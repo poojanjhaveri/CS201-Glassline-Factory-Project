@@ -12,11 +12,12 @@ import GlassLine.Shared.SharedData.SensorType;   // My file has this. You can de
 
 public interface ConveyorFamily{
 	
-	public abstract void msgSensorPressed( SensorType type ); // From Transducer
+	public abstract void msgHereIsGlass( Glass glass ); //from previous CF
 	
-	public abstract void msgSensorReleased( SensorType type ); // From Transducer
+	//from operators
+	public abstract void msgHereIsFinishedGlass(Operator operator, Glass glass);
+	public abstract void msgIHaveGlassFinished(Operator operator);
 	
-	public abstract void msgHereIsGlass( Glass glass );
-		
+	public abstract void msgIAmFree(); //from next CF
 	public abstract String getName();
 }
