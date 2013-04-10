@@ -1,11 +1,7 @@
-package engine.agent.Dongyoung_Folder;
+package engine.agent.Dongyoung;
 
 import shared.Glass;
-import shared.enums.SharedData.*;
-import transducer.TChannel;
-import transducer.TEvent;
-import transducer.TReceiver;
-import transducer.Transducer;
+import transducer.*;
 
 public class Machine extends Component implements TReceiver{
 

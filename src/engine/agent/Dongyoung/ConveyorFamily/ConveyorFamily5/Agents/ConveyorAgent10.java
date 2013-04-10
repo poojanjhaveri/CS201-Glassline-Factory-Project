@@ -1,18 +1,18 @@
-package engine.agent.Dongyoung_Folder.ConveyorFamily.ConveyorFamily7.Agents;
+package engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily5.Agents;
 
-import engine.agent.Dongyoung_Folder.Conveyor;
+import engine.agent.Dongyoung.Conveyor;
 import engine.interfaces.ConveyorFamily;
-
 
 /**
  * @author Dongyoung
  */
-public class ConveyorAgent13 extends Conveyor{
-
+public class ConveyorAgent10 extends Conveyor{
+	
 	// DATA
 	private ConveyorFamily previousFamily;
-	private OvenAgent oven;
-	public ConveyorAgent13(String name, int num, int frontSensorNum, int backSensorNum){
+	private PaintAgent paint;
+	
+	public ConveyorAgent10(String name, int num, int frontSensorNum, int backSensorNum){
 		super(name, num, frontSensorNum, backSensorNum);
 	}
 
@@ -22,7 +22,7 @@ public class ConveyorAgent13 extends Conveyor{
 	}
 	
 	protected void passGlassAction(){
-		oven.msgHereIsGlass( glasses.remove(0) );
+		paint.msgHereIsGlass( glasses.remove(0) );
 	}
 	
 	protected void glassLeaveFrontAction(){
@@ -30,8 +30,8 @@ public class ConveyorAgent13 extends Conveyor{
 	}
 	
 	/* Setter */
-	public void setComps(ConveyorFamily previousFamily, OvenAgent oven){
+	public void setComps(ConveyorFamily previousFamily, PaintAgent paint){
 		this.previousFamily = previousFamily;
-		this.oven = oven;
+		this.paint = paint;
 	}
 }

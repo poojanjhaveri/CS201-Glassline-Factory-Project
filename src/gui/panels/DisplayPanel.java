@@ -24,6 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+
+import shared.Glass;
 import shared.ImageIcons;
 import shared.enums.ConveyorDirections;
 import shared.enums.MachineType;
@@ -209,9 +211,9 @@ public class DisplayPanel extends JLayeredPane {
 			NOTE: You can observe the factory work on one piece of glass without agents by leaving the below line alone. Comment it out when you are ready to start working.
 		*/
 		System.err.println("****** GUI TEST IS RUNNING. Comment out 2 lines in DisplayPanel.java (near line 212, at the end of 'setupComponents()') in order to stop GUI test from running in the future.");
-	//	test = new GuiTestSM(transducer);
+		// test = new GuiTestSM(transducer);
 	}
-	
+
 	private void createPopUp(int x,int y)
 	{
 		GUIPopUp popUp = new GUIPopUp(this,transducer);
