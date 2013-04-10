@@ -1,11 +1,15 @@
 
 package gui.panels;
 
+import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import gui.drivers.FactoryFrame;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import shared.Glass;
+import transducer.TChannel;
+import transducer.TEvent;
 import transducer.Transducer;
 
 /**
@@ -83,6 +87,18 @@ public class FactoryPanel extends JPanel
 		// ===========================================================================
 
 		System.out.println("Back end initialization finished.");
+		
+		System.out.println("Back end initialization finished.");
+		
+		 ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer);
+		 transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
+		 c1.msgHereIsGlass(new Glass(0,true, true, true, true, true, true, false, false, false, false));
+		 ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(1,transducer);
+		 c1.setNextConveyorFamily(c2);
+		 System.out.println(c1.getNextConveyorFamily());
+		
+		
+		
 	}
 
 	/**
