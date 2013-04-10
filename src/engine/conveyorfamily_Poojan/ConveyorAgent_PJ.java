@@ -337,7 +337,7 @@ print("sending sending");
 	
 	private void checktheglass(MyCGlass mg) {
 		// TODO Auto-generated method stub
-		print("Checking the functionalities of glass"+mg.pcglass.getRecipe(WorkType.CUTTER));
+		print("Checking the functionalities of glass"+mg.pcglass.getRecipe(TChannel.CUTTER));
 		mg.NeedsProcessing=mg.pcglass.getRecipe(WorkType.CUTTER);
 		mg.status=GlassStatusConveyor.CHECKED;
 	}
