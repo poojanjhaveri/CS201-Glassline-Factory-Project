@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 import engine.agent.Agent;
-import engine.agent.interfaces.ConveyorFamily;
+import engine.interfaces.ConveyorFamily;
 import shared.Barcode;
 import shared.Glass;
 import transducer.TChannel;
