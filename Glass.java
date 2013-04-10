@@ -1,25 +1,20 @@
-package GlassLine.Shared;
+package shared;
 
 import java.util.HashMap;
 
-/**
- * I sent SharedData.java, too.
- * 
- * By Dongyoung Jung
- */
-import GlassLine.Shared.SharedData.GlassStatus;
-import GlassLine.Shared.SharedData.WorkType;
+import shared.enums.SharedData.GlassStatus;
+import shared.enums.SharedData.WorkType;
 
 /**
  * Glass Class
  * This class contains its Recipe.
  * 
- * @author Dongyoung Jung
+ * @author ( TEAM WORK ) 
  */
 public class Glass {
 	// Glass Number. Starts from 1, maybe?
 	private int number;
-
+	
 	/* 
 	 * You can check by WorkType
 	 * True - Necessary, False - Unnecessary
@@ -52,6 +47,13 @@ public class Glass {
 		recipe.put( WorkType.PAINTER, painter);
 	}
 	
+	
+	public Glass(int number){
+		this.number = number;
+	}
+	
+	
+	
 	/*
 	 * PASS : Does not need work.
 	 * WORK : Need work, but not assigned with an operator.
@@ -70,6 +72,9 @@ public class Glass {
 	
 	/* Returns the assigned number of glass */
 	public int getNumber(){  return number;  }
+	
+	
+	public Boolean getRecipe( WorkType Workty){  return recipe.get(Workty);  }
 	
 	/*
 	 * You can check if the glass needs Machine Work.
