@@ -17,7 +17,6 @@ public class InlineAgent extends Agent implements Inline {
 	String function;
 	Transducer transducer;
 	TChannel channel;
-	WorkType type;
 	
 	Glass glassOnSpot;
 	ConveyorFamily next;
@@ -70,7 +69,7 @@ public class InlineAgent extends Agent implements Inline {
 	//Actions
 	private void processGlass() {
 		Do("Processing Glass");
-		if(glassOnSpot.getRecipe(type) ) {
+		if(glassOnSpot.getRecipe(channel) ) {
 			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
 			try {
 				machineSemaphore.acquire();
@@ -107,9 +106,6 @@ public class InlineAgent extends Agent implements Inline {
 		channel = c;
 	}
 	
-	public void setWorkType(WorkType wt) {
-		type = wt;
-	}
 
 	public void setNextConveyorFamily(ConveyorFamily cf) {
 		next = cf;

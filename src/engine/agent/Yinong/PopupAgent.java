@@ -16,7 +16,7 @@ public class PopupAgent extends Agent implements Popup {
 	//data
 	int popupIndex;
 	Transducer transducer;
-	WorkType type;
+	TChannel channel;
 	//Operators
 	MyOperator[] operator = new MyOperator[2];
 	private class MyOperator {
@@ -238,7 +238,7 @@ public class PopupAgent extends Agent implements Popup {
 				}
 			}
 			if(tempGlass != null) {
-				if ( (! tempGlass.glass.getRecipe(type)) || (operatorFree(0) || operatorFree(1)) ) {
+				if ( (! tempGlass.glass.getRecipe(channel)) || (operatorFree(0) || operatorFree(1)) ) {
 					acceptGlass(tempGlass);
 					return true;
 				}
@@ -307,7 +307,7 @@ public class PopupAgent extends Agent implements Popup {
 
 	private void identifyGlass(MyGlass tempGlass) {
 		Do("Deciding if glass needs processing");
-		if(tempGlass.glass.getRecipe(type))
+		if(tempGlass.glass.getRecipe(channel))
 			tempGlass.state = GlassState.NEED_PROCESSING;
 		else
 			tempGlass.state = GlassState.PASS;
@@ -371,17 +371,9 @@ public class PopupAgent extends Agent implements Popup {
 	}
 	
 	public void setOperator(int index, Operator o, TChannel c, int operatorIndex) {
-		boolean alreadyRegistered = false;
-		if(operator[0] != null) {
-			if(operator[0].channel == c)
-				alreadyRegistered = true;
-		} else if (operator[1] != null) {
-			if(operator[1].channel == c)
-				alreadyRegistered = true;
-		}
+		
 		operator[index] = new MyOperator(o, true, c, operatorIndex);
-		if(! alreadyRegistered)
-			transducer.register(this, c);
+		
 	}
 
 	
@@ -393,8 +385,9 @@ public class PopupAgent extends Agent implements Popup {
 		conveyor = c;
 	}
 	
-	public void setWorkType(WorkType wt) {
-		type = wt;
+	public void setTChannel(TChannel t) {
+		channel = t;
+		transducer.register(this, t);
 	}
 	
 	public boolean operatorFree(int index) {
