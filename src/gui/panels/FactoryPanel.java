@@ -1,12 +1,13 @@
 
 package gui.panels;
-
+/*
 import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily5.ConveyorFamily5;
 import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily6.ConveyorFamily6;
 import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily7.ConveyorFamily7;
 import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
+*/
 import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import gui.drivers.FactoryFrame;
 
@@ -93,19 +94,24 @@ public class FactoryPanel extends JPanel
 		// ===========================================================================
 		System.out.println("Back end initialization finished.");
 		
+		// Poojan Jhaveri
 		
 		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer);
 		transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
-		c1.msgHereIsGlass(new Glass(0,true, true, true, true, true, true, false, false, false, false));
+		c1.msgHereIsGlass(new Glass(0,true, true, true, true, true, true, true, false, false, false));
 		ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(1,transducer);
 		c1.setNextConveyorFamily(c2);
 		System.out.println(c1.getNextConveyorFamily());
 		
+		
+		
+	
 				
 		//runDongyoung();
 	}
 	
 	public void runDongyoung(){
+		/*
 		new TestAni(transducer);
 		ConveyorFamily5 family5 = new ConveyorFamily5();
 		ConveyorFamily6 family6 = new ConveyorFamily6();
@@ -120,6 +126,7 @@ public class FactoryPanel extends JPanel
 		Glass glass = new Glass(0, true, true, true, true, true, true, true, false, false, false);
 		//Glass glass = new Glass(0, true, true, true, true, true, true, true, true, true, true);
 		family5.msgHereIsGlass(glass);
+		*/
 	}
 
 	/**

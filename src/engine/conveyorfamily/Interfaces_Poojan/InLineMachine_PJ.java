@@ -11,10 +11,9 @@ import shared.Glass;
  */
 public interface InLineMachine_PJ {
 
-	void msgINeedToPassGlass();
 
 	void msgGlassDoesNotNeedProcessing(Glass glass);
 
-	void msgGlassNeedsProcessing(Glass pcglass);
+	void msgGlassNeedsProcessing(Glass pcglass, Boolean needsProcessing);
 
 }
