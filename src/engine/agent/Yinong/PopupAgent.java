@@ -6,7 +6,6 @@ import transducer.*;
 import engine.agent.Agent;
 import engine.interfaces.*;
 import engine.interfaces.Yinong.Conveyor;
-import engine.interfaces.Yinong.Operator;
 import engine.interfaces.Yinong.Popup;
 
 import java.util.*;

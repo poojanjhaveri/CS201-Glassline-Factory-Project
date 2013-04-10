@@ -7,7 +7,6 @@ import engine.agent.Agent;
 import engine.interfaces.*;
 import engine.interfaces.Yinong.Conveyor;
 import engine.interfaces.Yinong.Inline;
-import engine.interfaces.Yinong.Operator;
 import engine.interfaces.Yinong.Popup;
 
 public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {

@@ -1,4 +1,4 @@
-package engine.interfaces.Yinong;
+package engine.interfaces;
 
 import shared.Glass;
 import transducer.TChannel;

@@ -1,5 +1,6 @@
 package engine.interfaces.Yinong;
 
+import engine.interfaces.Operator;
 import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;

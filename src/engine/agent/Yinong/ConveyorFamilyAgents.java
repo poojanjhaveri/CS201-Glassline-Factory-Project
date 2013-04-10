@@ -4,7 +4,6 @@ import shared.Glass;
 import transducer.TChannel;
 import engine.agent.Yinong.ConveyorAgent.Mode;
 import engine.interfaces.*;
-import engine.interfaces.Yinong.Operator;
 
 //This is not truly an agent.
 public class ConveyorFamilyAgents implements ConveyorFamily {
