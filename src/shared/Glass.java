@@ -3,7 +3,7 @@ package shared;
 import java.util.HashMap;
 
 import shared.enums.SharedData.GlassStatus;
-import shared.enums.SharedData.WorkType;
+import transducer.TChannel;
 
 /**
  * Glass Class
@@ -16,10 +16,10 @@ public class Glass {
 	private int number;
 	
 	/* 
-	 * You can check by WorkType
+	 * You can check by TChannel
 	 * True - Necessary, False - Unnecessary
 	 */
-	private HashMap<WorkType, Boolean> recipe = new HashMap<WorkType, Boolean>();
+	private HashMap<TChannel, Boolean> recipe = new HashMap<TChannel, Boolean>();
 	
 	/*
 	 * There are five status.
@@ -35,16 +35,16 @@ public class Glass {
 	/* CONSTRUCTOR */
 	public Glass(int number, boolean breakout, boolean manual_breakout, boolean cross_seamer, boolean drill, boolean grinder, boolean cutter, boolean washer, boolean uv_lamp, boolean oven, boolean painter){
 		this.number = number;
-		recipe.put( WorkType.BREAKOUT, breakout );
-		recipe.put( WorkType.MANUAL_BREAKOUT, manual_breakout );
-		recipe.put( WorkType.CROSS_SEAMER, cross_seamer );
-		recipe.put( WorkType.DRILL, drill );
-		recipe.put( WorkType.GRINDER, grinder );
-		recipe.put( WorkType.CUTTER, cutter );
-		recipe.put( WorkType.WASHER, washer );
-		recipe.put( WorkType.UV_LAMP, uv_lamp );
-		recipe.put( WorkType.OVEN, oven );
-		recipe.put( WorkType.PAINTER, painter);
+		recipe.put( TChannel.BREAKOUT, breakout );
+		recipe.put( TChannel.MANUAL_BREAKOUT, manual_breakout );
+		recipe.put( TChannel.CROSS_SEAMER, cross_seamer );
+		recipe.put( TChannel.DRILL, drill );
+		recipe.put( TChannel.GRINDER, grinder );
+		recipe.put( TChannel.CUTTER, cutter );
+		recipe.put( TChannel.WASHER, washer );
+		recipe.put( TChannel.UV_LAMP, uv_lamp );
+		recipe.put( TChannel.OVEN, oven );
+		recipe.put( TChannel.PAINTER, painter);
 	}
 	
 	
@@ -74,7 +74,7 @@ public class Glass {
 	public int getNumber(){  return number;  }
 	
 	
-	public Boolean getRecipe( WorkType Workty){  return recipe.get(Workty);  }
+	public Boolean getRecipe( TChannel Workty){  return recipe.get(Workty);  }
 	
 	/*
 	 * You can check if the glass needs Machine Work.
@@ -82,5 +82,5 @@ public class Glass {
 	 * You need this maybe before passing the glass onto Popup Sensor? Maybe?
 	 * If it does need the work, it remains as 'PASS' which means that it just passes by and moves to Next Conveyor Family.
 	 */
-	public void setStatusByWorkType( WorkType type ){  if( recipe.get( type ) == true ) setStatusWork();  }	
+	public void setStatusByTChannel( TChannel type ){  if( recipe.get( type ) == true ) setStatusWork();  }	
 }
