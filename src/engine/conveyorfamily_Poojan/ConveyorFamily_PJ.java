@@ -96,8 +96,6 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 
 	@Override
 	public void msgIamFree() {
-		 
-		System.out.println("I am free recieved from next conveyor family");
 		isNextConveyorFamilyBusy=false;
 	//	 transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
 		// TODO Auto-generated method stub
