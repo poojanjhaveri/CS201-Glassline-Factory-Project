@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import interfaces.ConveyorFamily;
-import interfaces.PopUp;
-import interfaces.Conveyor;
+import interfaces.PopUp_LV;
+import interfaces.Conveyor_LV;
 import shared.Glass;
 import shared.SharedData.WorkType;
 import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 
-public class PopUpAgent_LV extends Agent implements PopUp{
+public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	int index;
 	WorkType work;
@@ -23,7 +23,7 @@ public class PopUpAgent_LV extends Agent implements PopUp{
 	PopUpState state;
 	List<Machine> operators;
 	
-	Conveyor conveyor;
+	Conveyor_LV conveyor;
 	GlassPackage currentGlass;
 	List<GlassPackage> myGlassPieces = Collections.synchronizedList(new ArrayList<GlassPackage>());
 	enum GlassState {INCOMING, WAITING, NEEDS_WORK, FINISHED, MOVE, NONE};
@@ -442,7 +442,7 @@ public class PopUpAgent_LV extends Agent implements PopUp{
 		t.register(this, TChannel.POPUP);
 	}
 	
-	public void setInteractions(ConveyorFamily cf, Conveyor c, Transducer trans)
+	public void setInteractions(ConveyorFamily cf, Conveyor_LV c, Transducer trans)
 	{
 		conveyor = c;
 		next = cf;
@@ -450,7 +450,7 @@ public class PopUpAgent_LV extends Agent implements PopUp{
 		t.register(this, TChannel.POPUP);
 	}
 	
-	public void setConveyor(Conveyor c)
+	public void setConveyor(Conveyor_LV c)
 	{
 		conveyor = c;
 	}
@@ -465,7 +465,7 @@ public class PopUpAgent_LV extends Agent implements PopUp{
 		return nextComponentFree;
 	}
 	
-	public Conveyor getConveyor()
+	public Conveyor_LV getConveyor()
 	{
 		return conveyor;
 	}

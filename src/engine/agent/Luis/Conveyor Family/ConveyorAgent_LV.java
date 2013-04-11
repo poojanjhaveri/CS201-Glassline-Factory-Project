@@ -1,8 +1,8 @@
 package engine.agent;
 
-import interfaces.Conveyor;
+import interfaces.Conveyor_LV;
 import interfaces.ConveyorFamily;
-import interfaces.PopUp;
+import interfaces.PopUp_LV;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 
-public class ConveyorAgent_LV extends Agent implements Conveyor{
+public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	
 	int index;
 	boolean moving;
@@ -26,10 +26,10 @@ public class ConveyorAgent_LV extends Agent implements Conveyor{
 	
 	public class MyPopUp
 	{
-		PopUp popUp;
+		PopUp_LV popUp;
 		PopUpState state;
 		
-		public MyPopUp(PopUp p)
+		public MyPopUp(PopUp_LV p)
 		{
 			popUp = p;
 			state = PopUpState.OPEN;
@@ -182,7 +182,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor{
 		
 	}
 	
-	public void setInteractions(ConveyorFamily cf, PopUp popUp, Transducer trans)
+	public void setInteractions(ConveyorFamily cf, PopUp_LV popUp, Transducer trans)
 	{
 		previousFamily = cf;
 		myPopUp = new MyPopUp(popUp);
@@ -190,12 +190,12 @@ public class ConveyorAgent_LV extends Agent implements Conveyor{
 		t.register(this, TChannel.SENSOR);
 	}
 	
-	public PopUp getPopUp()
+	public PopUp_LV getPopUp()
 	{
 		return myPopUp.popUp;
 	}
 	
-	public void setPopUp(PopUp p)
+	public void setPopUp(PopUp_LV p)
 	{
 		myPopUp.popUp = p;
 	}

@@ -8,7 +8,7 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 
 	int index;
 	ConveyorAgent_LV conveyor;
-	PopUpAgent popup;
+	PopUpAgent_LV popup;
 	Transducer t;
 	ConveyorFamily previousFamily, nextFamily;
 	
@@ -16,7 +16,7 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 	{
 		index = i;
 		conveyor = new ConveyorAgent_LV("Conveyor " + index, index);
-		popup = new PopUpAgent("PopUp " + index, index);
+		popup = new PopUpAgent_LV("PopUp " + index, index);
 		conveyor.setInteractions(previousFamily, popup, trans);
 		popup.setInteractions(nextFamily, conveyor, trans);
 	}
