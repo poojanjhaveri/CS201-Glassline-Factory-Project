@@ -2,6 +2,7 @@ package engine.agent.Yinong;
 
 import shared.Glass;
 import transducer.TChannel;
+import transducer.Transducer;
 import engine.agent.Yinong.ConveyorAgent.Mode;
 import engine.interfaces.*;
 import engine.agent.Alex.*;
@@ -75,7 +76,6 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 	}
 	@Override
 	public void startThreads() {
-		// TODO Auto-generated method stub
 		conveyor.startThread();
 		if(popup != null) {
 			popup.startThread();
@@ -87,5 +87,13 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 	@Override
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
 		conveyor.setPreviousConveyorFamily(c2);
+	}
+	
+	public void setTransducer(Transducer t) {
+		conveyor.setTransducer(t);
+		if(popup != null)
+			popup.setTransducer(t);
+		if(inline != null)
+			inline.setTransducer(t);
 	}
 }
