@@ -61,7 +61,23 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 	}
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		
 		return null;
+	}
+	@Override
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void startThreads() {
+		// TODO Auto-generated method stub
+		conveyor.startThread();
+		if(popup != null) {
+			popup.startThread();
+		}
+		if(inline != null) {
+			inline.startThread();
+		}
 	}
 }

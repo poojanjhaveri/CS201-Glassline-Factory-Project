@@ -40,14 +40,14 @@ public class BinAgent extends Agent {
 		}
 	}
 	private class MyConveyorFamily {
-		public ConveyorFamilyInterface conveyor;
-		public MyConveyorFamily(ConveyorFamilyInterface cf){
+		public ConveyorFamily conveyor;
+		public MyConveyorFamily(ConveyorFamily cf){
 			conveyor = cf;
 		}
 	}
 	
 	
-	public BinAgent(String n, Transducer t, ConveyorFamilyInterface c1, V1_GUI gui){
+	public BinAgent(String n, Transducer t, ConveyorFamily c1, V1_GUI gui){
 		super (n);
 		this.gui = gui;
 		events = new ArrayList<TransducerEvent>();

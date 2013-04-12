@@ -263,4 +263,9 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		nextState = State.FREE;
 	}
 
+	@Override
+	public void startThreads() {
+		this.startThread();
+	}
+
 }
