@@ -96,17 +96,17 @@ public class FactoryPanel extends JPanel
 		
 		// Poojan Jhaveri
 		
-		/*
 		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer);
 		transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
 		c1.msgHereIsGlass(new Glass(0,true, true, true, true, true, true, true, false, false, false));
 		ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(1,transducer);
 		c1.setNextConveyorFamily(c2);
 		System.out.println(c1.getNextConveyorFamily());
-	*/
 		
 		
 		
+	
+				
 		//runDongyoung();
 	}
 	

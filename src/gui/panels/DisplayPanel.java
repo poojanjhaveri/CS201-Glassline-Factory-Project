@@ -129,7 +129,8 @@ public class DisplayPanel extends JLayeredPane {
 		int numConveyors = 0;
 		createBin(400,600);
 		
-		createConveyor(400,720,ConveyorDirections.LEFT, numConveyors++);	
+		createConveyor(400,720,ConveyorDirections.LEFT, numConveyors++);
+		
 		
 		createOnlineComponent(currentComponent.getX()-(int)(ImageIcons.getIconList("cutter").get(0).getIconWidth()/2),currentComponent.getCenterY(),MachineType.CUTTER,ConveyorDirections.LEFT);
 		

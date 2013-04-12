@@ -1,7 +1,6 @@
 
 package gui.panels.subcontrolpanels;
 
-import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import gui.drivers.FactoryFrame;
 import gui.panels.ControlPanel;
 
@@ -23,7 +22,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;
 
@@ -118,7 +116,7 @@ public class StatePanel extends JPanel
 		// set up buttons
 		startButton.addActionListener(new StartButtonListener());
 		stopButton.addActionListener(new StopButtonListener());
-		startButton.setEnabled(true);
+		startButton.setEnabled(false);
 		stopButton.setEnabled(false);
 
 		// setup sliders
@@ -241,9 +239,6 @@ public class StatePanel extends JPanel
 	 */
 	public class StartButtonListener implements ActionListener
 	{
-		
-		
-		int k=0;
 		/**
 		 * Invoked whenever the button is clicked, starts the control cell Note
 		 * that this button is disabled unless a kit config exists and the
@@ -251,17 +246,6 @@ public class StatePanel extends JPanel
 		 */
 		public void actionPerformed(ActionEvent ae)
 		{
-			
-			
-			ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,parent.getTransducer());
-			parent.getTransducer().fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
-			c1.msgHereIsGlass(new Glass(k,true, true, true, true, true, true, true, false, false, false));
-			ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(1,parent.getTransducer());
-			c1.setNextConveyorFamily(c2);
-			c2.setStatusOfNextConveyorFamily(true);
-			k++;
-			
-			
 			System.out.println("Control Panel START button clicked.");
 			if (parent.getTransducer() == null)
 			{
@@ -271,7 +255,7 @@ public class StatePanel extends JPanel
 			{
 				parent.getTransducer().fireEvent(TChannel.CONTROL_PANEL, TEvent.START, null);
 
-				startButton.setEnabled(true);
+				startButton.setEnabled(false);
 				stopButton.setEnabled(true);
 			}
 		}
