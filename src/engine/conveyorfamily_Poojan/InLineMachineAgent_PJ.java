@@ -150,9 +150,8 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
 		mg.status=GlassStatusInline.DONE;
-		    myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
-		
-			stateChanged();
+		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
+		stateChanged();
 	}
 
 
@@ -184,7 +183,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		{
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 			{
-				
 				synchronized(glassoninline){
 					for(MyPGlass mg:glassoninline){
 					    if(mg.status == GlassStatusInline.NEW ){

@@ -50,13 +50,14 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
 	
-	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2) {
+	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
 		// TODO Auto-generated constructor stub
 	this.name=string;
 	this.number=number;
 	this.MyFamily=c1;
 	this.mypopup=p1;
 	this.myinline=p2;
+	this.PREVIOUSFamily=cp;
 	
 	
 	this.isPopUpBusy=false;
@@ -177,7 +178,7 @@ print("sending sending");
 									    	
 											for(MyCGlass mg:glassonconveyor){
 										
-											    if(mg.status == GlassStatusConveyor.FIRSTDONE){
+											    if(mg.status == GlassStatusConveyor.DONE){
 											//	PassingGlassToPopupToProcess(mg);
 										    	glassonconveyor.remove(mg);
 										    	
@@ -233,7 +234,7 @@ print("sending sending");
 			
 			if(event == TEvent.SENSOR_GUI_RELEASED)
 			{
-				if((Integer)args[0]==this.getNumber())
+				if((Integer)args[0]==0)
 				{
 					
 								print("Sensor 0 Released");
@@ -265,6 +266,7 @@ print("sending sending");
 				if((Integer)args[0]==2)
 				{	
 					Object[] cno ={1};
+					print("3rd sensor");
 					   myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 					}    	
 			}
@@ -273,27 +275,29 @@ print("sending sending");
 			{
 				if((Integer)args[0]==3)
 				{	
-					
-					
+					synchronized(glassonconveyor)
+					{
 					for(MyCGlass mg:glassonconveyor){
-						if(mg.pcglass.getNumber() == (Integer)args[1]){
+				//		if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
+								
 								Object[] cno ={1};
 								myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
 								  if(!(isNextConveyorFamilyBusy))
 									{
 									  print("4th sensor");
 										Object[] cno1 ={1};
-										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno1);
+								//		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno1);
 										this.NEXTFamily.msgHereIsGlass(mg.pcglass);
 										print("RELEASE THE GLASS. PROCESSING DONE");
 										Object[] args1 = {1};
 										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
+									//	isNextConveyorFamilyBusy=true;
 										mg.status=GlassStatusConveyor.DONE;
-										//stateChanged();
+										stateChanged();
 									}
+						//	}
 							}
-					
 						}
  
 					} 
@@ -306,7 +310,7 @@ print("sending sending");
 			
 			if(event == TEvent.SENSOR_GUI_RELEASED)
 			{
-				if((Integer)args[0]==2)
+				if((Integer)args[0]==3)
 				{	
 					print("Glass Sent");
 					}    	
@@ -419,6 +423,7 @@ print("sending sending");
 		this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
 		isINLINEBusy=true;
 		mg.status=GlassStatusConveyor.FIRSTDONE;	
+		stateChanged();
 		
 	}
 	

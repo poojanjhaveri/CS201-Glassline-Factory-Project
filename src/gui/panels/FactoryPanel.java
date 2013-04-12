@@ -130,15 +130,21 @@ public class FactoryPanel extends JPanel
 		*/
 		//alex
 		
+		
 		V1_GUI gui = new V1_GUI();
+		this.cPanel.glassInfoPanel.add(gui);
 		BinAgent bin = new BinAgent("bin agent", transducer, gui);
 		gui.setBinAgent(bin);
 		bin.startThread();
-		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer);
+		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
+		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "breakout", false);
 		bin.setNextConveyorFamily(c1);
-		c1.setPreviousConveyorFamily(bin);
+		c1.setNextConveyorFamily(c2);
+		c2.setPreviousConveyorFamily(c1);
+	
 		
 		c1.startThreads();
+		
 		/*
 		ConveyorFamily c1 = new ConveyorFamily_PJ(0, transducer);
 		V1_GUI gui = new V1_GUI();

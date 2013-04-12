@@ -15,7 +15,7 @@ import javax.swing.JWindow;
 
 import shared.Barcode;
 
-public class V1_GUI extends JFrame implements ActionListener{
+public class V1_GUI extends JPanel implements ActionListener{
 	JButton allRecipe, noneRecipe, some1Recipe, some2Recipe, some3Recipe;
 	private BinAgent binAgent;
 	JTextPane textPane;
@@ -30,7 +30,7 @@ public class V1_GUI extends JFrame implements ActionListener{
 		super();
 		//init window
 		setSize(400, 600);
-		getContentPane().setLayout( new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+	//	getContentPane().setLayout( new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
 		
 		//init buttons

@@ -1,6 +1,6 @@
 package engine.conveyorfamily_Poojan;
 
-import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
+
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
 import engine.interfaces.ConveyorFamily;
@@ -27,8 +27,9 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	private Transducer transducer;
 	private boolean isHalfFamily;
 	
-	public ConveyorFamily_PJ(int number, Transducer transducer2)
+	public ConveyorFamily_PJ(int number, Transducer transducer2,ConveyorFamily cprev)
 	{
+		this.previousConveyorFamily=cprev;
 		this.ConveryorFamilyNo=number;
 		this.transducer=transducer2;
 		this.popup = new PopupAgent_PJ("MyPopup",number,this,transducer);
@@ -36,11 +37,10 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.inline = new InLineMachineAgent_PJ("MyInline",number,this,transducer);
 		this.inline.setConveyor(conveyor);
 
-		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline);
+		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
 	//	this.popup.setConveyor(conveyor);
 		
 		 isNextConveyorFamilyBusy=false;
-		// startThreads();
 	}
 	
 	
@@ -61,20 +61,6 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		return null;
 	}
 	
-	
-	
-	
-	
-	public boolean getStatusOfNextConveyorFamily() {
-		// TODO Auto-generated method stub
-		return isNextConveyorFamilyBusy;
-	}
-	
-	
-	public void setStatusOfNextConveyorFamily(Boolean y) {
-		// TODO Auto-generated method stub
-		isNextConveyorFamilyBusy=y;
-	}
 	
 	
 
@@ -126,7 +112,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
 		nextConveyorFamily=c3;
-		this.conveyor.NEXTFamily=c3;
+		this.conveyor.NEXTFamily=nextConveyorFamily;
 		
 	}
 
@@ -142,11 +128,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
 		// TODO Auto-generated method stub
-		this.conveyor.MyFamily=c2;
 		this.conveyor.PREVIOUSFamily=c2;
-		
-		System.out.println("PRVIOUS CONVEYOR FAMILY"+this.conveyor.PREVIOUSFamily.getName());
-
 		
 	}
 

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import engine.agent.Alex.V1_GUI;
 import gui.panels.ControlPanel;
 
 import javax.swing.*;
@@ -26,12 +27,6 @@ public class GlassSelectPanel extends JPanel
 	 */
 	public GlassSelectPanel(ControlPanel cp)
 	{
-		JCheckBox c1 = new JCheckBox("Cutter");
-		this.add(c1);
-		
-		JButton addglass = new JButton("Add Glass");
-		addglass.addActionListener(new add());
-		
 		
 		this.setBackground(Color.white);
 		parent = cp;
