@@ -16,13 +16,11 @@ public class ConveyorFamily7 implements ConveyorFamily {
 	
 	public ConveyorFamily7(){}
 	
-	public void setComps(ConveyorFamily previousFamily, ConveyorFamily nextFamily, Transducer transducer){
-		conveyor13.setComps(previousFamily, oven);
+	public void setTransducer(Transducer transducer){
 		conveyor13.setTransducer(transducer);
-		conveyor14.setComps(oven, nextFamily);
 		conveyor14.setTransducer(transducer);
-		oven.setComps(conveyor13, conveyor14);
 		oven.setTransducer(transducer);
+		oven.setComps(conveyor13, conveyor14);
 	}
 
 	@Override
@@ -37,37 +35,32 @@ public class ConveyorFamily7 implements ConveyorFamily {
 
 	@Override
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
-		// TODO Auto-generated method stub
-		
+		// Nothing
 	}
 
 	@Override
 	public void msgIHaveGlassFinished(Operator operator) {
-		// TODO Auto-generated method stub
-		
+		// Nothing
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
+		// Nothing
 		return null;
 	}
 
 	@Override
-	public void setNextConveyorFamily(ConveyorFamily c3) {
-		// TODO Auto-generated method stub
-		
+	public void setNextConveyorFamily(ConveyorFamily nextFamily) {
+		conveyor14.setComps(oven, nextFamily);
 	}
 
 	@Override
 	public void startThreads() {
-		// TODO Auto-generated method stub
-		
+		// Nothing
 	}
 
 	@Override
-	public void setPreviousConveyorFamily(ConveyorFamily c2) {
-		// TODO Auto-generated method stub
-		
+	public void setPreviousConveyorFamily(ConveyorFamily previousFamily) {
+		conveyor13.setComps(previousFamily, oven);
 	}
 }
