@@ -3,7 +3,9 @@ package gui.panels.subcontrolpanels;
 
 import gui.panels.ControlPanel;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * The GlassInfoPanel class displays information on glass in production

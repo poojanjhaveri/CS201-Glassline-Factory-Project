@@ -236,10 +236,7 @@ print("sending sending");
 				if((Integer)args[0]==this.getNumber())
 				{
 					
-								print("SENSOR RELEASED");
-								
-								
-						//		print(""+	this.PREVIOUSFamily.getName());
+								print("Sensor 0 Released");
 								this.PREVIOUSFamily.msgIAmFree();
 								//binAgent.msgIAmFree();
 					}    	
@@ -254,7 +251,6 @@ print("sending sending");
 							{
 								print("2nd sensor");
 								Object [] no={this.getNumber()};
-						//		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,no);
 								isConveyorRunning=true;
 								mg.status=GlassStatusConveyor.ONEXITSENSOR;
 								stateChanged();
