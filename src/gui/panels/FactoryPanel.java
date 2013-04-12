@@ -130,7 +130,7 @@ public class FactoryPanel extends JPanel
 		*/
 		//alex
 		
-		
+		/*
 		ConveyorFamily c1 = new ConveyorFamily_PJ(0, transducer);
 		V1_GUI gui = new V1_GUI();
 		BinAgent bin = new BinAgent("bin agent", transducer, gui);
@@ -158,7 +158,7 @@ public class FactoryPanel extends JPanel
 		
 */
 	//	c1.startThreads();
-		c2.startThreads();
+	//	c2.startThreads();
 	//	c3.startThreads();
 	//	bin.startThreads();
 		//c2.setNextConveyorFamily();
