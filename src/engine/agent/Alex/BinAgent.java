@@ -12,7 +12,7 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 
-public class BinAgent extends Agent {
+public class BinAgent extends Agent implements ConveyorFamily{
 	/*
 	 * Data
 	 */
@@ -47,13 +47,12 @@ public class BinAgent extends Agent {
 	}
 	
 	
-	public BinAgent(String n, Transducer t, ConveyorFamily c1, V1_GUI gui){
+	public BinAgent(String n, Transducer t, V1_GUI gui){
 		super (n);
 		this.gui = gui;
 		events = new ArrayList<TransducerEvent>();
 		requests = new ArrayList<GlassRequest>();
 		
-		this.ncCutter = new MyConveyorFamily(c1);
 		transducer = t;
 		transducer.register(this, TChannel.BIN);
 		
@@ -176,6 +175,48 @@ public class BinAgent extends Agent {
 	private void warnCreatingGlass(GlassRequest gr){
 		gr.dealtWith = true;
 		gui.warnCreatingGlass();
+	}
+
+
+	@Override
+	public void msgHereIsGlass(Glass glass) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void msgIHaveGlassFinished(Operator operator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+		// TODO Auto-generated method stub
+		ncCutter = new MyConveyorFamily(c3);
+	}
+
+
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void startThreads() {
+		// TODO Auto-generated method stub
+		this.startThread();
 	}
 
 

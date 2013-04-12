@@ -20,6 +20,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	private InLineMachineAgent_PJ inline;
 	public ConveyorFamily nextConveyorFamily;
 	public ConveyorFamily previousConveyorFamily;
+
 	
 	public boolean isNextConveyorFamilyBusy;
 	
@@ -142,7 +143,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
 		nextConveyorFamily=c3;
-		this.conveyor.NEXTFamily=c3;
+		this.conveyor.MyFamily=c3;
 	}
 
 
@@ -156,7 +157,9 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
 		// TODO Auto-generated method stub
-		this.conveyor.PREVIOUSFamily=c2;
+		this.conveyor.MyFamily=c2;
+
+		
 	}
 
 	

@@ -18,6 +18,7 @@ import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
 import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
+import engine.interfaces.ConveyorFamily;
 import gui.drivers.FactoryFrame;
 
 import javax.swing.BoxLayout;
@@ -122,6 +123,18 @@ public class FactoryPanel extends JPanel
 		gui.setBinAgent(bin);
 		bin.startThread();
 		*/
+		V1_GUI gui = new V1_GUI();
+		BinAgent bin = new BinAgent("bin agent", transducer, gui);
+
+		
+		ConveyorFamily c1 = new ConveyorFamily_PJ(0, transducer);
+		ConveyorFamily c2 = new ConveyorFamily_PJ(0, transducer);
+		c1.setPreviousConveyorFamily(bin);
+		c1.setNextConveyorFamily(c2);
+		
+		bin.setNextConveyorFamily(c1);
+		
+		//c2.setNextConveyorFamily();
 		//runDongyoung();
 	}
 	

@@ -13,6 +13,7 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 import engine.agent.Agent;
+import engine.agent.Alex.BinAgent;
 import engine.conveyorfamily.Interfaces_Poojan.Conveyor_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily.Interfaces_Poojan.InLineMachine_PJ;
@@ -44,6 +45,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
 	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
+	
 	
 	
 	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2) {
@@ -224,7 +226,9 @@ print("sending sending");
 					//	if(mg.pcglass.getNumber() == glassno){
 						//	{
 								print("SENSOR RELEASED");
+								
 								this.MyFamily.msgIAmFree();
+								//binAgent.msgIAmFree();
 							
 						//	}
 					//	}
