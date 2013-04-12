@@ -1,6 +1,7 @@
 
 package gui.panels.subcontrolpanels;
 
+import engine.agent.Yinong.ConveyorFamilyAgents;
 import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import gui.drivers.FactoryFrame;
 import gui.panels.ControlPanel;
@@ -256,10 +257,15 @@ public class StatePanel extends JPanel
 			ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,parent.getTransducer());
 			parent.getTransducer().fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
 			c1.msgHereIsGlass(new Glass(k,true, true, true, true, true, true, true, false, false, false));
-			ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(2,parent.getTransducer());
+			ConveyorFamilyAgents c2 = new ConveyorFamilyAgents(2, "breakout", false);
 			c1.setNextConveyorFamily(c2);
-			c2.msgHereIsGlass(new Glass(k,true, true, true, true, true, true, true, false, false, false));
-			c2.setStatusOfNextConveyorFamily(true);
+			c2.setTransducer(parent.getTransducer());
+			c2.setPreviousConveyorFamily(c1);
+			
+			c2.startThreads();
+			
+		//	ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(2,parent.getTransducer());
+		//	c2.msgHereIsGlass(new Glass(k,true, true, true, true, true, true, true, false, false, false));
 			k++;
 			
 			

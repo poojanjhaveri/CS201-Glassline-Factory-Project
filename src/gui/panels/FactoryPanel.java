@@ -139,6 +139,7 @@ public class FactoryPanel extends JPanel
 		
 		ConveyorFamily c2 = new ConveyorFamily_PJ(1, transducer);
 		c1.setNextConveyorFamily(c2);
+		c1.setPreviousConveyorFamily(bin);
 	
 		/*
 		
@@ -156,10 +157,10 @@ public class FactoryPanel extends JPanel
 		c2.setNextConveyorFamily(c3);
 		
 */
-		c1.startThreads();
+	//	c1.startThreads();
 		c2.startThreads();
 	//	c3.startThreads();
-		bin.startThreads();
+	//	bin.startThreads();
 		//c2.setNextConveyorFamily();
 		
 		//runDongyoung();

@@ -49,8 +49,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
 	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
-	boolean halfFamily;
-	private ConveyorFamily nextCF;
 	
 	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2) {
 		// TODO Auto-generated constructor stub
@@ -238,19 +236,13 @@ print("sending sending");
 				if((Integer)args[0]==this.getNumber())
 				{
 					
-				//	for(MyCGlass mg:glassonconveyor){
-						
-					//	if(mg.pcglass.getNumber() == glassno){
-						//	{
 								print("SENSOR RELEASED");
 								
-								this.MyFamily.msgIAmFree();
+								
+						//		print(""+	this.PREVIOUSFamily.getName());
+						//		this.PREVIOUSFamily.msgIAmFree();
 								//binAgent.msgIAmFree();
-							
-						//	}
-					//	}
-					}
-			    //};    	
+					}    	
 			}
 			
 			if(event == TEvent.SENSOR_GUI_PRESSED)
@@ -297,9 +289,9 @@ print("sending sending");
 									  print("4th sensor");
 										Object[] cno1 ={1};
 										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno1);
-									  
-									  print("RELEASE THE GLASS. PROCESSING DONE");
-									Object[] args1 = {1};
+										this.NEXTFamily.msgHereIsGlass(mg.pcglass);
+										print("RELEASE THE GLASS. PROCESSING DONE");
+										Object[] args1 = {1};
 										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 										mg.status=GlassStatusConveyor.DONE;
 										//stateChanged();
@@ -320,7 +312,7 @@ print("sending sending");
 			{
 				if((Integer)args[0]==2)
 				{	
-					
+					print("Glass Sent");
 					}    	
 			}
 			
@@ -335,7 +327,7 @@ print("sending sending");
 
 	public void msgHereIsGlass(Glass g1) {
 		// TODO Auto-generated method stub
-		print("Glass Recieved. Conveyor Start");
+		print("Glass Recieved. Conveyor Start"+this.number);
 		MyCGlass mcg = new MyCGlass(g1);
 		mcg.NeedsProcessing = mcg.pcglass.getRecipe(TChannel.CUTTER);
 		glassonconveyor.add(mcg);

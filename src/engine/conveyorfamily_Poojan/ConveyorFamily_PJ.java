@@ -41,21 +41,9 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	//	this.popup.setConveyor(conveyor);
 		
 		 isNextConveyorFamilyBusy=false;
-		// startThreads();
+		 startThreads();
 	}
 	
-	
-	public void msgSensorPressed(SensorType type) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	public void msgSensorReleased(SensorType type) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 	public void msgHereIsGlass(Glass glass) {
 		// TODO Auto-generated method stub
@@ -93,10 +81,9 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	@Override
 	public void msgIAmFree() {
+		System.out.println("My CFnumber is"+this.ConveryorFamilyNo+"I am Free received from NEXT CONVEYOR FAMILY");
 		isNextConveyorFamilyBusy=false;
-	//	 transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
-		// TODO Auto-generated method stub
-		
+		this.conveyor.isNextConveyorFamilyBusy=false;
 	}
 
 
@@ -158,6 +145,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		// TODO Auto-generated method stub
 		this.conveyor.MyFamily=c2;
 		this.conveyor.PREVIOUSFamily=c2;
+		
+		System.out.println("PRVIOUS CONVEYOR FAMILY"+this.conveyor.PREVIOUSFamily.getName());
 
 		
 	}
