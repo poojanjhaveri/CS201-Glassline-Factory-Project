@@ -24,11 +24,9 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	//Previous Conveyor Family
 	ConveyorFamily previous;
 	//State Variables
-	State popupState;
 	enum State {BUSY, FREE};
-	
+	State popupState;
 	State inlineState;
-	
 	State nextState;
 	
 	boolean conveyorRunning;
@@ -52,6 +50,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		conveyorRunning = false;
 		sensor1State = SensorState.NOTHING;
 		sensor2State = SensorState.NOTHING;
+		Do("Conveyor initialized. Mode has been set to " + md.toString());
 	}
 	
 	//Messages and Eventfires
@@ -61,20 +60,20 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 			if(event == TEvent.SENSOR_GUI_PRESSED) {
 				if( (Integer)(args[0]) % 2 == 0) {
 					sensor1State = SensorState.PRESSED;
-					Do("SENSOR 1 PRESSED");
+					Do("Sensor 1 Pressed");
 				}
 				else {
 					sensor2State = SensorState.PRESSED;
-					Do("SENSOR 2 PRESSED");
+					Do("Sensor 2 Pressed");
 				}
 			} else if(event == TEvent.SENSOR_GUI_RELEASED) {
 				if( (Integer)(args[0]) % 2 == 0) {
 					sensor1State = SensorState.RELEASED;
-					Do("SENSOR 1 RELEASED");
+					Do("Sensor 1 Released");
 				}
 				else {
 					sensor2State = SensorState.RELEASED;
-					Do("SENSOR 2 RELEASED");
+					Do("Sensor 2 Released");
 				}
 			}
 		}
@@ -82,6 +81,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	}
 
 	public void msgHereIsGlass(Glass glass) {
+		Do("Received a glass.");
 		glasses.add(glass);
 		stateChanged();
 	}
@@ -98,8 +98,26 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	
 	@Override
 	public void msgInlineFree() {
+		Do("Received msgInlineFree from the inline machine.");
 		inlineState = State.FREE;
 		stateChanged();
+	}
+	
+	@Override
+	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
+		Do("WARNING: msgHereIsFinishedGlass is called. It shouldn't be called as this is a conveyorAgent.");
+		
+	}
+
+	@Override
+	public void msgIHaveGlassFinished(Operator operator) {
+		Do("WARNING: msgIHaveGlassFinished is called. It shouldn't be called as this is a conveyorAgent.");
+	}
+
+	@Override
+	public void msgIAmFree() {
+		Do("Received msgIAmFree from the next conveyor (family).");
+		nextState = State.FREE;
 	}
 	
 	//Scheduler
@@ -264,22 +282,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		next = cf;
 	}
 
-	@Override
-	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
-		Do("WARNING: msgHereIsFinishedGlass is called. It shouldn't be called as this is a conveyorAgent.");
-		
-	}
-
-
-	@Override
-	public void msgIHaveGlassFinished(Operator operator) {
-		Do("WARNING: msgIHaveGlassFinished is called. It shouldn't be called as this is a conveyorAgent.");
-	}
-
-	@Override
-	public void msgIAmFree() {
-		nextState = State.FREE;
-	}
+	
 
 	@Override
 	public void startThreads() {
