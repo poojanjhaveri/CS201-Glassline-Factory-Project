@@ -52,4 +52,16 @@ public class ConveyorFamily7 implements ConveyorFamily {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startThreads() {
+		// TODO Auto-generated method stub
+		
+	}
 }
