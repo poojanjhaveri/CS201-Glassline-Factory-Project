@@ -18,7 +18,6 @@ import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.GlassStatusConveyor;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyOperators;
-import engine.interfaces.ConveyorFamily;
 
 
 
@@ -28,8 +27,8 @@ public class PopupAgent_PJ  extends Agent implements Popup_PJ  {
 	private String name;
 	private Transducer myTransducer;
 	private Conveyor_PJ myconveyor;
-	public ConveyorFamily MyFamily;
-	private ConveyorFamily NEXTFamily;
+	public ConveyorFamilyInterface MyFamily;
+	private ConveyorFamilyInterface NEXTFamily;
 	private Semaphore popupconveyor = new Semaphore(1,true);
 	private Semaphore popupoperator = new Semaphore(1,true);
 	private List<ROperator> respondtooperators = Collections.synchronizedList(new ArrayList<ROperator>());
@@ -42,7 +41,7 @@ public class PopupAgent_PJ  extends Agent implements Popup_PJ  {
 
 	public enum GlassStatusPopup{NOPROCESSING,PROCESSING,BEINGPROCESSED, DONE,DONE2};
 	public enum opstatus{RESPOND,DONE};
-	public PopupAgent_PJ(String string, int i, ConveyorFamily conveyorFamily,
+	public PopupAgent_PJ(String string, int i, ConveyorFamilyInterface conveyorFamily,
 			Transducer transducer) {
 		// TODO Auto-generated constructor stub
 		
@@ -359,12 +358,12 @@ public class PopupAgent_PJ  extends Agent implements Popup_PJ  {
 
 	private void glassprocessingfinished(MyPGlass mg) {
 		// TODO Auto-generated method stub
-	//	if(!(this.MyFamily.getStatusOfNextConveyorFamily()))
+		if(!(this.MyFamily.getStatusOfNextConveyorFamily()))
 				{
 			print("RELEASE THE GLASS. PROCESSING DONE");
 				Object[] args1 = {this.number};
 					myTransducer.fireEvent(TChannel.POPUP,TEvent.POPUP_RELEASE_GLASS,args1);
-			//		this.MyFamily.getNextConveyorFamily().msgHereIsGlass(mg.pcglass);
+					this.MyFamily.getNextConveyorFamily().msgHereIsGlass(mg.pcglass);
 					mg.status=GlassStatusPopup.DONE;
 					stateChanged();
 				}
@@ -377,10 +376,10 @@ public class PopupAgent_PJ  extends Agent implements Popup_PJ  {
 	private void shiptheglass(MyPGlass mg) {
 		// TODO Auto-generated method stub
 		Object[] args1 = {this.number};
-	//	if(!this.MyFamily.getStatusOfNextConveyorFamily())
+		if(!this.MyFamily.getStatusOfNextConveyorFamily())
 		{
 			myTransducer.fireEvent(TChannel.POPUP,TEvent.POPUP_RELEASE_GLASS,args1);
-		//	this.MyFamily.getNextConveyorFamily().msgHereIsGlass(mg.pcglass);	
+			this.MyFamily.getNextConveyorFamily().msgHereIsGlass(mg.pcglass);	
 			mg.status=GlassStatusPopup.BEINGPROCESSED;
 			stateChanged();
 		}

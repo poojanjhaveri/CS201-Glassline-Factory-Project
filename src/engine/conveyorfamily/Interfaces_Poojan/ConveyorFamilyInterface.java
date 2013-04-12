@@ -24,7 +24,7 @@ public interface ConveyorFamilyInterface {
 	
 	public abstract void setNextConveyorFamily(ConveyorFamilyInterface c3);
 	
-
+	public abstract ConveyorFamilyInterface getNextConveyorFamily();
 
 	public abstract void msgIHaveFinishedGlass(Operator_PJ operatorAgent);
 
