@@ -222,7 +222,6 @@ print("sending sending");
 						//	{
 								print("SENSOR RELEASED");
 								this.MyFamily.msgIamFree();
-								this.MyFamily.msgIamFree();
 							
 						//	}
 					//	}
@@ -267,11 +266,13 @@ print("sending sending");
 					for(MyCGlass mg:glassonconveyor){
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
+								Object[] cno ={1};
+								myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
 								  if(!(this.MyFamily.getStatusOfNextConveyorFamily()))
 									{
 									  print("4th sensor");
-										Object[] cno ={1};
-										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
+										Object[] cno1 ={1};
+										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno1);
 									  
 									  print("RELEASE THE GLASS. PROCESSING DONE");
 									Object[] args1 = {1};
@@ -312,6 +313,7 @@ print("sending sending");
 		// TODO Auto-generated method stub
 		print("Glass Recieved. Conveyor Start");
 		glassonconveyor.add(new MyCGlass(g1));
+		print("glass number"+g1.getNumber());
 		stateChanged();
 	}
 	
