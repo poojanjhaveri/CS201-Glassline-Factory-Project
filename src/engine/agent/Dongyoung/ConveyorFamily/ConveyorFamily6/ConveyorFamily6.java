@@ -65,4 +65,10 @@ public class ConveyorFamily6 implements ConveyorFamily {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		// TODO Auto-generated method stub
+		
+	}
 }

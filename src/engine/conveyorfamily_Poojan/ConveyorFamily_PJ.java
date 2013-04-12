@@ -152,6 +152,13 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.inline.startThread();
 	}
 
+
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }

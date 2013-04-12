@@ -50,4 +50,10 @@ public class MockNextFamily implements ConveyorFamily {
 		
 	}
 
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

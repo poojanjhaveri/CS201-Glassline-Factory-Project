@@ -22,6 +22,7 @@ public interface ConveyorFamily{
 	public abstract String getName();
 	
 	public abstract void setNextConveyorFamily(ConveyorFamily c3);
+	public abstract void setPreviousConveyorFamily(ConveyorFamily c2);
 	
 	public abstract void startThreads();
 }

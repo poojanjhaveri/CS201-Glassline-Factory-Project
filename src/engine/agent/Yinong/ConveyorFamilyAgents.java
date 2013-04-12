@@ -66,8 +66,11 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 	}
 	@Override
 	public void setNextConveyorFamily(ConveyorFamily c3) {
-		// TODO Auto-generated method stub
-		
+		if(isOffline) {
+			popup.setNextConveyorFamily(c3);
+		} else {
+			inline.setNextConveyorFamily(c3);
+		}
 	}
 	@Override
 	public void startThreads() {
@@ -79,5 +82,9 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 		if(inline != null) {
 			inline.startThread();
 		}
+	}
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		conveyor.setPreviousConveyorFamily(c2);
 	}
 }
