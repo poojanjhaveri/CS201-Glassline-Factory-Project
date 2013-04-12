@@ -18,8 +18,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	private ConveyorAgent_PJ conveyor;
 	private PopupAgent_PJ popup;
 	private InLineMachineAgent_PJ inline;
-	public ConveyorFamilyInterface nextConveyorFamily;
-	public ConveyorFamilyInterface previousConveyorFamily;
+	public ConveyorFamily nextConveyorFamily;
+	public ConveyorFamily previousConveyorFamily;
 	
 	public boolean isNextConveyorFamilyBusy;
 	
@@ -37,10 +37,12 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.inline.setConveyor(conveyor);
 		
 	//	this.popup.startThread();
-		this.inline.startThread();
+	
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline);
 	//	this.popup.setConveyor(conveyor);
-		this.conveyor.startThread();
+		
+		
+		startThreads();
 		 isNextConveyorFamilyBusy=false;
 	}
 
@@ -63,13 +65,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		
 	}
 
-	public void setNextConveyorFamily(ConveyorFamilyInterface c3)
-	{
-		nextConveyorFamily=c3;
-		
-	}
 	
-	public ConveyorFamilyInterface getNextConveyorFamily()
+	public ConveyorFamily getNextConveyorFamily()
 	{
 		return nextConveyorFamily;
 	}
@@ -144,14 +141,15 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	@Override
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
-		
+		nextConveyorFamily=c3;
 	}
 
 
 	@Override
 	public void startThreads() {
 		// TODO Auto-generated method stub
-		
+		this.conveyor.startThread();
+		this.inline.startThread();
 	}
 
 	
