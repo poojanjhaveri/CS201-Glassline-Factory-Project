@@ -55,7 +55,7 @@ public class ConveyorFamily5 implements ConveyorFamily {
 	}
 
 	@Override
-	public void startThreads() {
+	public void startThreads(){
 		// Nothing
 	}
 

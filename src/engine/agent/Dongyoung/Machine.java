@@ -88,15 +88,21 @@ public class Machine extends Component implements TReceiver{
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		if( channel == this.channel ){
 			if( event == TEvent.WORKSTATION_LOAD_FINISHED ){
-				System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
+				if( debug ){
+					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
+				}
 				msgLoadFinished();
 			}
 			else if( event == TEvent.WORKSTATION_GUI_ACTION_FINISHED ){
-				System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
+				if( debug ){
+					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
+				}
 				msgActionFinished();
 			}
 			else if( event == TEvent.WORKSTATION_RELEASE_FINISHED ){
-				System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
+				if( debug ){
+					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
+				}
 				msgReleaseFinished();
 			}
 		}

@@ -74,6 +74,7 @@ public class Conveyor extends Component implements TReceiver{
 	private void checkPassAction(){
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
 		if( nextCompFree ){
+			nextCompFree = false;
 			passGlassAction();
 			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
 			checkPass = false;
@@ -107,25 +108,33 @@ public class Conveyor extends Component implements TReceiver{
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		
 		sensorNum = (Integer)args[0];
-				
 		if( channel == TChannel.SENSOR ){
 			if( event == TEvent.SENSOR_GUI_PRESSED ){
 				if( sensorNum == frontSensorNum ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					if( debug ){
+						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					}
 					msgFrontSensorOn();
 				}
 				else if( sensorNum == backSensorNum ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					if( debug ){
+						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					}
 					msgBackSensorOn();
 				}
 			}
 			else if( event == TEvent.SENSOR_GUI_RELEASED ){
 				if( sensorNum == frontSensorNum ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					if( debug ){
+						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					}
 					msgFrontSensorOff();
 				}
 				else if( sensorNum == backSensorNum ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					if( debug ){
+						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
+					}
+					// Nothing
 				}
 			}
 		}	

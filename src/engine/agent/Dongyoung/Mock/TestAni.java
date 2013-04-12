@@ -1,6 +1,9 @@
 
 package engine.agent.Dongyoung.Mock;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import transducer.TChannel;
 import transducer.TEvent;
 import transducer.TReceiver;
@@ -12,9 +15,9 @@ public class TestAni implements TReceiver
 
 	boolean offlineDone = false;
 
-	public TestAni(Transducer t)
+	public TestAni(Transducer transducer)
 	{
-		this.t = t;
+		this.t = transducer;
 		t.register(this, TChannel.CUTTER);
 		t.register(this, TChannel.SENSOR);
 		t.register(this, TChannel.BREAKOUT);
@@ -25,6 +28,12 @@ public class TestAni implements TReceiver
 		t.register(this, TChannel.TRUCK);//added by monroe
 
 		t.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
+		
+		new Timer().schedule(new TimerTask(){
+			public void run(){
+				t.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
+			}
+		}, 3000);
 	}
 
 	@Override
@@ -63,10 +72,13 @@ public class TestAni implements TReceiver
 		}
 		else if (channel == TChannel.POPUP && event == TEvent.POPUP_GUI_LOAD_FINISHED)
 		{
+			t.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
+			/*
 			if (offlineDone)
 				t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_DOWN, args);
 			else
 				t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_UP, args);
+			*/
 		}
 		else if (channel == TChannel.POPUP && event == TEvent.POPUP_GUI_MOVED_UP)
 		{

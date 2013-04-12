@@ -9,6 +9,7 @@ public class Component extends Agent{
 	protected Transducer transducer;
 	protected String name;
 	protected Glass tempGlass;
+	protected boolean debug = true;
 	
 	protected boolean nextCompFree = true;
 	protected boolean newGlass = false;
@@ -32,7 +33,6 @@ public class Component extends Agent{
 	@Override
 	// SCHEDULER
 	protected boolean pickAndExecuteAnAction() {
-		System.out.println("TEST1");
 		return false;
 	}
 
