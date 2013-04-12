@@ -28,12 +28,14 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 			conveyor = new ConveyorAgent("Conveyor", index, Mode.OFFLINE);
 			popup = new PopupAgent("Popup", index);
 			conveyor.setPopup(popup);
+			popup.setConveyor(conveyor);
 			inline = null;
 		} else {				//Conveyor Family 4-7
 			conveyor = new ConveyorAgent("Conveyor", index, Mode.ONLINE);
 			popup = null;
 			inline = new InlineAgent(index, "Inline", "nothing");
 			conveyor.setInline(inline);
+			inline.setConveyor(conveyor);
 		}
 	}
 
@@ -95,5 +97,12 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 			popup.setTransducer(t);
 		if(inline != null)
 			inline.setTransducer(t);
+	}
+	
+	public void setChannel(TChannel c) {
+		if(popup != null)
+			popup.setTChannel(c);
+		if(inline != null)
+			inline.setChannel(c);
 	}
 }

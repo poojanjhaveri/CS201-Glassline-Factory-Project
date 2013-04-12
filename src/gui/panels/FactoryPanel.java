@@ -16,8 +16,12 @@ import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily7.ConveyorFamily7;
 import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
+<<<<<<< HEAD
 import engine.agent.Yinong.ConveyorAgent;
 import engine.agent.Yinong.ConveyorFamilyAgents;
+=======
+import engine.agent.Yinong.*;
+>>>>>>> Fixed conveyor family code
 import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import engine.interfaces.ConveyorFamily;
@@ -141,9 +145,17 @@ public class FactoryPanel extends JPanel
 		gui.setBinAgent(bin);
 		bin.setNextConveyorFamily(c1);
 		
+<<<<<<< HEAD
 		c1.startThreads();
 		c2.startThreads();
 		bin.startThreads();
+=======
+		ConveyorFamily c3 = new ConveyorFamilyAgents(2, "Breakout", false);
+		( (ConveyorFamilyAgents) c3).setChannel(TChannel.BREAKOUT);
+		( (ConveyorFamilyAgents) c3).setTransducer(transducer);
+		c3.setPreviousConveyorFamily(c2);
+		c3.startThreads();
+>>>>>>> Fixed conveyor family code
 		
 		//c2.setNextConveyorFamily();
 		//runDongyoung();
