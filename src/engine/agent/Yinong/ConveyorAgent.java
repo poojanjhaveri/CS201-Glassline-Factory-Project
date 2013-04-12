@@ -56,7 +56,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	//Messages and Eventfires
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		if( (channel == TChannel.SENSOR) && ( ( (int) (args[0])) / 2 == conveyorIndex ) ) {
+		if( (channel == TChannel.SENSOR) && ( ( (Integer) (args[0])) / 2 == conveyorIndex ) ) {
 			if(event == TEvent.SENSOR_GUI_PRESSED) {
 				if( (Integer)(args[0]) % 2 == 0) {
 					sensor1State = SensorState.PRESSED;

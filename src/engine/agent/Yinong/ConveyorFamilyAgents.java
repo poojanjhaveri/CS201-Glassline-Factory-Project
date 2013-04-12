@@ -41,6 +41,7 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 
 	@Override
 	public void msgHereIsGlass(Glass glass) {
+		System.out.println("msg Glass recieved 2nd family");
 		conveyor.msgHereIsGlass(glass);
 	}
 
