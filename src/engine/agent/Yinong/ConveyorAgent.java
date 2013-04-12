@@ -48,6 +48,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		//State Initialization
 		popupState = State.FREE;
 		inlineState = State.FREE;
+		nextState = State.FREE;
 		conveyorRunning = false;
 		sensor1State = SensorState.NOTHING;
 		sensor2State = SensorState.NOTHING;
@@ -137,6 +138,16 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 				return true;
 			}
 		} else {
+			//Inline busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
+			if( (nextState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
+				stopConveyor();
+				return true;
+			}
+			//Inline cleared; start the conveyor if it's stopped
+			if( (nextState == State.FREE) && (! conveyorRunning) ) {
+				startConveyor();
+				return true;
+			}
 			if( (sensor2State == SensorState.RELEASED) ) {
 				giveGlassToNextThing();
 				return true;

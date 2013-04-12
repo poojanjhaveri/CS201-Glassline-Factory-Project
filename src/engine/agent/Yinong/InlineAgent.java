@@ -39,6 +39,8 @@ public class InlineAgent extends Agent implements Inline {
 	@Override
 	public void eventFired(TChannel c, TEvent event, Object[] args) {
 		if(channel == c) {
+			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
+				machineSemaphore.release();
 			if(event == TEvent.WORKSTATION_GUI_ACTION_FINISHED)
 				machineSemaphore.release();
 			if(event == TEvent.WORKSTATION_RELEASE_FINISHED)
@@ -69,6 +71,12 @@ public class InlineAgent extends Agent implements Inline {
 	//Actions
 	private void processGlass() {
 		Do("Processing Glass");
+		try {
+			machineSemaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		if(glassOnSpot.getRecipe(channel) ) {
 			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
 			try {
@@ -79,7 +87,7 @@ public class InlineAgent extends Agent implements Inline {
 		}
 		
 		while(! nextFree) {}
-		
+		//Do("LOOK! I'm here");
 		next.msgHereIsGlass(glassOnSpot);
 		transducer.fireEvent(channel, TEvent.WORKSTATION_RELEASE_GLASS, null);
 		try {
@@ -89,6 +97,7 @@ public class InlineAgent extends Agent implements Inline {
 		}
 		glassOnSpot = null;
 		conveyor.msgInlineFree();
+		//Do("LOOK! I'm here");
 	}
 
 	//Getters, Setters and Hacks

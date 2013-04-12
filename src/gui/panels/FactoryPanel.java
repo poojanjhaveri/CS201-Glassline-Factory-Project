@@ -16,8 +16,10 @@ import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily7.ConveyorFamily7;
 import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
+import engine.agent.Luis.*;
 
 import engine.agent.Yinong.ConveyorAgent;
+import engine.agent.Yinong.ConveyorAgent.Mode;
 import engine.agent.Yinong.ConveyorFamilyAgents;
 
 import engine.agent.Yinong.*;
@@ -137,14 +139,33 @@ public class FactoryPanel extends JPanel
 		gui.setBinAgent(bin);
 		bin.startThread();
 		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
-		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "breakout", false);
+		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "Breakout", false);
 		bin.setNextConveyorFamily(c1);
 		c1.setNextConveyorFamily(c2);
 		c2.setPreviousConveyorFamily(c1);
-	
+		
+		( (ConveyorFamilyAgents) c2).setChannel(TChannel.BREAKOUT);
+		( (ConveyorFamilyAgents) c2).setTransducer(transducer);
+		
+		ConveyorFamily c3 = new ConveyorFamilyAgents(3, "Manual_Breakout", false);
+		c2.setNextConveyorFamily(c3);
+		( (ConveyorFamilyAgents) c3).setChannel(TChannel.MANUAL_BREAKOUT);
+		( (ConveyorFamilyAgents) c3).setTransducer(transducer);
+		c3.setPreviousConveyorFamily(c2);
+		
+		ConveyorFamily c4 = new ConveyorAgent("Conveyor4", 4, Mode.MEDIATING);
+		c3.setNextConveyorFamily(c4);
+		c4.setPreviousConveyorFamily(c3);
+		( (ConveyorAgent) c4).setTransducer(transducer);
+		
+		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer);
+		c4.setNextConveyorFamily(c5);
+		//NEED MORE HERE TO HAVE CF1 SET UP: Start thread, set everything, etc.
 		
 		c1.startThreads();
-		
+		c2.startThreads();
+		c3.startThreads();
+		c4.startThreads();
 		/*
 		ConveyorFamily c1 = new ConveyorFamily_PJ(0, transducer);
 		V1_GUI gui = new V1_GUI();

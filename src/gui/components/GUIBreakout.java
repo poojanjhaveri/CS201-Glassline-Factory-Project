@@ -152,6 +152,9 @@ public class GUIBreakout extends GuiAnimationComponent
 		}
 		else if (direction.equals(ConveyorDirections.UP))
 		{
+			if(guiPart == null) {
+				System.out.println("guiPart is null");
+			}
 			guiPart.setCenterLocation(guiPart.getCenterX(), guiPart.getCenterY() - 1);
 		}
 		else if (direction.equals(ConveyorDirections.LEFT))
