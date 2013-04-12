@@ -219,19 +219,7 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	}
 
 
-	
-	public void msgHereIsFinishedGlass(engine.interfaces.Operator operator,
-			Glass glass) {
-		// TODO Auto-generated method stub
-		
-	}
 
-
-	
-	public void msgIHaveGlassFinished(engine.interfaces.Operator operator) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }
