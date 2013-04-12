@@ -159,6 +159,7 @@ public class FactoryPanel extends JPanel
 		c3.startThreads();
 		bin.startThreads();
 		//c2.setNextConveyorFamily();
+		
 		//runDongyoung();
 	}
 	
@@ -167,23 +168,21 @@ public class FactoryPanel extends JPanel
 		ConveyorFamily5 family5 = new ConveyorFamily5();
 		ConveyorFamily6 family6 = new ConveyorFamily6();
 		ConveyorFamily7 family7 = new ConveyorFamily7();
-		MockPreviousFamily previousFamily = new MockPreviousFamily();
+		MockPreviousFamily previousFamily = new MockPreviousFamily(transducer);
 		MockNextFamily nextFamily = new MockNextFamily();
 				
+		previousFamily.setPreviousConveyorFamily(family5);
+		
 		family5.setTransducer(transducer);
 		family6.setTransducer(transducer);
 		family7.setTransducer(transducer);
 		
 		family5.setPreviousConveyorFamily(previousFamily);
-		family5.setNextConveyorFamily(nextFamily);
+		family5.setNextConveyorFamily(family6);
 		family6.setPreviousConveyorFamily(family5);
 		family6.setNextConveyorFamily(family7);
 		family7.setPreviousConveyorFamily(family6);
 		family7.setNextConveyorFamily(nextFamily);
-				
-		Glass glass = new Glass(0, true, true, true, true, true, true, true, false, false, false);
-		//Glass glass = new Glass(0, true, true, true, true, true, true, true, true, true, true);
-		family5.msgHereIsGlass(glass);
 	}
 
 	/**
