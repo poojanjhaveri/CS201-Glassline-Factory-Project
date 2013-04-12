@@ -240,7 +240,7 @@ print("sending sending");
 								
 								
 						//		print(""+	this.PREVIOUSFamily.getName());
-						//		this.PREVIOUSFamily.msgIAmFree();
+								this.PREVIOUSFamily.msgIAmFree();
 								//binAgent.msgIAmFree();
 					}    	
 			}

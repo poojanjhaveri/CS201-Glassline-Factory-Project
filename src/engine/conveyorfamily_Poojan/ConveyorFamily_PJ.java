@@ -18,8 +18,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	private ConveyorAgent_PJ conveyor;
 	private PopupAgent_PJ popup;
 	private InLineMachineAgent_PJ inline;
-	public ConveyorFamily nextConveyorFamily;
-	public ConveyorFamily previousConveyorFamily;
+	private ConveyorFamily nextConveyorFamily;
+	private ConveyorFamily previousConveyorFamily;
 
 	
 	public boolean isNextConveyorFamilyBusy;
@@ -35,13 +35,12 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		
 		this.inline = new InLineMachineAgent_PJ("MyInline",number,this,transducer);
 		this.inline.setConveyor(conveyor);
-		
-	
+
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline);
 	//	this.popup.setConveyor(conveyor);
 		
 		 isNextConveyorFamilyBusy=false;
-		 startThreads();
+		// startThreads();
 	}
 	
 	

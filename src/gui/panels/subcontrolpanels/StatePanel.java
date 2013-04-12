@@ -253,11 +253,12 @@ public class StatePanel extends JPanel
 		public void actionPerformed(ActionEvent ae)
 		{
 			
-			
-			ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,parent.getTransducer());
-			parent.getTransducer().fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
-			c1.msgHereIsGlass(new Glass(k,true, true, true, true, true, true, true, false, false, false));
 			ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(2,parent.getTransducer());
+			ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,parent.getTransducer());
+			c1.msgHereIsGlass(new Glass(k,true, true, true, true, true, true, true, false, false, false));
+			parent.getTransducer().fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
+			
+			c1.setPreviousConveyorFamily(c2);
 			
 			/*
 			c2.setChannel(TChannel.BREAKOUT);
