@@ -133,14 +133,14 @@ public class FactoryPanel extends JPanel
 		
 		ConveyorFamily c1 = new ConveyorFamily_PJ(0, transducer);
 		V1_GUI gui = new V1_GUI();
-		BinAgent bin = new BinAgent("bin agent", transducer, c1, gui);
-
+		BinAgent bin = new BinAgent("bin agent", transducer, gui);
+		bin.setNextConveyorFamily(c1);
 		//pujan
 		
 		ConveyorFamily c2 = new ConveyorFamily_PJ(1, transducer);
 		c1.setNextConveyorFamily(c2);
 	
-		
+		/*
 		
 		//yinong
 		ConveyorFamily c3 = new ConveyorFamilyAgents(2, "breakout", false);
@@ -155,13 +155,13 @@ public class FactoryPanel extends JPanel
 		
 		c2.setNextConveyorFamily(c3);
 		
-
+*/
 		c1.startThreads();
 		c2.startThreads();
-		c3.startThreads();
+	//	c3.startThreads();
 		bin.startThreads();
 		//c2.setNextConveyorFamily();
-		*/
+		
 		//runDongyoung();
 	}
 	

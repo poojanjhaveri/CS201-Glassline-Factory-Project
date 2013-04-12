@@ -46,7 +46,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		
 		
 		 isNextConveyorFamilyBusy=false;
-		 startThreads();
+		// startThreads();
 	}
 	
 	
