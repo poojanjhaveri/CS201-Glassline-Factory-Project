@@ -112,7 +112,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			for(MyCGlass mg:glassonconveyor){
 		
 			    if(mg.status == GlassStatusConveyor.ONENTRYSENSOR ){
-			    	
+			    	print("CHecking the glass");
 				checktheglass(mg);
 				return true;
 			    }
@@ -345,6 +345,7 @@ print("sending sending");
 		print("Checking the functionalities of glass"+mg.pcglass.getRecipe(TChannel.CUTTER));
 		mg.NeedsProcessing=mg.pcglass.getRecipe(TChannel.CUTTER);
 		mg.status=GlassStatusConveyor.CHECKED;
+		stateChanged();
 	}
 	
 	
@@ -356,7 +357,7 @@ print("sending sending");
 		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args1);
 		isConveyorRunning=true;
 		mg.status=GlassStatusConveyor.DONE;
-		
+		stateChanged();
 	}
 	
 	
@@ -371,14 +372,14 @@ print("sending sending");
 	
 	private void PassingGlassToInLineMachine(MyCGlass mg) {
 		// TODO Auto-generated method stub
-		print("Glass passed to the inline machine. Conveyor STOP. Glass Needs Processing");
+		print("Glass passed to the inline machine. Conveyor STOP. Glass Needs Processing"+mg.NeedsProcessing);
 		this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
 		
 		//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
 		
 		isINLINEBusy=true;
 		mg.status=GlassStatusConveyor.FIRSTDONE;	
-		
+		stateChanged();
 	}
 	
 	
@@ -405,6 +406,7 @@ print("sending sending");
 				    	mg.status=GlassStatusConveyor.NEEDSMACHINEPROCESSING;
 				    	this.mypopup.msgINeedToPassGlass();
 				    	print("machine NEeds Processing");
+				    	stateChanged();
 				    	return;
 				    }
 				}

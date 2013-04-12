@@ -264,7 +264,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	
 	public void msgGlassNeedsProcessing(Glass pcglass,Boolean choice) {
 		// TODO Auto-generated method stub
-		print("Glass received. Glass needs processing");
+		print("Glass received. Glass needs processing"+choice+pcglass.getNumber());
 		glassoninline.add(new MyPGlass(pcglass,choice));
 		stateChanged();
 	}
