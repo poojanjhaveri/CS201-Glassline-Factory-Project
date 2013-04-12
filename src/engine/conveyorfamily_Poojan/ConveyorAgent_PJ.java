@@ -31,6 +31,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private int number;
 	private Transducer myTransducer;
 	public ConveyorFamily MyFamily;
+	public ConveyorFamily NEXTFamily;
+	public ConveyorFamily PREVIOUSFamily;
+	
 
 	private Popup_PJ mypopup;
 	private InLineMachine_PJ myinline;
@@ -424,11 +427,8 @@ print("sending sending");
 	
 	private void PassingGlassToInLineMachine(MyCGlass mg) {
 		// TODO Auto-generated method stub
-		print("Glass passed to the inline machine. Conveyor STOP. Glass Needs Processing");
+		print("Glass passed to the inline machine.");
 		this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
-		
-		//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
-		
 		isINLINEBusy=true;
 		mg.status=GlassStatusConveyor.FIRSTDONE;	
 		
@@ -471,11 +471,6 @@ print("sending sending");
 			
 			
 		}
-		
-		
-		
-		
-		
 	}
 
 	

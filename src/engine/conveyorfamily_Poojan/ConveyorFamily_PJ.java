@@ -31,19 +31,14 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	{
 		this.ConveryorFamilyNo=number;
 		this.transducer=transducer2;
-	//	this.entrysensor = new SensorAgent("Entry Sensor",1,SensorPosition.START,transducer);
-	//	this.exitsensor = new SensorAgent("Exit Sensor",2,SensorPosition.END,transducer);
 		this.popup = new PopupAgent_PJ("MyPopup",number,this,transducer);
 		
 		this.inline = new InLineMachineAgent_PJ("MyInline",number,this,transducer);
 		this.inline.setConveyor(conveyor);
 		
-	//	this.popup.startThread();
 	
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline);
 	//	this.popup.setConveyor(conveyor);
-		
-		
 		
 		 isNextConveyorFamilyBusy=false;
 		// startThreads();
@@ -145,7 +140,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
 		nextConveyorFamily=c3;
-		this.conveyor.MyFamily=c3;
+		this.conveyor.NEXTFamily=c3;
 		
 	}
 
@@ -162,6 +157,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
 		// TODO Auto-generated method stub
 		this.conveyor.MyFamily=c2;
+		this.conveyor.PREVIOUSFamily=c2;
 
 		
 	}
