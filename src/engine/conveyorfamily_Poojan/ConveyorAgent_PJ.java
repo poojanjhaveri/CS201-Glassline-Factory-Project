@@ -46,10 +46,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
 	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
+	boolean halfFamily;
+	private ConveyorFamily nextCF;
 	
-	
-	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2) {
+	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2, boolean halfFamily, ConveyorFamily nextConveyorFamily) {
 		// TODO Auto-generated constructor stub
+		nextCF = nextConveyorFamily;
+		this.halfFamily = halfFamily;
 	this.name=string;
 	this.number=number;
 	this.MyFamily=c1;
@@ -126,7 +129,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					for(MyCGlass mg:glassonconveyor){
 				
 					    if(mg.status == GlassStatusConveyor.ONEXITSENSOR ){
-					    	PassingGlassToInLineMachine(mg);
+					    	{PassingGlassToInLineMachine(mg);
+
+					    	}
 						return true;
 					    }
 					}
@@ -169,9 +174,20 @@ print("sending sending");
 											}
 										    	};  */
 		    	
+
+									    	
+											for(MyCGlass mg:glassonconveyor){
+										
+											    if(mg.status == GlassStatusConveyor.FIRSTDONE){
+											//	PassingGlassToPopupToProcess(mg);
+										    	glassonconveyor.remove(mg);
+										    	
+										    	
+												return true;
+											    }
+											}
+										    	
 		    	
-		    	
-		
 		
 		// TODO Auto-generated method stub
 		return false;
@@ -377,15 +393,31 @@ print("sending sending");
 	}*/
 	
 	private void PassingGlassToInLineMachine(MyCGlass mg) {
-		// TODO Auto-generated method stub
-		print("Glass passed to the inline machine. Conveyor STOP. Glass Needs Processing"+mg.NeedsProcessing);
-		this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
-		
-		//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
-		
-		isINLINEBusy=true;
-		mg.status=GlassStatusConveyor.FIRSTDONE;	
-		stateChanged();
+		if (halfFamily){
+			// TODO Auto-generated method stub
+			print("Glass passed to the inline machine. Conveyor STOP. Glass Needs Processing"+mg.NeedsProcessing);
+			this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
+			
+			//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
+			
+			isINLINEBusy=true;
+			mg.status=GlassStatusConveyor.FIRSTDONE;	
+			
+			
+		}
+		else{
+			//send to next cf
+			print("Glass passed to the next conveyor family." );
+
+			//this..msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
+			
+			//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
+			this.nextCF.msgHereIsGlass(mg.pcglass);
+			
+			isINLINEBusy=true;
+			mg.status=GlassStatusConveyor.FIRSTDONE;	
+			
+		}
 	}
 	
 	

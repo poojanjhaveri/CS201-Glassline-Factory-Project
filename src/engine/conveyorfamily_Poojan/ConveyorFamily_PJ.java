@@ -25,9 +25,12 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public boolean isNextConveyorFamilyBusy;
 	
 	private Transducer transducer;
+	private boolean isHalfFamily;
 	
-	public ConveyorFamily_PJ(int number, Transducer transducer2)
+	public ConveyorFamily_PJ(int number, Transducer transducer2, boolean halfFamily)
 	{
+		isHalfFamily = halfFamily;
+		
 		this.ConveryorFamilyNo=number;
 		this.transducer=transducer2;
 	//	this.entrysensor = new SensorAgent("Entry Sensor",1,SensorPosition.START,transducer);
@@ -39,14 +42,14 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		
 	//	this.popup.startThread();
 	
-		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline);
+		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline, isHalfFamily);
 	//	this.popup.setConveyor(conveyor);
 		
 		
 		
 		 isNextConveyorFamilyBusy=false;
 	}
-
+	
 	
 	public void msgSensorPressed(SensorType type) {
 		// TODO Auto-generated method stub
@@ -144,6 +147,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		// TODO Auto-generated method stub
 		nextConveyorFamily=c3;
 		this.conveyor.MyFamily=c3;
+		
 	}
 
 
