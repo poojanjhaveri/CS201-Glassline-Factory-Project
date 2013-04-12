@@ -107,8 +107,8 @@ public class FactoryPanel extends JPanel
 		c1.setNextConveyorFamily(c2);
 		System.out.println(c1.getNextConveyorFamily());
 	*/
-		ConveyorFamilyInterface c1 = new  ConveyorFamily_PJ(0,transducer);
-		ConveyorFamilyInterface c2 = new  ConveyorFamily_PJ(1,transducer);
+		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer);
+		ConveyorFamily_PJ c2 = new  ConveyorFamily_PJ(1,transducer);
 		c1.setNextConveyorFamily(c2);
 		
 		V1_GUI gui = new V1_GUI();
