@@ -1,8 +1,11 @@
 package engine.conveyorfamily_Poojan;
 
+
 import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
+import engine.interfaces.ConveyorFamily;
+import engine.interfaces.Operator;
 import shared.Glass;
 import shared.enums.SensorPosition;
 import shared.enums.SharedData.SensorType;
@@ -10,14 +13,14 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 
-public class ConveyorFamily_PJ implements ConveyorFamilyInterface
+public class ConveyorFamily_PJ implements ConveyorFamily
 {
 	private int ConveryorFamilyNo;
 	private ConveyorAgent_PJ conveyor;
 	private PopupAgent_PJ popup;
 	private InLineMachineAgent_PJ inline;
-	public ConveyorFamilyInterface nextConveyorFamily;
-	public ConveyorFamilyInterface previousConveyorFamily;
+	public ConveyorFamily nextConveyorFamily;
+	public ConveyorFamily previousConveyorFamily;
 	
 	public boolean isNextConveyorFamilyBusy;
 	
@@ -31,6 +34,7 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 	//	this.entrysensor = new SensorAgent("Entry Sensor",1,SensorPosition.START,transducer);
 	//	this.exitsensor = new SensorAgent("Exit Sensor",2,SensorPosition.END,transducer);
 		this.popup = new PopupAgent_PJ("MyPopup",number,this,transducer);
+		
 		this.inline = new InLineMachineAgent_PJ("MyInline",number,this,transducer);
 		this.inline.setConveyor(conveyor);
 		
@@ -61,16 +65,7 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 		
 	}
 
-	public void setNextConveyorFamily(ConveyorFamilyInterface c3)
-	{
-		nextConveyorFamily=c3;
-		
-	}
-	
-	public ConveyorFamilyInterface getNextConveyorFamily()
-	{
-		return nextConveyorFamily;
-	}
+
 	
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -81,12 +76,6 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 	
 	
 	
-	public boolean getStatusOfNextConveyorFamily() {
-		// TODO Auto-generated method stub
-		return isNextConveyorFamilyBusy;
-	}
-	
-	
 	public void setStatusOfNextConveyorFamily(Boolean y) {
 		// TODO Auto-generated method stub
 		isNextConveyorFamilyBusy=y;
@@ -95,7 +84,7 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 	
 
 	@Override
-	public void msgIamFree() {
+	public void msgIAmFree() {
 		isNextConveyorFamilyBusy=false;
 	//	 transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
 		// TODO Auto-generated method stub
@@ -103,7 +92,6 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 	}
 
 
-	@Override
 	public void msgIHaveFinishedGlass(Operator_PJ o) {
 		// TODO Auto-generated method stub
 		System.out.println("operator has finished processing Glass");
@@ -113,7 +101,7 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 	}
 
 
-	@Override
+	
 	public void msgHereIsFinishedGlass(Glass g, Operator_PJ operatorAgent) {
 		// TODO Auto-generated method stub
 		System.out.println("Sending it back to popup");
@@ -126,6 +114,27 @@ public class ConveyorFamily_PJ implements ConveyorFamilyInterface
 		return this.conveyor;
 	}
 
-	
+
+	@Override
+	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void msgIHaveGlassFinished(Operator operator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+		// TODO Auto-generated method stub
+		nextConveyorFamily=c3;
+	}
+
+
 	
 }

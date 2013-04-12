@@ -13,24 +13,21 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	//data
 	int conveyorIndex;
 	Mode mode;
-	public enum Mode {OFFLINE, ONLINE, MEDIATING};
+	public enum Mode {OFFLINE, ONLINE};
 	Transducer transducer;
 	List<Glass> glasses = Collections.synchronizedList(new ArrayList<Glass> ());
 	//Pop-up Agent
 	Popup popup;
 	//Inline Agent
 	Inline inline;
-	//Next Agent / Conveyor Family
-	ConveyorFamily next;
 	//Previous Conveyor Family
 	ConveyorFamily previous;
 	//State Variables
-	State popupState;
-	enum State {BUSY, FREE};
+	PopupState popupState;
+	enum PopupState {BUSY, FREE};
 	
-	State inlineState;
-	
-	State nextState;
+	InlineState inlineState;
+	enum InlineState {BUSY, FREE};
 	
 	boolean conveyorRunning;
 	
@@ -47,8 +44,8 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		conveyorIndex = index;
 		mode = md;
 		//State Initialization
-		popupState = State.FREE;
-		inlineState = State.FREE;
+		popupState = PopupState.FREE;
+		inlineState = InlineState.FREE;
 		conveyorRunning = false;
 		sensor1State = SensorState.NOTHING;
 		sensor2State = SensorState.NOTHING;
@@ -79,18 +76,18 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	}
 	
 	public void msgPopupBusy() {
-		popupState = State.BUSY;
+		popupState = PopupState.BUSY;
 		stateChanged();
 	}
 	
 	public void msgPopupFree() {
-		popupState = State.FREE;
+		popupState = PopupState.FREE;
 		stateChanged();
 	}
 	
 	@Override
 	public void msgInlineFree() {
-		inlineState = State.FREE;
+		inlineState = InlineState.FREE;
 		stateChanged();
 	}
 	
@@ -99,12 +96,12 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	public boolean pickAndExecuteAnAction() {
 		if(mode == Mode.OFFLINE) {
 			//Pop-up busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
-			if( (popupState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
+			if( (popupState == PopupState.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
 				stopConveyorAndNotify();
 				return true;
 			}
 			//Pop-up cleared; start the conveyor if it's stopped
-			if( (popupState == State.FREE) && (! conveyorRunning) ) {
+			if( (popupState == PopupState.FREE) && (! conveyorRunning) ) {
 				startConveyor();
 				return true;
 			}
@@ -113,25 +110,20 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 				giveGlassToPopup();
 				return true;
 			}
-		} else if(mode == Mode.ONLINE) {
+		} else {
 			//Inline busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
-			if( (inlineState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
+			if( (inlineState == InlineState.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
 				stopConveyor();
 				return true;
 			}
 			//Inline cleared; start the conveyor if it's stopped
-			if( (inlineState == State.FREE) && (! conveyorRunning) ) {
+			if( (inlineState == InlineState.FREE) && (! conveyorRunning) ) {
 				startConveyor();
 				return true;
 			}
 			//Glass exiting the conveyor. Give the glass to the inline on the back end
 			if( (sensor2State == SensorState.RELEASED) ) {
 				giveGlassToInline();
-				return true;
-			}
-		} else {
-			if( (sensor2State == SensorState.RELEASED) ) {
-				giveGlassToNextThing();
 				return true;
 			}
 		}
@@ -144,13 +136,6 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		return false;
 	}
 	
-	private void giveGlassToNextThing() {
-		Do("Giving glass to the next thing");
-		next.msgHereIsGlass(glasses.remove(0));
-		sensor2State = SensorState.NOTHING;
-		nextState = State.BUSY;
-	}
-
 	private void notifyPrevious() {
 		Do("Notifying the previous conveyor family that I'm free");
 		previous.msgIAmFree();
@@ -161,7 +146,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		Do("Giving glass to the Inline Agent");
 		inline.msgHereIsGlass(glasses.remove(0));
 		sensor2State = SensorState.NOTHING;
-		inlineState = State.BUSY;
+		inlineState = InlineState.BUSY;
 	}
 
 
@@ -230,37 +215,29 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		return conveyorRunning;
 	}
 	
-	public void setPopupState(State p) {
+	public void setPopupState(PopupState p) {
 		popupState = p;
 	}
 	
-	public void setInlineState(State i) {
+	public void setInlineState(InlineState i) {
 		inlineState = i;
-	}
-	
-	public void setNextState(State n) {
-		nextState = n;
-	}
-	
-	public void setNextConveyorFamily(ConveyorFamily cf) {
-		next = cf;
 	}
 
 	@Override
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
-		Do("WARNING: msgHereIsFinishedGlass is called. It shouldn't be called as this is a conveyorAgent.");
+		// Do nothing.
 		
-	}
-
-
-	@Override
-	public void msgIHaveGlassFinished(Operator operator) {
-		Do("WARNING: msgIHaveGlassFinished is called. It shouldn't be called as this is a conveyorAgent.");
 	}
 
 	@Override
 	public void msgIAmFree() {
-		nextState = State.FREE;
+		// Do nothing.
+		
+	}
+
+	@Override
+	public void msgIHaveGlassFinished(Operator operator) {
+		// Do nothing.
 	}
 
 }

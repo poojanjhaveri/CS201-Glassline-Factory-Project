@@ -18,6 +18,7 @@ import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Popup_PJ;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.GlassStatusConveyor;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
+import engine.interfaces.ConveyorFamily;
 
 /**
  * @author madiphone14
@@ -28,7 +29,7 @@ public class OperatorAgent_PJ extends Agent implements Operator_PJ {
 	
 	private String name;
 	private int number;
-	private ConveyorFamilyInterface myFamily;
+	private ConveyorFamily myFamily;
 	 public enum ostatus {NEW,PROCESS,DONE, WAITINGFORPEMISSION, WAITINGFORPERMISSION, SEND};
 	 private List<Oglass> glasswithoperator = Collections.synchronizedList(new ArrayList<Oglass>());
 	   Timer timer = new Timer();
@@ -45,7 +46,7 @@ public class OperatorAgent_PJ extends Agent implements Operator_PJ {
 		}
 	}
 	
-	public OperatorAgent_PJ(int no,ConveyorFamily_PJ conv1,String name)
+	public OperatorAgent_PJ(int no,ConveyorFamily conv1,String name)
 	{
 		this.myFamily=conv1;
 		this.number=no;
@@ -100,7 +101,7 @@ public class OperatorAgent_PJ extends Agent implements Operator_PJ {
 
 	private void senditbacktopopup(Oglass o) {
 		// TODO Auto-generated method stub
-		this.myFamily.msgHereIsFinishedGlass(o.g,this);
+		//this.myFamily.msgHereIsFinishedGlass(o.g,this);
 		
 	}
 
@@ -144,7 +145,7 @@ public class OperatorAgent_PJ extends Agent implements Operator_PJ {
 	private void informtheconveyor(Oglass o) {
 		// TODO Auto-generated method stub
 		print("I have finished processing the glass");
-		this.myFamily.msgIHaveFinishedGlass(this);
+//		this.myFamily.msgIHaveFinishedGlass(this);
 		o.status=ostatus.WAITINGFORPEMISSION;
 		stateChanged();
 	}

@@ -8,9 +8,6 @@ import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
 */
-import engine.agent.Alex.BinAgent;
-import engine.agent.Alex.V1_GUI;
-import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import gui.drivers.FactoryFrame;
 
@@ -107,14 +104,8 @@ public class FactoryPanel extends JPanel
 		c1.setNextConveyorFamily(c2);
 		System.out.println(c1.getNextConveyorFamily());
 	*/
-		ConveyorFamilyInterface c1 = new  ConveyorFamily_PJ(0,transducer);
-		ConveyorFamilyInterface c2 = new  ConveyorFamily_PJ(1,transducer);
-		c1.setNextConveyorFamily(c2);
 		
-		V1_GUI gui = new V1_GUI();
-		BinAgent bin = new BinAgent("bin agent", transducer, c1, gui);
-		gui.setBinAgent(bin);
-		bin.startThread();
+		
 		
 		//runDongyoung();
 	}

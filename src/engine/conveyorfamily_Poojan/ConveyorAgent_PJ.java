@@ -20,6 +20,7 @@ import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Popup_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
 import engine.conveyorfamily_Poojan.PopupAgent_PJ.GlassStatusPopup;
+import engine.interfaces.ConveyorFamily;
 
 
 public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
@@ -28,7 +29,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private String name;
 	private int number;
 	private Transducer myTransducer;
-	public ConveyorFamilyInterface MyFamily;
+	public ConveyorFamily MyFamily;
 
 	private Popup_PJ mypopup;
 	private InLineMachine_PJ myinline;
@@ -39,12 +40,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private Boolean isPopUpBusy;
 	private Boolean isINLINEBusy;
 	private Boolean isConveyorRunning;
+	private boolean isNextConveyorFamilyBusy;
 	
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
 	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
 	
-	public ConveyorAgent_PJ(String string,int number, ConveyorFamilyInterface c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2) {
+	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2) {
 		// TODO Auto-generated constructor stub
 	this.name=string;
 	this.number=number;
@@ -56,6 +58,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	this.isPopUpBusy=false;
 	this.isINLINEBusy=false;
 	myTransducer = transducer;
+	isNextConveyorFamilyBusy=false;
 	
 	myTransducer.register(this, TChannel.CUTTER);
 	myTransducer.register(this, TChannel.SENSOR);
@@ -221,7 +224,7 @@ print("sending sending");
 					//	if(mg.pcglass.getNumber() == glassno){
 						//	{
 								print("SENSOR RELEASED");
-								this.MyFamily.msgIamFree();
+								this.MyFamily.msgIAmFree();
 							
 						//	}
 					//	}
@@ -268,7 +271,7 @@ print("sending sending");
 							{
 								Object[] cno ={1};
 								myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
-								  if(!(this.MyFamily.getStatusOfNextConveyorFamily()))
+								  if(!(isNextConveyorFamilyBusy))
 									{
 									  print("4th sensor");
 										Object[] cno1 ={1};
@@ -277,6 +280,7 @@ print("sending sending");
 									  print("RELEASE THE GLASS. PROCESSING DONE");
 									Object[] args1 = {1};
 										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
+										isNextConveyorFamilyBusy=true;
 										mg.status=GlassStatusConveyor.DONE;
 										//stateChanged();
 									}

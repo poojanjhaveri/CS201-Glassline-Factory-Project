@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 import engine.agent.Agent;
-import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.interfaces.ConveyorFamily;
 import shared.Barcode;
 import shared.Glass;
@@ -26,7 +25,7 @@ public class BinAgent extends Agent {
 	Transducer transducer;
 	MyConveyorFamily ncCutter;
 	boolean currentlyCreatingGlass = false;
-	boolean nextCFFree = true;
+	boolean nextCFFree = false;
 	
 	
 	
@@ -40,20 +39,20 @@ public class BinAgent extends Agent {
 		}
 	}
 	private class MyConveyorFamily {
-		public ConveyorFamilyInterface conveyor;
-		public MyConveyorFamily(ConveyorFamilyInterface cf){
+		public ConveyorFamily conveyor;
+		public MyConveyorFamily(ConveyorFamily cf){
 			conveyor = cf;
 		}
 	}
 	
 	
-	public BinAgent(String n, Transducer t, ConveyorFamilyInterface c1, V1_GUI gui){
+	public BinAgent(String n, Transducer t, ConveyorFamily ncCutter, V1_GUI gui){
 		super (n);
 		this.gui = gui;
 		events = new ArrayList<TransducerEvent>();
 		requests = new ArrayList<GlassRequest>();
 		
-		this.ncCutter = new MyConveyorFamily(c1);
+		this.ncCutter = new MyConveyorFamily(ncCutter);
 		transducer = t;
 		transducer.register(this, TChannel.BIN);
 		
@@ -105,11 +104,10 @@ public class BinAgent extends Agent {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		System.out.println("test pickandex");
+
 		for (TransducerEvent event: events){
 			if (event == TransducerEvent.glassCreated)
 			{
-				events.remove(event);
 				giveGlassToNCCutter();
 				return true;
 			}
