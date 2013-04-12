@@ -43,7 +43,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	//	this.popup.setConveyor(conveyor);
 		
 		
-		startThreads();
+		
 		 isNextConveyorFamilyBusy=false;
 	}
 
@@ -152,6 +152,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		// TODO Auto-generated method stub
 		this.conveyor.startThread();
 		this.inline.startThread();
+		//this.popup.startThread();
 	}
 
 

@@ -104,7 +104,6 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		System.out.println("test pickandex");
 		for (TransducerEvent event: events){
 			if (event == TransducerEvent.glassCreated)
 			{
@@ -185,21 +184,21 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	}
 
 
-	@Override
+
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	@Override
+
 	public void msgIHaveGlassFinished(Operator operator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	@Override
+
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
 		ncCutter = new MyConveyorFamily(c3);
@@ -217,6 +216,21 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	public void startThreads() {
 		// TODO Auto-generated method stub
 		this.startThread();
+	}
+
+
+	
+	public void msgHereIsFinishedGlass(engine.interfaces.Operator operator,
+			Glass glass) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+	public void msgIHaveGlassFinished(engine.interfaces.Operator operator) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -319,8 +319,10 @@ print("sending sending");
 	public void msgHereIsGlass(Glass g1) {
 		// TODO Auto-generated method stub
 		print("Glass Recieved. Conveyor Start");
-		glassonconveyor.add(new MyCGlass(g1));
-		print("glass number"+g1.getNumber());
+		MyCGlass mcg = new MyCGlass(g1);
+		mcg.NeedsProcessing = mcg.pcglass.getRecipe(TChannel.CUTTER);
+		glassonconveyor.add(mcg);
+		print("glass number "+g1.getNumber());
 		stateChanged();
 	}
 	
