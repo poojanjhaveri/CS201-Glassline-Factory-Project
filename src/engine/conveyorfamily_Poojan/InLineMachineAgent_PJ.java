@@ -184,18 +184,22 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		{
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 			{
+				
+				synchronized(glassoninline){
 					for(MyPGlass mg:glassoninline){
 					    if(mg.status == GlassStatusInline.NEW ){
 					    	print("cutter called");
 						mg.status=GlassStatusInline.CHECKING;
 						stateChanged();
 					    }	
-			    	
+					}
 			}
 			}
 			
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 			{
+				
+				synchronized(glassoninline){
 					for(MyPGlass mg:glassoninline){
 						 if(mg.status == GlassStatusInline.DONE2 ){
 							 mg.status=GlassStatusInline.PROCESSINGDONE;
@@ -203,7 +207,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 							
 								stateChanged();
 							    }	
-			    	
+					}
 			}
 			}
 			
@@ -211,12 +215,15 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 			
 			if(event == TEvent.WORKSTATION_GUI_ACTION_FINISHED)
 			{
+				
+				synchronized(glassoninline){
 					for(MyPGlass mg:glassoninline){
 					    if(mg.status == GlassStatusInline.DONE2 ){
 					    	mg.status=GlassStatusInline.PROCESSINGDONE;
 					  
 						stateChanged();
 					    }	
+					}
 			}
 			}
 			
