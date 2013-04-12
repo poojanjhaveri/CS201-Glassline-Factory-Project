@@ -31,7 +31,7 @@ public class V1_GUI extends JFrame implements ActionListener{
 		//init window
 		setSize(400, 600);
 		getContentPane().setLayout( new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		this.setVisible(true);
+		
 		
 		//init buttons
 		allRecipe = new JButton("Recipe: All Processes");
@@ -67,7 +67,7 @@ public class V1_GUI extends JFrame implements ActionListener{
 		
 		this.add(top_section);
 		this.add(bottom_section);
-		
+		this.setVisible(true);
 	}
 	public void setBinAgent(BinAgent binAgent){
 		this.binAgent = binAgent;
