@@ -1,8 +1,9 @@
-package engine.agent;
+package engine.agent.Luis;
 
 import shared.Glass;
 import transducer.Transducer;
-import interfaces.ConveyorFamily;
+import engine.agent.Alex.*;
+import engine.interfaces.ConveyorFamily;
 
 public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 
@@ -47,6 +48,24 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 
 	public String getName() {
 		return null;
+	}
+
+	@Override
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startThreads() {
+		conveyor.startThread();
+		popup.startThread();
 	}
 
 }

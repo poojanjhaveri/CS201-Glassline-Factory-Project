@@ -2,7 +2,7 @@ package engine.agent.Dongyoung.Mock;
 
 import shared.Glass;
 import engine.interfaces.ConveyorFamily;
-import engine.interfaces.Operator;
+import engine.agent.Alex.*;
 
 public class MockPreviousFamily implements ConveyorFamily {
 

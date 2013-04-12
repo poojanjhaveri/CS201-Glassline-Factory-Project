@@ -5,9 +5,8 @@ import shared.*;
 import transducer.*;
 import engine.agent.Agent;
 import engine.interfaces.*;
-import engine.interfaces.Yinong.Conveyor;
-import engine.interfaces.Yinong.Inline;
-import engine.interfaces.Yinong.Popup;
+import engine.interfaces.Yinong.*;
+import engine.agent.Alex.*;
 
 public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	//data

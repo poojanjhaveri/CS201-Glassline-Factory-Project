@@ -4,7 +4,7 @@ import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
 import engine.interfaces.ConveyorFamily;
-import engine.interfaces.Operator;
+import engine.agent.Alex.*;
 import shared.Glass;
 import shared.enums.SensorPosition;
 import shared.enums.SharedData.SensorType;

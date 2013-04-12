@@ -2,7 +2,7 @@ package engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily6;
 
 import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily6.Agents.*;
 import engine.interfaces.ConveyorFamily;
-import engine.interfaces.Operator;
+import engine.agent.Alex.*;
 import shared.Glass;
 import transducer.Transducer;
 

@@ -1,8 +1,9 @@
-package engine.agent;
+package engine.agent.Luis;
 
-import interfaces.Conveyor_LV;
-import interfaces.ConveyorFamily;
-import interfaces.PopUp_LV;
+import engine.agent.Agent;
+import engine.agent.Luis.Interface.*;
+import engine.interfaces.ConveyorFamily;
+import engine.agent.Alex.*;
 
 import java.util.*;
 

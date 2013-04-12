@@ -1,10 +1,11 @@
-package interfaces;
+package engine.agent.Luis.Interface;
 
 import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
-import engine.agent.Operator;
+import engine.agent.Alex.*;
+import engine.interfaces.ConveyorFamily;
 
 public interface Conveyor_LV {
 	

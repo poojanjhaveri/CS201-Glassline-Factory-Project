@@ -1,23 +1,24 @@
-package engine.agent;
+package engine.agent.Luis;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import interfaces.ConveyorFamily;
-import interfaces.PopUp_LV;
-import interfaces.Conveyor_LV;
+import engine.interfaces.*;
 import shared.Glass;
-import shared.SharedData.WorkType;
 import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
+import engine.agent.Agent;
+import engine.agent.Alex.*;
+import engine.agent.Luis.*;
+import engine.agent.Luis.Interface.*;
 
 public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	int index;
-	WorkType work;
+	TChannel work;
 	boolean nextComponentFree;
 	Status status;
 	PopUpState state;

@@ -7,8 +7,8 @@ package engine.interfaces;
  * public enum SensorType { ENTRY_SENSOR, MIDDLE_SENSOR, POPUP_SENSOR }
  */
 
-import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import shared.Glass;   // My file has this. You can delete this import.
+import engine.agent.Alex.*;
 
 public interface ConveyorFamily{
 	

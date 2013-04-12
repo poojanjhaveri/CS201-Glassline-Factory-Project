@@ -1,12 +1,12 @@
-package interfaces;
+package engine.agent.Luis.Interface;
 
 import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
-import engine.agent.Operator;
+import engine.agent.Alex.*;
 //import engine.agent.Operator;
-import engine.agent.PopUpAgent_LV.GlassPackage;
+import engine.interfaces.ConveyorFamily;
 
 public interface PopUp_LV 
 {
