@@ -7,6 +7,7 @@ package engine.interfaces;
  * public enum SensorType { ENTRY_SENSOR, MIDDLE_SENSOR, POPUP_SENSOR }
  */
 
+import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import shared.Glass;   // My file has this. You can delete this import.
 
 public interface ConveyorFamily{
@@ -19,4 +20,8 @@ public interface ConveyorFamily{
 	
 	public abstract void msgIAmFree(); //from next CF
 	public abstract String getName();
+	
+	public abstract void setNextConveyorFamily(ConveyorFamily c3);
+	
+	public abstract void startThreads();
 }

@@ -19,6 +19,7 @@ import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.GlassStatusConveyor;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyOperators;
+import engine.interfaces.ConveyorFamily;
 
 
 
@@ -28,8 +29,8 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private String name;
 	private Transducer myTransducer;
 	private Conveyor_PJ myconveyor;
-	public ConveyorFamilyInterface MyFamily;
-	private ConveyorFamilyInterface NEXTFamily;
+	public ConveyorFamily MyFamily;
+	private ConveyorFamily NEXTFamily;
 	
 	private List<MyPGlass> glassoninline = Collections.synchronizedList(new ArrayList<MyPGlass>());
 	private List<MyPGlass> finishedglassonpopup = Collections.synchronizedList(new ArrayList<MyPGlass>());
@@ -38,7 +39,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private boolean finisheddone;
 
 	public enum GlassStatusInline{NEW,CHECKING,NOPROCESSING,PROCESSING,BEINGPROCESSED, DONE,DONE2, PROCESSINGDONE};
-	public InLineMachineAgent_PJ(String string, int i, ConveyorFamilyInterface conveyorFamily,
+	public InLineMachineAgent_PJ(String string, int i, ConveyorFamily conveyorFamily,
 			Transducer transducer) {
 		// TODO Auto-generated constructor stub
 		
@@ -269,40 +270,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	}
 	
 	
-	
-	
-	// ACTIONS
-
-	private void glassprocessingfinished(MyPGlass mg) {
-		// TODO Auto-generated method stub
-		if(!(this.MyFamily.getStatusOfNextConveyorFamily()))
-				{
-			print("RELEASE THE GLASS. PROCESSING DONE");
-				Object[] args1 = {this.number};
-					myTransducer.fireEvent(TChannel.POPUP,TEvent.POPUP_RELEASE_GLASS,args1);
-					this.MyFamily.getNextConveyorFamily().msgHereIsGlass(mg.pcglass);
-					mg.status=GlassStatusInline.DONE;
-					stateChanged();
-				}
-	} 
-
-
-
-	
-
-	private void shiptheglass(MyPGlass mg) {
-		// TODO Auto-generated method stub
-		Object[] args1 = {this.number};
-		if(!this.MyFamily.getStatusOfNextConveyorFamily())
-		{
-			myTransducer.fireEvent(TChannel.POPUP,TEvent.POPUP_RELEASE_GLASS,args1);
-			this.MyFamily.getNextConveyorFamily().msgHereIsGlass(mg.pcglass);	
-			mg.status=GlassStatusInline.BEINGPROCESSED;
-			stateChanged();
-		}
-		
-	}
-
 	
 
 	private void checkingforglass(MyPGlass mg)
