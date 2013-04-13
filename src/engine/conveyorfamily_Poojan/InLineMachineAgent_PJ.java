@@ -136,11 +136,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 							    }
 							}
 						    	}; 	
-		    	
-						 
 
-						    	
-		
 		
 		// TODO Auto-generated method stub
 		return false;
@@ -189,6 +185,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 					    	print("cutter called");
 						mg.status=GlassStatusInline.CHECKING;
 						stateChanged();
+						return;
 					    }	
 					}
 			}
@@ -202,8 +199,9 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 						 if(mg.status == GlassStatusInline.DONE2 ){
 							 mg.status=GlassStatusInline.PROCESSINGDONE;
 							 print("Load fininshed");
-							
+							 
 								stateChanged();
+								return;
 							    }	
 					}
 			}
@@ -220,6 +218,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 					    	mg.status=GlassStatusInline.PROCESSINGDONE;
 					  
 						stateChanged();
+						return;
 					    }	
 					}
 			}

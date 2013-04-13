@@ -160,39 +160,19 @@ public class FactoryPanel extends JPanel
 		
 		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer);
 		c4.setNextConveyorFamily(c5);
+		c5.setPreviousConveyorFamily(c4);
+		
 		//NEED MORE HERE TO HAVE CF1 SET UP: Start thread, set everything, etc.
 		
 		c1.startThreads();
 		c2.startThreads();
 		c3.startThreads();
 		c4.startThreads();
-		/*
-		ConveyorFamily c1 = new ConveyorFamily_PJ(0, transducer);
-		V1_GUI gui = new V1_GUI();
-		BinAgent bin = new BinAgent("bin agent", transducer, gui);
-		bin.setNextConveyorFamily(c1);
-		//pujan
+	//	c5.startThreads();
 		
-		ConveyorFamily c2 = new ConveyorFamily_PJ(1, transducer);
-		c1.setNextConveyorFamily(c2);
-		c1.setPreviousConveyorFamily(bin);
-	
-		/*
 		
-		//yinong
-		ConveyorFamily c3 = new ConveyorFamilyAgents(2, "breakout", false);
 		
-		gui.setBinAgent(bin);
-
-
-
-		( (ConveyorFamilyAgents)c3).setChannel(TChannel.BREAKOUT);
-		( (ConveyorFamilyAgents) c3).setTransducer(transducer);
-		c3.setPreviousConveyorFamily(c2);
 		
-		c2.setNextConveyorFamily(c3);
-		
-*/
 	//	c1.startThreads();
 	//	c2.startThreads();
 	//	c3.startThreads();

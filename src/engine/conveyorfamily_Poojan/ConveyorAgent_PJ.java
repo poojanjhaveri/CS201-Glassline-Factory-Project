@@ -39,7 +39,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private InLineMachine_PJ myinline;
 	
 	public enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE};
-	public enum operatorstatus{FREE,BUSY};
 	
 	private Boolean isPopUpBusy;
 	private Boolean isINLINEBusy;
@@ -130,9 +129,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				
 					    if(mg.status == GlassStatusConveyor.ONEXITSENSOR ){
 					    	{PassingGlassToInLineMachine(mg);
-
+					    	return true;
 					    	}
-						return true;
+						
 					    }
 					}
 				    	};  
@@ -156,25 +155,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 									    if(mg.status == GlassStatusConveyor.NEEDSMACHINEPROCESSING){
 									//	PassingGlassToPopupToProcess(mg);
 									    	PassingGlassToInLineMachine(mg);
-print("sending sending");
 										return true;
 									    }
 									}
 								    	};   	
 				    	
-								    	/*
+			
 								    	synchronized(glassonconveyor){
-									    	
-											for(MyCGlass mg:glassonconveyor){
-										
-											    if(mg.status == GlassStatusConveyor.NEEDSMACHINEPROCESSING){
-												PassingGlassToPopupToProcess(mg);
-												return true;
-											    }
-											}
-										    	};  */
-		    	
-
 									    	
 											for(MyCGlass mg:glassonconveyor){
 										
@@ -186,7 +173,7 @@ print("sending sending");
 												return true;
 											    }
 											}
-										    	
+								    	}
 		    	
 		
 		// TODO Auto-generated method stub
@@ -211,6 +198,7 @@ print("sending sending");
 				
 				if((Integer)args[0]==0)
 				{
+					synchronized(glassonconveyor){
 					for(MyCGlass mg:glassonconveyor){
 					
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
@@ -225,8 +213,10 @@ print("sending sending");
 								print("SENSOR PRESSED");
 								print("Conveyor started"+this.getNumber());
 								stateChanged();
+								return;
 							}
 						}
+					}
 					}
 			    };    	
 			}
@@ -239,7 +229,6 @@ print("sending sending");
 					
 								print("Sensor 0 Released");
 								this.PREVIOUSFamily.msgIAmFree();
-								//binAgent.msgIAmFree();
 					}    	
 			}
 			
@@ -247,16 +236,20 @@ print("sending sending");
 			{
 				if((Integer)args[0]==1)
 				{
+					synchronized(glassonconveyor){
 					for(MyCGlass mg:glassonconveyor){
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
+								Object[] cno ={this.getNumber()};
 								print("2nd sensor");
 								Object [] no={this.getNumber()};
 								isConveyorRunning=true;
 								mg.status=GlassStatusConveyor.ONEXITSENSOR;
 								stateChanged();
+								return;
 							}
 						}
+					}
 					}
 			    };    	
 			}
@@ -266,7 +259,8 @@ print("sending sending");
 				if((Integer)args[0]==2)
 				{	
 					Object[] cno ={1};
-					print("3rd sensor");
+					print("NCCUTTER : 3rd sensor");
+					isINLINEBusy=false;
 					   myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 					}    	
 			}
@@ -295,6 +289,7 @@ print("sending sending");
 									//	isNextConveyorFamilyBusy=true;
 										mg.status=GlassStatusConveyor.DONE;
 										stateChanged();
+										return;
 									}
 						//	}
 							}
@@ -376,50 +371,19 @@ print("sending sending");
 	}
 	
 	
-	/*
-	private void PassingGlassToPopupToProcess(MyCGlass mg) {
-		// TODO Auto-generated method stub
-		print("Glass passed to the popup. Conveyor STOP. Glass Needs Processing");
-		this.mypopup.msgGlassNeedsProcessing(mg.pcglass,mg.myoperator.op);
-		isPopUpBusy=true;
-		mg.status=GlassStatusConveyor.DONE;	
-	}*/
-	
-	/*
-	private void PassingGlassToInLineMachine(MyCGlass mg) {
-		if (halfFamily){
-			// TODO Auto-generated method stub
-			print("Glass passed to the inline machine. Conveyor STOP. Glass Needs Processing"+mg.NeedsProcessing);
-			this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
-			
-			//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
-			
-			isINLINEBusy=true;
-			mg.status=GlassStatusConveyor.FIRSTDONE;	
-			
-			
-		}
-		else{
-			//send to next cf
-			print("Glass passed to the next conveyor family." );
-
-			//this..msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
-			
-			//this.myinline.msgGlassDoesNotNeedProcessing(mg.pcglass);
-			this.nextCF.msgHereIsGlass(mg.pcglass);
-			
-			isINLINEBusy=true;
-			mg.status=GlassStatusConveyor.FIRSTDONE;	
-			
-		}
-		
-		
-		
-	}*/
 	
 	private void PassingGlassToInLineMachine(MyCGlass mg) {
 		// TODO Auto-generated method stub
-		print("Glass passed to the inline machine.");
+		if(isINLINEBusy)
+		{
+		Object[] cno={0};
+		 myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
+		 print("Conveyor Stop because Inline Is BUSY");
+		}
+		else
+		{
+			print("Glass passed to inline machine");
+		}
 		this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
 		isINLINEBusy=true;
 		mg.status=GlassStatusConveyor.FIRSTDONE;	
@@ -428,51 +392,6 @@ print("sending sending");
 	}
 	
 
-
-
-	private void passtheglass(MyCGlass mg) {
-		// TODO Auto-generated method stub
-		
-		mg.status=GlassStatusConveyor.CHECKINGPROCESSING;
-		print("mg.status"+mg.NeedsProcessing);
-		if(mg.NeedsProcessing==true)
-		{
-			
-			
-		  for(int i=0; i < operatorlist.size(); i++){
-				
-				if(!operatorlist.get(i).occupied ){
-				    synchronized(operatorlist){
-				    
-				    	mg.myoperator=operatorlist.get(i);
-				    	operatorlist.get(i).occupied=true;
-				    	mg.status=GlassStatusConveyor.NEEDSMACHINEPROCESSING;
-				    	this.mypopup.msgINeedToPassGlass();
-				    	print("machine NEeds Processing");
-				    	stateChanged();
-				    	return;
-				    }
-				}
-				
-			    }
-		}
-		else
-		{
-			print("Machine does not need processing");
-			this.mypopup.msgINeedToPassGlass();
-			mg.status=GlassStatusConveyor.NOMACHINEPROCESSING;
-			
-			
-		}
-	}
-
-	
-
-	public void setOperator(Operator_PJ o1)
-	{
-		operatorlist.add(new MyOperators(o1));
-	}
-	
 	
 	public String getName(){
         return name;
@@ -493,6 +412,17 @@ print("sending sending");
 	public Boolean getisPopUpBusy(){
         return this.isPopUpBusy;
     }
+
+
+
+
+
+
+	@Override
+	public void setOperator(Operator_PJ o1) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 

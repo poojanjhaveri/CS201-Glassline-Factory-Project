@@ -53,13 +53,13 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 	@Override
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
-		
+		nextFamily=c3;
 	}
 
 	@Override
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
 		// TODO Auto-generated method stub
-		
+		previousFamily=c2;
 	}
 
 	@Override

@@ -71,6 +71,7 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	}
 
 	public void msgIAmFree(){
+		print("NCCUTTER IS FREE");
 		nextCFFree = true;
 		stateChanged();
 	}
