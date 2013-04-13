@@ -24,7 +24,7 @@ public class FactoryFrame extends JFrame
 	/**
 	 * The window title
 	 */
-	public static final String WINDOW_TITLE = "Glass Line - Insert Team Name Here";
+	public static final String WINDOW_TITLE = "Glass Line - Team01";
 
 	/**
 	 * The default frames per second. The speed slider will start at (the
