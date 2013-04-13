@@ -6,6 +6,7 @@ import java.util.concurrent.Semaphore;
 import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;
+import transducer.Transducer;
 import engine.agent.Agent;
 import engine.interfaces.ConveyorFamily;
 
@@ -38,6 +39,7 @@ public class Operator extends Agent{
 	 * Messages
 	 *
 	 */
+	private Transducer transducer;
 	private TChannel mychannel;
 	
 	public void msgHereIsGlass(Glass g){
@@ -103,14 +105,14 @@ public class Operator extends Agent{
 	
 	private void loadGlass() {
 		// TODO Auto-generated method stub
-		Integer[] args = new Integer[0];
+		Integer[] args = new Integer[1];
 		args[0] = workstation_number;
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_LOAD_GLASS, args);
 	}
 	
 	private void machineGlass(MyGlass myGlass){
 		print("Machining glass piece " + myGlass.glass.getNumber());
-		Integer[] args = new Integer[0];
+		Integer[] args = new Integer[1];
 		args[0] = workstation_number;
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_ACTION, args);
 		try {
@@ -136,5 +138,10 @@ public class Operator extends Agent{
 
 	public void print(String n){
 	System.out.println(name + ": " + n);
+	}
+	
+	public void setTransducer(Transducer t) {
+		transducer = t;
+		t.register(this, mychannel);
 	}
 }
