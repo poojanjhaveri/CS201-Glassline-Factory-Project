@@ -108,7 +108,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	
 	private void startUpConveyor()
 	{
-		System.out.println("starting conveyor");
+		print("starting conveyor");
 		Integer[] args = new Integer[1];
 		args[0] = index;
 		t.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, args);
@@ -117,7 +117,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	
 	private void stopConveyor()
 	{
-		System.out.println("stopping conveyor");
+		print("stopping conveyor");
 		Integer[] args = new Integer[1];
 		args[0] = index;
 		t.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, args);
@@ -127,13 +127,13 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	private void letPopUpKnowGlassIsWaiting()
 	{
 		stopConveyor();
-		System.out.println("Letting popup know glass is waiting");
+		print("Letting popup know glass is waiting");
 		myPopUp.popUp.msgIHaveGlassReady(glassPieces.get(0));
 	}
 	
 	private void moveToPopUp()
 	{
-		System.out.println("Giving glass to popUp");
+		print("Giving glass to popUp");
 		myPopUp.popUp.msgHereIsGlass(glassPieces.get(0));
 		sensorTwo = SensorState.NULL;
 		myPopUp.state = PopUpState.BUSY;
@@ -142,7 +142,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	
 	private void notifyPreviousFamily()
 	{
-		System.out.println("Letting previous Family know I am free");
+		print("Letting previous Family know I am free");
 		previousFamily.msgIAmFree();
 		sensorOne = SensorState.NULL;
 	}

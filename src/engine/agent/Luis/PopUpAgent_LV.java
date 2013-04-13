@@ -281,7 +281,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void takeGlass(GlassPackage g)
 	{
-		System.out.println("Taking glass from conveyor");
+		print("Taking glass from conveyor");
 		if(status == Status.RAISED)
 			lowerPopUp();
 		conveyor.msgPopUpFree();
@@ -297,7 +297,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void giveGlassToOperator(GlassPackage g, int operatorNumber)
 	{
-		System.out.println("Giving operator glass");
+		print("Giving operator glass");
 		if(status == Status.LOWERED);
 			raisePopUp();
 		operators.get(operatorNumber).operator.msgHereIsGlass(g.glass);
@@ -316,7 +316,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void moveGlass(GlassPackage g)
 	{
-		System.out.println("Moving glass to next conveyor");
+		print("Moving glass to next conveyor");
 		if(status == Status.RAISED)
 			lowerPopUp();
 		next.msgHereIsGlass(g.glass);
@@ -337,7 +337,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void checkGlass(GlassPackage g)
 	{
-		System.out.println("Checking if glass needs work");
+		print("Checking if glass needs work");
 		if(g.glass.getRecipe(channel))
 			g.state = GlassState.NEEDS_WORK;
 		else
