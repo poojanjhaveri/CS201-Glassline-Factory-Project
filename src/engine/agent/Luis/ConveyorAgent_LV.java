@@ -20,8 +20,8 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	enum PopUpState {OPEN, BUSY};
 	enum SensorState {PRESSED, RELEASED, NULL};
 	MyPopUp myPopUp;
-	SensorState sensorOne;
-	SensorState sensorTwo;
+	SensorState sensorOne = SensorState.NULL;
+	SensorState sensorTwo = SensorState.NULL;
 	ConveyorFamily previousFamily;
 	Transducer t;
 	
@@ -74,20 +74,20 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	 */
 
 	public boolean pickAndExecuteAnAction() {
-	
+			
 		if((myPopUp.state == PopUpState.BUSY) && (sensorTwo == SensorState.PRESSED) && (moving))
 		{
 			letPopUpKnowGlassIsWaiting();
 			return true;
-		}
-		
+			}
+			
 		if((myPopUp.state == PopUpState.OPEN) && (!moving))
 		{
 			startUpConveyor();
 			return true;
 		}
 		
-		if(sensorTwo == SensorState.RELEASED)
+		if(sensorTwo == SensorState.RELEASED && !(myPopUp.state == PopUpState.BUSY))
 		{
 			moveToPopUp();
 			return true;
@@ -98,7 +98,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 			notifyPreviousFamily();
 			return true;
 		}
-		
+
 		return false;
 	}
 	
@@ -134,7 +134,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	private void moveToPopUp()
 	{
 		print("Giving glass to popUp");
-		myPopUp.popUp.msgHereIsGlass(glassPieces.get(0));
+		myPopUp.popUp.msgHereIsGlass(glassPieces.remove(0));
 		sensorTwo = SensorState.NULL;
 		myPopUp.state = PopUpState.BUSY;
 		
@@ -153,16 +153,16 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 		{
 			if(event == TEvent.SENSOR_GUI_PRESSED)
 			{
-				if((Integer)(args[0]) == index+5)
+				if((Integer)(args[0]) == index*2)
 					sensorOne = SensorState.PRESSED;
-				else if((Integer)(args[0]) == index + 6)
+				else if((Integer)(args[0]) == index*2 + 1)
 					sensorTwo = SensorState.PRESSED;
 			}
 			else if(event == TEvent.SENSOR_GUI_RELEASED)
 			{
-				if((Integer)(args[0]) == index+5)
+				if((Integer)(args[0]) == index*2)
 					sensorOne = SensorState.RELEASED;
-				else if((Integer)(args[0]) == index + 6)
+				else if((Integer)(args[0]) == index*2+1)
 					sensorTwo = SensorState.RELEASED;
 			}
 		}

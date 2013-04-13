@@ -18,7 +18,7 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 	InlineAgent inline;
 	boolean isOffline;
 	
-	private ConveyorFamilyAgents() {}
+	public ConveyorFamilyAgents() {}
 	public ConveyorFamilyAgents(int i, String f, boolean offline) {
 		index = i;
 		function = f;
