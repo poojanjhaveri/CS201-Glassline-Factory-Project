@@ -397,7 +397,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		
-		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index-4)) //Note: popup offset
+		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index)) //Note: popup offset
 		{
 			if(event == TEvent.POPUP_GUI_MOVED_DOWN)
 				statusSemaphore.release();

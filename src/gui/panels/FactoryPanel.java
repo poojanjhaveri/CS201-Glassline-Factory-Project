@@ -159,7 +159,7 @@ public class FactoryPanel extends JPanel
 		c4.setPreviousConveyorFamily(c3);
 		( (ConveyorAgent) c4).setTransducer(transducer);
 		
-		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer);
+		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer, 0);
 		((ConveyorFamilyAgent_LV)c5).setChannel(TChannel.DRILL);	
 		Operator o5up = new Operator("operator 5- up", TChannel.DRILL, 1);
 		Operator o5down = new Operator("operator 5- down", TChannel.DRILL, 2);
@@ -167,7 +167,7 @@ public class FactoryPanel extends JPanel
 		c4.setNextConveyorFamily(c5);
 		c5.setPreviousConveyorFamily(c4);
 		
-		ConveyorFamily c6 = new ConveyorFamilyAgent_LV(6, transducer);
+		ConveyorFamily c6 = new ConveyorFamilyAgent_LV(6, transducer,1);
 		((ConveyorFamilyAgent_LV)c6).setChannel(TChannel.CROSS_SEAMER);
 		Operator o6up = new Operator("operator 5- up", TChannel.CROSS_SEAMER, 3);
 		Operator o6down = new Operator("operator 5- down", TChannel.CROSS_SEAMER, 4);
@@ -175,7 +175,7 @@ public class FactoryPanel extends JPanel
 		c5.setNextConveyorFamily(c6);
 		c6.setPreviousConveyorFamily(c5);
 		
-		ConveyorFamily c7 = new ConveyorFamilyAgent_LV(7, transducer);
+		ConveyorFamily c7 = new ConveyorFamilyAgent_LV(7, transducer,2);
 		((ConveyorFamilyAgent_LV)c7).setChannel(TChannel.GRINDER);
 
 		Operator o7up = new Operator("operator 7- up", TChannel.GRINDER, 5);
