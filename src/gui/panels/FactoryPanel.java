@@ -196,26 +196,24 @@ public class FactoryPanel extends JPanel
 		c8.setNextConveyorFamily(c9);
 		
 		
-		
+		// Dongyoung =======================================
 		ConveyorFamily family5 = new ConveyorFamily5();
-		c9.setNextConveyorFamily(family5);
 		ConveyorFamily family6 = new ConveyorFamily6();
 		ConveyorFamily family7 = new ConveyorFamily7();
-		//MockPreviousFamily previousFamily = new MockPreviousFamily(transducer);
 		MockNextFamily nextFamily = new MockNextFamily();
 				
-		
-		
 		((ConveyorFamily5)family5).setTransducer(transducer);
 		((ConveyorFamily6)family6).setTransducer(transducer);
 		((ConveyorFamily7)family7).setTransducer(transducer);
 		
+		c9.setNextConveyorFamily(family5);
 		family5.setPreviousConveyorFamily(c9);
 		family5.setNextConveyorFamily(family6);
 		family6.setPreviousConveyorFamily(family5);
 		family6.setNextConveyorFamily(family7);
 		family7.setPreviousConveyorFamily(family6);
 		family7.setNextConveyorFamily(nextFamily);
+		// ================================================
 		
 		//NEED MORE HERE TO HAVE CF1 SET UP: Start thread, set everything, etc.
 		o5down.startThread();
@@ -246,14 +244,9 @@ public class FactoryPanel extends JPanel
 	//	c3.startThreads();
 	//	bin.startThreads();
 		//c2.setNextConveyorFamily();
-		
-		
 	}
-	
-<<<<<<< HEAD
-	public void runDongyoung(ConveyorFamily prev){
 
-=======
+	// NO TOUCH
 	public void runDongyoung(){
 		new TestAni(transducer);
 		ConveyorFamily5 family5 = new ConveyorFamily5();
@@ -274,7 +267,6 @@ public class FactoryPanel extends JPanel
 		family6.setNextConveyorFamily(family7);
 		family7.setPreviousConveyorFamily(family6);
 		family7.setNextConveyorFamily(nextFamily);
->>>>>>> 7eb5913bde4f8a81d51b7cac687a7a58508fd360
 	}
 
 	/**
