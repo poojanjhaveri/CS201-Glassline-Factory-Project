@@ -250,8 +250,31 @@ public class FactoryPanel extends JPanel
 		
 	}
 	
+<<<<<<< HEAD
 	public void runDongyoung(ConveyorFamily prev){
 
+=======
+	public void runDongyoung(){
+		new TestAni(transducer);
+		ConveyorFamily5 family5 = new ConveyorFamily5();
+		ConveyorFamily6 family6 = new ConveyorFamily6();
+		ConveyorFamily7 family7 = new ConveyorFamily7();
+		MockPreviousFamily previousFamily = new MockPreviousFamily(transducer);
+		MockNextFamily nextFamily = new MockNextFamily();
+				
+		previousFamily.setNextConveyorFamily(family5);
+		
+		family5.setTransducer(transducer);
+		family6.setTransducer(transducer);
+		family7.setTransducer(transducer);
+		
+		family5.setPreviousConveyorFamily(previousFamily);
+		family5.setNextConveyorFamily(family6);
+		family6.setPreviousConveyorFamily(family5);
+		family6.setNextConveyorFamily(family7);
+		family7.setPreviousConveyorFamily(family6);
+		family7.setNextConveyorFamily(nextFamily);
+>>>>>>> 7eb5913bde4f8a81d51b7cac687a7a58508fd360
 	}
 
 	/**

@@ -45,7 +45,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		
 		this.name=string;
 		this.number=i;
-
+		
 		this.MyFamily=conveyorFamily;
 		
 		myTransducer = transducer;
@@ -145,6 +145,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
+
 		mg.status=GlassStatusInline.DONE;
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
 		stateChanged();
