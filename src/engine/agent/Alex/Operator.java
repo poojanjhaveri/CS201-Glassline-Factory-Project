@@ -14,8 +14,8 @@ public class Operator extends Agent{
 
 	public Operator(String name, TChannel tc, int workStationNum){
 		super(name);
-		popup = new Semaphore(0);
-		machined = new Semaphore(0);
+		popup = new Semaphore(0, true);
+		machined = new Semaphore(0, true);
 		mychannel = tc;
 		workstation_number = workStationNum ;
 		glasses = new ArrayList<MyGlass>();
@@ -29,9 +29,10 @@ public class Operator extends Agent{
 	ArrayList<MyGlass> glasses; //should only have one piece, but just in case
 	class MyGlass{
 		public Glass glass;
-		public boolean beenLoaded = false;
-		public boolean beenMachined = false;
-		MyGlass(Glass g){glass = g;}
+		public LoadingState lState;
+		public MachiningState mState;
+		MyGlass(Glass g){glass = g; lState = LoadingState.Waiting; 
+		mState = MachiningState.Waiting;}
 	}
 	Semaphore popup;
 	Semaphore machined;
@@ -39,6 +40,8 @@ public class Operator extends Agent{
 	 * Messages
 	 *
 	 */
+	enum LoadingState {Waiting, Loading, Loaded};
+	enum MachiningState {Waiting, Machining, Finished};
 	private Transducer transducer;
 	private TChannel mychannel;
 	
@@ -58,7 +61,7 @@ public class Operator extends Agent{
 	//from tr
 	public void msgLoadFinished(){
 		print("Load finished");
-		glasses.get(0).beenLoaded = true;
+		glasses.get(0).lState = LoadingState.Loaded;
 	}
 	private void msgReleaseFinished() {
 		// TODO Auto-generated method stub
@@ -74,12 +77,13 @@ public class Operator extends Agent{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		if (!glasses.isEmpty() && !glasses.get(0).beenLoaded)
+		if (!glasses.isEmpty() && glasses.get(0).lState == LoadingState.Waiting)
 		{
 			loadGlass();
 			return true;
 		}
-		if (!glasses.isEmpty() && !glasses.get(0).beenMachined && glasses.get(0).beenLoaded)
+		if (!glasses.isEmpty() && glasses.get(0).mState == MachiningState.Waiting 
+				&& glasses.get(0).lState == LoadingState.Loaded)
 		{
 			machineGlass(glasses.get(0));
 			return true;
@@ -91,12 +95,14 @@ public class Operator extends Agent{
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		// TODO Auto-generated method stub
-		if (event == TEvent.WORKSTATION_GUI_ACTION_FINISHED && (int)args[0] == workstation_number)
+		if(channel == mychannel &&  (int)args[0] == workstation_number) {
+		if (event == TEvent.WORKSTATION_GUI_ACTION_FINISHED)
 			msgDoneMachining();
-		else if (event == TEvent.WORKSTATION_LOAD_FINISHED && (int)args[0] == workstation_number)
+		else if (event == TEvent.WORKSTATION_LOAD_FINISHED)
 			msgLoadFinished();
-		else if (event == TEvent.WORKSTATION_RELEASE_FINISHED && (int)args[0] == workstation_number)
+		else if (event == TEvent.WORKSTATION_RELEASE_FINISHED)
 			msgReleaseFinished();
+		}
 		
 	}
 	/*
@@ -108,6 +114,7 @@ public class Operator extends Agent{
 		Integer[] args = new Integer[1];
 		args[0] = workstation_number;
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_LOAD_GLASS, args);
+		glasses.get(0).lState = LoadingState.Loading;
 	}
 	
 	private void machineGlass(MyGlass myGlass){

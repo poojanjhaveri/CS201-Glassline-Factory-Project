@@ -310,6 +310,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
+		Do("REACHED HERE !!!");
 		g.operatorNumber = operatorNumber;
 		operators.get(operatorNumber).occupied = true;
 		g.state = GlassState.NONE;
@@ -380,7 +381,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			e.printStackTrace();
 		}
 		
-		Do("REACHED HERE");
+		//Do("REACHED HERE");
 		conveyor.msgPopUpBusy();
 		status = Status.RAISED;
 	}
@@ -416,15 +417,19 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			if(event == TEvent.POPUP_GUI_RELEASE_FINISHED)
 				stateSemaphore.release();
 		}
-		else if((channel == operators.get(0).channel) && ((Integer)(args[0]) == operators.get(0).number))
+		else if((channel == operators.get(0).channel) && ((Integer)(args[0]) % 2 == 1) )
 		{
+			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
+					" Operator No: "+operators.get(0).number);
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 				operators.get(0).semaphore.release();
 			if(event == TEvent.WORKSTATION_RELEASE_FINISHED)
 				operators.get(0).semaphore.release();
 		}
-		else if((channel == operators.get(1).channel) && ((Integer)(args[0]) == operators.get(1).number))
+		else if((channel == operators.get(1).channel) && ((Integer)(args[0]) % 2 == 0) )
 		{
+			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
+					" Operator No: "+operators.get(0).number);
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 				operators.get(1).semaphore.release();
 			if(event == TEvent.WORKSTATION_RELEASE_FINISHED)
@@ -443,6 +448,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	{
 		this.operators.add(new Machine(operatorOne,c,false,0));
 		this.operators.add(new Machine(operatorTwo,c,false,1));
+		t.register(this, c);
 	}
 	
 	public void setTransducer(Transducer trans)
