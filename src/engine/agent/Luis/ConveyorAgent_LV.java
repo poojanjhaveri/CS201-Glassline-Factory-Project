@@ -153,16 +153,16 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 		{
 			if(event == TEvent.SENSOR_GUI_PRESSED)
 			{
-				if((Integer)(args[0]) == index+7)
+				if((Integer)(args[0]) == index+5)
 					sensorOne = SensorState.PRESSED;
-				else if((Integer)(args[0]) == index + 8)
+				else if((Integer)(args[0]) == index + 6)
 					sensorTwo = SensorState.PRESSED;
 			}
 			else if(event == TEvent.SENSOR_GUI_RELEASED)
 			{
-				if((Integer)(args[0]) == index+7)
+				if((Integer)(args[0]) == index+5)
 					sensorOne = SensorState.RELEASED;
-				else if((Integer)(args[0]) == index + 8)
+				else if((Integer)(args[0]) == index + 6)
 					sensorTwo = SensorState.RELEASED;
 			}
 		}
