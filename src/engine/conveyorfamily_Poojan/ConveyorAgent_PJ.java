@@ -61,7 +61,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	this.myinline=p2;
 	this.PREVIOUSFamily=cp;
 	
-	
+	secondconveyorfree=true;
 	this.isPopUpBusy=false;
 	this.isINLINEBusy=false;
 	myTransducer = transducer;
