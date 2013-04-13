@@ -223,7 +223,7 @@ public class FactoryPanel extends JPanel
 		MockPreviousFamily previousFamily = new MockPreviousFamily(transducer);
 		MockNextFamily nextFamily = new MockNextFamily();
 				
-		previousFamily.setPreviousConveyorFamily(family5);
+		previousFamily.setNextConveyorFamily(family5);
 		
 		family5.setTransducer(transducer);
 		family6.setTransducer(transducer);
