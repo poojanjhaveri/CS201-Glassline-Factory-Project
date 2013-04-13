@@ -14,6 +14,7 @@ public class Component extends Agent{
 	protected boolean nextCompFree = true;
 	protected boolean newGlass = false;
 	protected boolean checkPass = false;
+	protected boolean checkDone = true;
 	
 	protected Component(String name){
 		this.name = name;
@@ -23,6 +24,9 @@ public class Component extends Agent{
 	// MESSAGE
 	public void msgIAmFree(){
 		nextCompFree = true;
+		if( !checkDone ){
+			checkPass = true;
+		}
 		stateChanged();
 	}
 	
@@ -37,9 +41,7 @@ public class Component extends Agent{
 	}
 
 	// ACTION
-	
-	
-	
+
 	// EXTRA
 	/* Getter */
 	public String getName(){

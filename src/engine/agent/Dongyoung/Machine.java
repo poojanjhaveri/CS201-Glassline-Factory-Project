@@ -16,39 +16,24 @@ public class Machine extends Component implements TReceiver{
 		this.channel = channel;
 	}
 	
-	// MESSAGE
-	public void msgLoadFinished(){
-		glass = tempGlass;
-		loadFinished = true;
-		stateChanged();
-	}
-	
-	public void msgActionFinished(){
-		actionFinished = true;
-		stateChanged();
-	}
-	
-	public void msgReleaseFinished(){
-		releaseFinished = true;
-		stateChanged();
-	}
+	// MESSAGE - Directly from Transducer. Refer to function 'eventFired'
 	
 	// SCHEDULER
 	@Override
 	protected boolean pickAndExecuteAnAction(){
 		
 		if( loadFinished ){
-			doAction();
+			doWorkAction();
 			return true;
 		}
 		
 		if( actionFinished ){
-			actionFinished();
+			actionFinishedAction();
 			return true;
 		}
 		
 		if( releaseFinished ){
-			releaseFinished();
+			releaseFinishedAction();
 			return true;
 		}
 		
@@ -56,17 +41,17 @@ public class Machine extends Component implements TReceiver{
 	}
 	
 	// ACTION
-	private void doAction(){
+	private void doWorkAction(){
+		loadFinished = false;
 		if( glass.getRecipe( channel ) ){
 			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
 		}
 		else if( !glass.getRecipe( channel ) ){
-			msgActionFinished();
+			actionFinishedAction();
 		}
-		loadFinished = false;
 	}
 	
-	private void actionFinished(){
+	private void actionFinishedAction(){
 		if( nextCompFree ){
 			transducer.fireEvent(channel, TEvent.WORKSTATION_RELEASE_GLASS, null);
 			passGlassAction();
@@ -74,7 +59,7 @@ public class Machine extends Component implements TReceiver{
 		}
 	}
 	
-	private void releaseFinished(){
+	private void releaseFinishedAction(){
 		glass = null;
 		notifyIAmFreeAction();
 		releaseFinished = false;
@@ -91,20 +76,22 @@ public class Machine extends Component implements TReceiver{
 				if( debug ){
 					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
 				}
-				msgLoadFinished();
+				glass = tempGlass;
+				loadFinished = true;
 			}
 			else if( event == TEvent.WORKSTATION_GUI_ACTION_FINISHED ){
 				if( debug ){
 					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
 				}
-				msgActionFinished();
+				actionFinished = true;
 			}
 			else if( event == TEvent.WORKSTATION_RELEASE_FINISHED ){
 				if( debug ){
 					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
 				}
-				msgReleaseFinished();
+				releaseFinished = true;
 			}
+			stateChanged();
 		}
 	}
 	

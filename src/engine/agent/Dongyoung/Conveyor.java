@@ -1,7 +1,5 @@
 package engine.agent.Dongyoung;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import shared.Glass;
@@ -13,7 +11,7 @@ public class Conveyor extends Component implements TReceiver{
 	protected CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum, sensorNum;
-	protected boolean glassLeaveFront = false, glassLeaveBack = false;
+	protected boolean glassLeaveFront = false;
 	
 	/* Constructor */
 	protected Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
@@ -23,47 +21,23 @@ public class Conveyor extends Component implements TReceiver{
 		this.backSensorNum = backSensorNum;
 	}
 	
-	// MESSAGE
-	public void msgFrontSensorOn(){
-		newGlass = true;
-		stateChanged();
-	}
-	
-	public void msgBackSensorOn(){
-		checkPass = true;
-		stateChanged();
-	}
-	
-	public void msgFrontSensorOff(){
-		glassLeaveFront = true;
-		stateChanged();
-	}
-	
-	public void msgBackSensorOff(){
-		glassLeaveBack = true;
-		stateChanged();
-	}
+	// MESSAGE - Directly from Transducer. Refer to function 'eventFired'
 	
 	// SCHEDULER
 	@Override
 	protected boolean pickAndExecuteAnAction(){
-		if( checkPass ){
-			checkPassAction();
-			return true;
-		}
-		
 		if( newGlass ){
 			newGlassAction();
 			return true;
 		}
 		
-		if( glassLeaveBack ){
-			glassLeaveBackAction();
+		if( glassLeaveFront ){
+			glassLeaveFrontAction();
 			return true;
 		}
 		
-		if( glassLeaveFront ){
-			glassLeaveFrontAction();
+		if( checkPass ){
+			checkPassAction();
 			return true;
 		}
 		
@@ -77,8 +51,9 @@ public class Conveyor extends Component implements TReceiver{
 			nextCompFree = false;
 			passGlassAction();
 			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
-			checkPass = false;
+			checkDone = true;
 		}
+		checkPass = false;
 	}
 	
 	private void newGlassAction(){
@@ -94,15 +69,6 @@ public class Conveyor extends Component implements TReceiver{
 		notifyIAmFreeAction();
 	}
 	
-	private void glassLeaveBackAction(){
-		glassLeaveBack = false;
-		new Timer().schedule(new TimerTask(){
-			public void run(){
-				conveyorCheck();
-			}
-		}, 1000);
-	}
-	
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
@@ -114,21 +80,23 @@ public class Conveyor extends Component implements TReceiver{
 					if( debug ){
 						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
 					}
-					msgFrontSensorOn();
+					newGlass = true;
 				}
 				else if( sensorNum == backSensorNum ){
 					if( debug ){
 						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
 					}
-					msgBackSensorOn();
+					checkPass = true;
 				}
+				stateChanged();
 			}
 			else if( event == TEvent.SENSOR_GUI_RELEASED ){
 				if( sensorNum == frontSensorNum ){
 					if( debug ){
 						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
 					}
-					msgFrontSensorOff();
+					glassLeaveFront = true;
+					stateChanged();
 				}
 				else if( sensorNum == backSensorNum ){
 					if( debug ){
