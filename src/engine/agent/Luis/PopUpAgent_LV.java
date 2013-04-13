@@ -283,14 +283,16 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	private void takeGlass(GlassPackage g)
 	{
 		print("Taking glass from conveyor");
-		if(status == Status.RAISED)
+		if(status == Status.RAISED) {
 			lowerPopUp();
-		conveyor.msgPopUpFree();
-		try{
-			stateSemaphore.acquire();
-		} catch(InterruptedException e){
-			e.printStackTrace();
+			try{
+				stateSemaphore.acquire();
+			} catch(InterruptedException e){
+				e.printStackTrace();
+			}
 		}
+		conveyor.msgPopUpFree();
+		
 		state = PopUpState.FULL;
 		g.state = GlassState.WAITING;
 		conveyor.msgPopUpBusy();
@@ -350,7 +352,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	{
 		print("lowering popup");
 		Integer[] args = new Integer[1];
-		args[0] = index-4; //Note: popup offset
+		
+		args[0] = index; //Note: popup offset
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_DOWN, args);
 		
 		try{
@@ -367,7 +370,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	{
 		print("raising popup");
 		Integer[] args = new Integer[1];
-		args[0] = index-4;
+		
+		args[0] = index;
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_UP, args);
 		
 		try{
@@ -375,6 +379,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
+		
+		Do("REACHED HERE");
 		conveyor.msgPopUpBusy();
 		status = Status.RAISED;
 	}
