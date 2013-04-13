@@ -240,6 +240,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					for(MyCGlass mg:glassonconveyor){
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
+							
 								print("2nd sensor");
 								Object [] no={this.getNumber()};
 								isConveyorRunning=true;
@@ -300,12 +301,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 									{
 									  print("4th sensor");
 										Object[] cno1 ={1};
+										isNextConveyorFamilyBusy=true;
 								//		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno1);
 										this.NEXTFamily.msgHereIsGlass(mg.pcglass);
 										print("RELEASE THE GLASS. PROCESSING DONE");
 										Object[] args1 = {1};
 										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
-									//	isNextConveyorFamilyBusy=true;
+										
 										mg.status=GlassStatusConveyor.DONE;
 										stateChanged();
 										return;
@@ -433,7 +435,10 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
     }
 
 
-
+	public Boolean getisINLINEBusy()
+	{
+		return this.isINLINEBusy;
+	}
 
 
 

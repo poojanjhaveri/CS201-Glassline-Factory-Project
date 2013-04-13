@@ -28,7 +28,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private int number;
 	private String name;
 	private Transducer myTransducer;
-	private Conveyor_PJ myconveyor;
+	public Conveyor_PJ myconveyor;
 	public ConveyorFamily MyFamily;
 	private ConveyorFamily NEXTFamily;
 	
@@ -149,6 +149,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		mg.status=GlassStatusInline.DONE;
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
 		stateChanged();
+
 	}
 
 
