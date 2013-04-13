@@ -124,7 +124,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 					return;
 				}
 			}
-			GlassPackage g = new GlassPackage(glass, GlassState.WAITING);
+			GlassPackage g = new GlassPackage(glass, GlassState.INCOMING);
 			myGlassPieces.add(g);
 			currentGlass = g;
 		}
@@ -177,6 +177,26 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	public boolean pickAndExecuteAnAction() {
 
 		GlassPackage temp = null;
+		
+		if(state == PopUpState.OPEN)
+		{
+			synchronized(myGlassPieces)
+			{
+				for(GlassPackage g : myGlassPieces)
+				{
+					if(g.state == GlassState.INCOMING)
+						temp = g;
+				}
+			}
+			if(temp != null)
+			{
+				if((!temp.glass.getRecipe(channel)) || (getOperatorStatus(0) == false || getOperatorStatus(1) == false))
+				{
+					takeGlass(temp);
+					return true;
+				}
+			}
+		}
 		
 		if(state == PopUpState.OPEN)
 			{
@@ -252,26 +272,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			}
 		}
 		
-		if(state == PopUpState.OPEN)
-		{
-			synchronized(myGlassPieces)
-			{
-				for(GlassPackage g : myGlassPieces)
-				{
-					if(g.state == GlassState.INCOMING)
-						temp = g;
-				}
-			}
-			if(temp != null)
-			{
-				if((!temp.glass.getRecipe(channel)) || (getOperatorStatus(0) == false || getOperatorStatus(1) == false))
-				{
-					takeGlass(temp);
-					return true;
-				}
-			}
-		}
-		
+
 		return false;
 	}
 	
@@ -320,6 +321,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if(status == Status.RAISED)
 			lowerPopUp();
 		next.msgHereIsGlass(g.glass);
+		myGlassPieces.remove(g);
+		
 		Integer[] args = new Integer[1];
 		args[0] = index;
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
@@ -331,7 +334,6 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		state = PopUpState.OPEN;
 		conveyor.msgPopUpFree();
 		currentGlass = null;
-		myGlassPieces.remove(g);
 		nextComponentFree= false;
 	}
 	
