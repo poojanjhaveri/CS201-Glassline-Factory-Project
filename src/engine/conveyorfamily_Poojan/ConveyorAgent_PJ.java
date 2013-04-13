@@ -283,6 +283,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 										Object[] cno1 ={1};
 								//		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno1);
 										this.NEXTFamily.msgHereIsGlass(mg.pcglass);
+										isNextConveyorFamilyBusy = true;
 										print("RELEASE THE GLASS. PROCESSING DONE");
 										Object[] args1 = {1};
 										myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
