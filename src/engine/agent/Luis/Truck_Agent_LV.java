@@ -80,7 +80,8 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public void tellConveyorIAmFree()
 	{
 		print("Letting conveyor know I can load glass");
-		truckGlass.remove(0);
+		if(truckGlass.size()!=0)
+			truckGlass.remove(0);
 		previousFamily.msgIAmFree();
 		state = TruckState.PARKED;
 	}
@@ -130,4 +131,4 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public String getName(){
 		return name;
 	}
-}
+}}
