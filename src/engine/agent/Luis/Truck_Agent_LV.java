@@ -89,6 +89,9 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public void moveGlass(Glass g)
 	{
 		print("Delivering Glass");
+		Integer[] args = new Integer[1];
+		args[0] = 0;
+		t.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_EMPTY,args);
 		state = TruckState.COMMUTING;	
 	}
 
