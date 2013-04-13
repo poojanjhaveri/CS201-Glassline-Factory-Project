@@ -136,7 +136,7 @@ synchronized(glassonconveyor){
 			for(MyCGlass mg:glassonconveyor){
 		
 			    if(mg.status == GlassStatusConveyor.ONENTRYSENSOR ){
-			    	print("CHecking the glass");
+			    print("CHecking the glass");
 				checktheglass(mg);
 				return true;
 			    }
@@ -207,11 +207,11 @@ synchronized(glassonconveyor){
 
 	private void newglass(MyCGlass mg) {
 		// TODO Auto-generated method stub
+		firstsensor=false;
 		Object[] args={this.number};
 		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args);
 		mg.status=GlassStatusConveyor.ONENTRYSENSOR;
 		stateChanged();
-		
 	}
 
 
