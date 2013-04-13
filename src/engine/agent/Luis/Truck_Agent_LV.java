@@ -89,7 +89,6 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public void moveGlass(Glass g)
 	{
 		print("Delivering Glass");
-		t
 		state = TruckState.COMMUTING;	
 	}
 
@@ -132,4 +131,4 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public String getName(){
 		return name;
 	}
-}}
+}
