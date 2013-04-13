@@ -53,6 +53,9 @@ public class Conveyor extends Component implements TReceiver{
 			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
 			checkDone = true;
 		}
+		else{
+			checkDone = false;
+		}
 		checkPass = false;
 	}
 	
