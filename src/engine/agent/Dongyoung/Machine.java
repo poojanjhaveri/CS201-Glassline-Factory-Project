@@ -10,7 +10,7 @@ public class Machine extends Component implements TReceiver{
 	private TChannel channel;
 	private boolean loadFinished = false, actionFinished = false, releaseFinished = false;
 	
-	/* Constructor */
+	// Constructor
 	protected Machine(String name, TChannel channel) {
 		super(name);
 		this.channel = channel;
@@ -41,6 +41,10 @@ public class Machine extends Component implements TReceiver{
 	}
 	
 	// ACTION
+	/*
+	 * Need work - machine should work
+	 * No need - machine should not work
+	 */
 	private void doWorkAction(){
 		loadFinished = false;
 		if( glass.getRecipe( channel ) ){

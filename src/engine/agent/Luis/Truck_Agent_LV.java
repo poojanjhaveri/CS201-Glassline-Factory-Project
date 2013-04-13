@@ -8,8 +8,8 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 
-
 import engine.agent.Agent;
+import engine.agent.Alex.Operator;
 import engine.interfaces.ConveyorFamily;
 
 public class Truck_Agent_LV extends Agent implements ConveyorFamily{
@@ -28,17 +28,10 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 		truckGlass = new ArrayList<Glass>();
 		state = TruckState.ARRIVED;
 	}
-	
-	public void setInteractions(ConveyorFamily cf, Transducer trans)
-	{
-		previousFamily = cf;		
-		t = trans;
-		t.register(this, TChannel.TRUCK);
-	}
-	
+
 	//Messages
-	
-	public void msgTakeAwayGlass(Glass glass)
+	@Override
+	public void msgHereIsGlass(Glass glass)
 	{
 		truckGlass.add(glass);
 		stateChanged();
@@ -95,8 +88,46 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public void moveGlass(Glass g)
 	{
 		print("Delivering Glass");
-		state = TruckState.COMMUTING;
-		
+		state = TruckState.COMMUTING;	
 	}
 
+	@Override
+	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
+		// Nothing
+	}
+
+	@Override
+	public void msgIHaveGlassFinished(Operator operator) {
+		// Nothing	
+	}
+
+	@Override
+	public void msgIAmFree() {
+		// Nothing	
+	}
+
+	@Override
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+		// Nothing
+	}
+
+	@Override
+	public void setPreviousConveyorFamily(ConveyorFamily cf) {
+		previousFamily = cf;		
+	}
+	
+	public void setTransducer(Transducer trans){
+		t = trans;
+		t.register(this, TChannel.TRUCK);
+	}
+
+	@Override
+	public void startThreads() {
+		// Nothing
+	}
+	
+	@Override
+	public String getName(){
+		return name;
+	}
 }

@@ -195,8 +195,6 @@ public class FactoryPanel extends JPanel
 		((ConveyorAgent)c9).setTransducer(transducer);
 		c9.setPreviousConveyorFamily(c8);
 		c8.setNextConveyorFamily(c9);
-		
-		Truck_Agent_LV truck = new Truck_Agent_LV("truck");
 				
 		// Dongyoung =======================================
 		ConveyorFamily family5 = new ConveyorFamily5();
@@ -213,11 +211,14 @@ public class FactoryPanel extends JPanel
 		family6.setPreviousConveyorFamily(family5);
 		family6.setNextConveyorFamily(family7);
 		family7.setPreviousConveyorFamily(family6);
-		family7.setNextConveyorFamily(truck);
 		// ================================================
 		
-		truck.setInteractions(family7, transducer);
-
+		// Truck ==========================================
+		Truck_Agent_LV truck = new Truck_Agent_LV("truck");
+		truck.setPreviousConveyorFamily(family7);
+		truck.setTransducer(transducer);
+		family7.setNextConveyorFamily(truck);
+		// ================================================
 		
 		//NEED MORE HERE TO HAVE CF1 SET UP: Start thread, set everything, etc.
 		o5down.startThread();

@@ -11,11 +11,12 @@ public class Component extends Agent{
 	protected Glass tempGlass;
 	protected boolean debug = true;
 	
-	protected boolean nextCompFree = true;
-	protected boolean newGlass = false;
-	protected boolean checkPass = false;
-	protected boolean checkDone = true;
+	protected boolean nextCompFree = true;   // Next Component's status
+	protected boolean newGlass = false;   // New glass on Front Sensor
+	protected boolean checkPass = false;   // New glass on Next Sensor
+	protected boolean checkDone = true;   // Glass passed to next Component safely?
 	
+	// Constructor
 	protected Component(String name){
 		this.name = name;
 		super.startThread();
@@ -24,6 +25,7 @@ public class Component extends Agent{
 	// MESSAGE
 	public void msgIAmFree(){
 		nextCompFree = true;
+		// If a glass still stays, it needs to be sent.
 		if( !checkDone ){
 			checkPass = true;
 		}
@@ -40,9 +42,8 @@ public class Component extends Agent{
 		return false;
 	}
 
-	// ACTION
+	// ACTION - No Common Action between all components
 
-	// EXTRA
 	/* Getter */
 	public String getName(){
 		return name;
