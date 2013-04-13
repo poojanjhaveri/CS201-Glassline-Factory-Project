@@ -11,12 +11,13 @@ import engine.interfaces.ConveyorFamily;
 
 public class Operator extends Agent{
 
-	Operator(String name, TChannel tc, int workStationNum){
+	public Operator(String name, TChannel tc, int workStationNum){
 		super(name);
 		popup = new Semaphore(0);
 		machined = new Semaphore(0);
 		mychannel = tc;
 		workstation_number = workStationNum ;
+		glasses = new ArrayList<MyGlass>();
 	}
 	/*
 	 * DATA

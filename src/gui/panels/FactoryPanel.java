@@ -9,6 +9,7 @@ import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
 */
 import engine.agent.Alex.BinAgent;
+import engine.agent.Alex.Operator;
 import engine.agent.Alex.V1_GUI;
 import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily5.ConveyorFamily5;
 import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily6.ConveyorFamily6;
@@ -159,16 +160,48 @@ public class FactoryPanel extends JPanel
 		( (ConveyorAgent) c4).setTransducer(transducer);
 		
 		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer);
+		((ConveyorFamilyAgent_LV)c5).setChannel(TChannel.DRILL);	
+		Operator o5up = new Operator("operator 5- up", TChannel.DRILL, 1);
+		Operator o5down = new Operator("operator 5- down", TChannel.DRILL, 2);
+		((ConveyorFamilyAgent_LV)c5).setOperators(o5up, o5down, TChannel.DRILL);
 		c4.setNextConveyorFamily(c5);
 		c5.setPreviousConveyorFamily(c4);
 		
+		ConveyorFamily c6 = new ConveyorFamilyAgent_LV(6, transducer);
+		((ConveyorFamilyAgent_LV)c6).setChannel(TChannel.CROSS_SEAMER);
+		Operator o6up = new Operator("operator 5- up", TChannel.CROSS_SEAMER, 3);
+		Operator o6down = new Operator("operator 5- down", TChannel.CROSS_SEAMER, 4);
+		((ConveyorFamilyAgent_LV)c6).setOperators(o6up, o6down, TChannel.CROSS_SEAMER);
+		c5.setNextConveyorFamily(c6);
+		c6.setPreviousConveyorFamily(c5);
+		
+		ConveyorFamily c7 = new ConveyorFamilyAgent_LV(7, transducer);
+		((ConveyorFamilyAgent_LV)c7).setChannel(TChannel.GRINDER);
+
+		Operator o7up = new Operator("operator 7- up", TChannel.GRINDER, 5);
+		Operator o7down = new Operator("operator 7- down", TChannel.GRINDER, 6);
+		((ConveyorFamilyAgent_LV)c7).setOperators(o7up, o7down, TChannel.GRINDER);
+		c6.setNextConveyorFamily(c7);
+		c7.setPreviousConveyorFamily(c6);
+		
 		//NEED MORE HERE TO HAVE CF1 SET UP: Start thread, set everything, etc.
+		o5down.startThread();
+		o5up.startThread();
+		o6down.startThread();
+		o6up.startThread();
+		o7up.startThread();
+		o7down.startThread();
+		
 		
 		c1.startThreads();
 		c2.startThreads();
 		c3.startThreads();
 		c4.startThreads();
-	//	c5.startThreads();
+		c5.startThreads();
+		c6.startThreads();
+		c7.startThreads();
+		
+		
 		
 		
 		

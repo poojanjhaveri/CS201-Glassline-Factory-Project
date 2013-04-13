@@ -346,9 +346,9 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void lowerPopUp()
 	{
-		System.out.println("lowering popup");
+		print("lowering popup");
 		Integer[] args = new Integer[1];
-		args[0] = index;
+		args[0] = index-4; //Note: popup offset
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_DOWN, args);
 		
 		try{
@@ -363,9 +363,9 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void raisePopUp()
 	{
-		System.out.println("raising popup");
+		print("raising popup");
 		Integer[] args = new Integer[1];
-		args[0] = index;
+		args[0] = index-4;
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_UP, args);
 		
 		try{
@@ -379,7 +379,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void takeFinishedGlass(GlassPackage g, int operatorNum)
 	{
-		System.out.println("Taking glass from operator");
+		print("Taking glass from operator");
 		if(status == Status.LOWERED)
 			raisePopUp();
 		operators.get(operatorNum).operator.msgIAmFree();
@@ -397,7 +397,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		
-		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index))
+		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index-4)) //Note: popup offset
 		{
 			if(event == TEvent.POPUP_GUI_MOVED_DOWN)
 				statusSemaphore.release();
@@ -500,5 +500,14 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	{
 		operators.get(i).occupied = b;
 	}
+
+
+	public void setInteractions(ConveyorFamily c3) {
+		// TODO Auto-generated method stub
+		next = c3;
+	}
+
+
+
 	
 }

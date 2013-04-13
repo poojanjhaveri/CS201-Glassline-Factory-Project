@@ -1,6 +1,7 @@
 package engine.agent.Luis;
 
 import shared.Glass;
+import transducer.TChannel;
 import transducer.Transducer;
 import engine.agent.Alex.*;
 import engine.interfaces.ConveyorFamily;
@@ -53,13 +54,15 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 	@Override
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
-		nextFamily=c3;
+		
+		popup.setInteractions(c3);
+		
 	}
 
 	@Override
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
 		// TODO Auto-generated method stub
-		previousFamily=c2;
+		conveyor.setInteractions(c2, popup);
 	}
 
 	@Override
@@ -67,5 +70,12 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		conveyor.startThread();
 		popup.startThread();
 	}
+	public void setChannel(TChannel tc){
+		popup.channel = tc;
+	}
 
+	public void setOperators(Operator o5up, Operator o5down, TChannel c) {
+		// TODO Auto-generated method stub
+		popup.setOperators(o5up, o5down, c);
+	}
 }
