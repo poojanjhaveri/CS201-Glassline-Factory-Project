@@ -69,7 +69,7 @@ public class InlineAgent extends Agent implements Inline {
 	}
 
 	public void msgIAmFree() {
-		Do("Received msgIAmFree from the next coonveyor (family).");
+		Do("Received msgIAmFree from the next conveyor (family).");
 		nextFree = true;
 		stateChanged();
 	}
