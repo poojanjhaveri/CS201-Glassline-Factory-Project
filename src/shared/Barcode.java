@@ -15,8 +15,6 @@ public class Barcode {
 				else 
 					recipe[i] = false;
 			}
-
-			
 			return recipe;
 		}
 	

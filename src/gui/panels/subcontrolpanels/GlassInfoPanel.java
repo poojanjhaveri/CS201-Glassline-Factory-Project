@@ -3,6 +3,7 @@ package gui.panels.subcontrolpanels;
 
 import gui.panels.ControlPanel;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,6 +25,7 @@ public class GlassInfoPanel extends JPanel
 	public GlassInfoPanel(ControlPanel cp)
 	{
 		parent = cp;
+		
 	}
 
 	/**

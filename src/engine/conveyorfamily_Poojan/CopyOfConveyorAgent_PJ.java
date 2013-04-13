@@ -24,7 +24,7 @@ import engine.conveyorfamily_Poojan.PopupAgent_PJ.GlassStatusPopup;
 import engine.interfaces.ConveyorFamily;
 
 
-public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
+public class CopyOfConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 	
 	private String name;
@@ -43,13 +43,18 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private Boolean isPopUpBusy;
 	private Boolean isINLINEBusy;
 	private Boolean isConveyorRunning;
+	
+	
+	private boolean firstsensor;
+	
+	
 	public boolean isNextConveyorFamilyBusy;
 	
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
 	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
 	
-	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
+	public CopyOfConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
 		// TODO Auto-generated constructor stub
 	this.name=string;
 	this.number=number;
@@ -111,6 +116,21 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
+		
+synchronized(glassonconveyor){
+	    	
+			for(MyCGlass mg:glassonconveyor){
+		
+			    if(mg.status == GlassStatusConveyor.NEW && firstsensor ){
+				newglass(mg);
+				return true;
+			    }
+			}
+		    	};
+		
+		
+		
+		
 		synchronized(glassonconveyor){
 	    	
 			for(MyCGlass mg:glassonconveyor){
@@ -185,6 +205,20 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 
 
+	private void newglass(MyCGlass mg) {
+		// TODO Auto-generated method stub
+		Object[] args={this.number};
+		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args);
+		mg.status=GlassStatusConveyor.ONENTRYSENSOR;
+		stateChanged();
+		
+	}
+
+
+
+
+
+
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		
@@ -198,28 +232,11 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				
 				if((Integer)args[0]==0)
 				{
-					synchronized(glassonconveyor){
-					for(MyCGlass mg:glassonconveyor){
+					firstsensor=true;
 					
-						if(mg.pcglass.getNumber() == (Integer)args[1]){
-							{
-								Object [] no={this.getNumber()};
-								if(isConveyorRunning)
-								{
-						    	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
-						    	isConveyorRunning=true;
-								}
-								mg.status=GlassStatusConveyor.ONENTRYSENSOR;
-								print("SENSOR PRESSED");
-								print("Conveyor started"+this.getNumber());
-								stateChanged();
-								return;
-							}
-						}
 					}
-					}
-			    };    	
-			}
+			    }    	
+			
 			
 			
 			if(event == TEvent.SENSOR_GUI_RELEASED)
