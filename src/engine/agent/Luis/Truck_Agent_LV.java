@@ -12,7 +12,7 @@ import transducer.Transducer;
 import engine.agent.Agent;
 import engine.interfaces.ConveyorFamily;
 
-public class Truck_Agent_LV extends Agent {
+public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	
 	String name;
 	ConveyorFamily previousFamily;
@@ -22,7 +22,7 @@ public class Truck_Agent_LV extends Agent {
 	Semaphore drivingSemaphore = new Semaphore(0,true);
 	TruckState state;
 	
-	Truck_Agent_LV(String n)
+	public Truck_Agent_LV(String n)
 	{
 		name = n;
 		truckGlass = new ArrayList<Glass>();
