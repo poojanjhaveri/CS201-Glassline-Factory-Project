@@ -134,7 +134,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 								glassoninline.remove(mg);
 								return true;
 							    }
-							}
+								}
 						    	}; 	
 
 		

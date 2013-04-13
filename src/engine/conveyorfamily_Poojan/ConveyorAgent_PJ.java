@@ -268,7 +268,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					print("NCCUTTER : 3rd sensor");
 					myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 					}   
-					isINLINEBusy=false;
+					
 				}
 			}
 			
@@ -277,7 +277,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			{
 				if((Integer)args[0]==2)
 				{
-					
+					isINLINEBusy=false;
 				}
 							
 			}
