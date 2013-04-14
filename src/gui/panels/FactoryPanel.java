@@ -37,6 +37,7 @@ import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
+import transducer.TransducerDebugMode;
 
 /**
  * The FactoryPanel is highest level panel in the actual kitting cell. The
@@ -69,7 +70,7 @@ public class FactoryPanel extends JPanel
 		// initialize transducer
 		transducer = new Transducer();
 		transducer.startTransducer();
-
+		transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
 		// use default layout
 		// dPanel = new DisplayPanel(this);
 		// dPanel.setDefaultLayout();
@@ -172,8 +173,8 @@ public class FactoryPanel extends JPanel
 		
 		ConveyorFamily c6 = new ConveyorFamilyAgent_LV(6, transducer,1);
 		((ConveyorFamilyAgent_LV)c6).setChannel(TChannel.CROSS_SEAMER);
-		Operator o6up = new Operator("operator 5- up", TChannel.CROSS_SEAMER, 3);
-		Operator o6down = new Operator("operator 5- down", TChannel.CROSS_SEAMER, 4);
+		Operator o6up = new Operator("operator 5- up", TChannel.CROSS_SEAMER, 0);
+		Operator o6down = new Operator("operator 5- down", TChannel.CROSS_SEAMER, 1);
 		o6up.setTransducer(transducer);
 		o6down.setTransducer(transducer);
 		((ConveyorFamilyAgent_LV)c6).setOperators(o6up, o6down, TChannel.CROSS_SEAMER);
@@ -183,8 +184,8 @@ public class FactoryPanel extends JPanel
 		ConveyorFamily c7 = new ConveyorFamilyAgent_LV(7, transducer,2);
 		((ConveyorFamilyAgent_LV)c7).setChannel(TChannel.GRINDER);
 
-		Operator o7up = new Operator("operator 7- up", TChannel.GRINDER, 5);
-		Operator o7down = new Operator("operator 7- down", TChannel.GRINDER, 6);
+		Operator o7up = new Operator("operator 7- up", TChannel.GRINDER, 0);
+		Operator o7down = new Operator("operator 7- down", TChannel.GRINDER, 1);
 		o7up.setTransducer(transducer);
 		o7down.setTransducer(transducer);
 		((ConveyorFamilyAgent_LV)c7).setOperators(o7up, o7down, TChannel.GRINDER);

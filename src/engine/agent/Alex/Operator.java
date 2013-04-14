@@ -46,6 +46,7 @@ public class Operator extends Agent{
 	private TChannel mychannel;
 	
 	public void msgHereIsGlass(Glass g){
+		Do("Received a glass");
 
 		glasses.add(new MyGlass(g));
 		stateChanged();
@@ -85,6 +86,7 @@ public class Operator extends Agent{
 		if (!glasses.isEmpty() && glasses.get(0).mState == MachiningState.Waiting 
 				&& glasses.get(0).lState == LoadingState.Loaded)
 		{
+			Do("I reached here.");
 			machineGlass(glasses.get(0));
 			return true;
 		}
@@ -111,6 +113,7 @@ public class Operator extends Agent{
 	
 	private void loadGlass() {
 		// TODO Auto-generated method stub
+		Do("Loading glass");
 		Integer[] args = new Integer[1];
 		args[0] = workstation_number;
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_LOAD_GLASS, args);

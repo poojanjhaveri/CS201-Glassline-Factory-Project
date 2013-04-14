@@ -32,6 +32,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	enum Status{RAISED,LOWERED};
 	Semaphore stateSemaphore = new Semaphore(0,true);
 	Semaphore statusSemaphore = new Semaphore(0,true);
+	//Semaphore loadSemaphore = new Semaphore(0,true);
 	
 	ConveyorFamily next;
 	
@@ -283,15 +284,16 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	private void takeGlass(GlassPackage g)
 	{
 		print("Taking glass from conveyor");
-		if(status == Status.RAISED) {
+		if(status == Status.RAISED)
 			lowerPopUp();
-			try{
-				stateSemaphore.acquire();
-			} catch(InterruptedException e){
-				e.printStackTrace();
-			}
-		}
+			
 		conveyor.msgPopUpFree();
+		
+		try{
+			stateSemaphore.acquire();
+		} catch(InterruptedException e){
+			e.printStackTrace();
+		}
 		
 		state = PopUpState.FULL;
 		g.state = GlassState.WAITING;
@@ -417,7 +419,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			if(event == TEvent.POPUP_GUI_RELEASE_FINISHED)
 				stateSemaphore.release();
 		}
-		else if((channel == operators.get(0).channel) && ((Integer)(args[0]) % 2 == 1) )
+		else if((channel == operators.get(0).channel) && ((Integer)(args[0]) == 0) )
 		{
 			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
 					" Operator No: "+operators.get(0).number);
@@ -426,7 +428,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			if(event == TEvent.WORKSTATION_RELEASE_FINISHED)
 				operators.get(0).semaphore.release();
 		}
-		else if((channel == operators.get(1).channel) && ((Integer)(args[0]) % 2 == 0) )
+		else if((channel == operators.get(1).channel) && ((Integer)(args[0]) == 1) )
 		{
 			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
 					" Operator No: "+operators.get(0).number);
