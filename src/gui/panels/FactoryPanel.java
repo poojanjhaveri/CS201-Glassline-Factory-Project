@@ -162,8 +162,8 @@ public class FactoryPanel extends JPanel
 		
 		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer, 0);
 		((ConveyorFamilyAgent_LV)c5).setChannel(TChannel.DRILL);	
-		Operator o5up = new Operator("operator 5- up", TChannel.DRILL, 1);
-		Operator o5down = new Operator("operator 5- down", TChannel.DRILL, 2);
+		Operator o5up = new Operator("operator 5- up", TChannel.DRILL, 0);
+		Operator o5down = new Operator("operator 5- down", TChannel.DRILL, 1);
 		o5up.setTransducer(transducer);
 		o5down.setTransducer(transducer);
 		((ConveyorFamilyAgent_LV)c5).setOperators(o5up, o5down, TChannel.DRILL);
