@@ -25,10 +25,6 @@ public class ConveyorAgent10 extends Conveyor{
 		paint.msgHereIsGlass( glasses.remove(0) );
 	}
 	
-	protected void glassLeaveFrontAction(){
-		previousFamily.msgIAmFree();
-	}
-	
 	/* Setter */
 	public void setComps(ConveyorFamily previousFamily, PaintAgent paint){
 		this.previousFamily = previousFamily;

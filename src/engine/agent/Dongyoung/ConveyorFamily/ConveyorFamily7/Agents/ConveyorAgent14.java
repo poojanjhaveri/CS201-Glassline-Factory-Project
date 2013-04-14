@@ -25,10 +25,6 @@ public class ConveyorAgent14  extends Conveyor{
 		nextFamily.msgHereIsGlass( glasses.remove(0) );
 	}
 	
-	protected void glassLeaveFrontAction(){
-		oven.msgIAmFree();
-	}
-
 	/* Setter */
 	public void setComps(OvenAgent oven, ConveyorFamily nextFamily){
 		this.oven = oven;

@@ -25,10 +25,6 @@ public class ConveyorAgent12  extends Conveyor{
 		nextFamily.msgHereIsGlass( glasses.remove(0) );
 	}
 	
-	protected void glassLeaveFrontAction(){
-		uvLamp.msgIAmFree();
-	}
-	
 	/* Setter */
 	public void setComps(UVLampAgent uvLamp, ConveyorFamily nextFamily){
 		this.uvLamp = uvLamp;
