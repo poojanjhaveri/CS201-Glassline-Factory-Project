@@ -97,7 +97,7 @@ public class Operator extends Agent{
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		// TODO Auto-generated method stub
-		if(channel == mychannel &&  (int)args[0] == workstation_number) {
+		if(channel == mychannel &&  (Integer)args[0] == workstation_number) {
 		if (event == TEvent.WORKSTATION_GUI_ACTION_FINISHED)
 			msgDoneMachining();
 		else if (event == TEvent.WORKSTATION_LOAD_FINISHED)
