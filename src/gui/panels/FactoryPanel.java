@@ -9,6 +9,7 @@ import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
 */
+import engine.agent.Alex.AlexsConveyorFamily;
 import engine.agent.Alex.BinAgent;
 import engine.agent.Alex.Operator;
 import engine.agent.Alex.V1_GUI;
@@ -204,11 +205,18 @@ public class FactoryPanel extends JPanel
 		c7.setNextConveyorFamily(c8);
 		c8.setPreviousConveyorFamily(c7);
 		
+		/**REPLACE WITH ALEXS CF
 		ConveyorFamily c9 = new ConveyorAgent("conveyor 9",9,Mode.MEDIATING);
 		((ConveyorAgent)c9).setTransducer(transducer);
 		c9.setPreviousConveyorFamily(c8);
 		c8.setNextConveyorFamily(c9);
-				
+		*/
+		
+		ConveyorFamily c9 = new AlexsConveyorFamily("conveyor 9", transducer, 9, null );
+		c8.setNextConveyorFamily(c9);
+		c9.setPreviousConveyorFamily(c8);
+		
+		
 		// Dongyoung =======================================
 		ConveyorFamily family5 = new ConveyorFamily5();
 		ConveyorFamily family6 = new ConveyorFamily6();

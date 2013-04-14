@@ -22,7 +22,7 @@ public class V1_GUI extends JPanel implements ActionListener{
 	String textOnPane;
 	private static Barcode ALL_RECIPE = new Barcode(0x3FF);
 	private static Barcode NONE_RECIPE = new Barcode(0);
-	private static Barcode SOME_1_RECIPE = new Barcode(0x1F);
+	private static Barcode SOME_1_RECIPE = new Barcode(0x3F);
 	private static Barcode SOME_2_RECIPE = new Barcode(0x3E0);
 	private static Barcode SOME_3_RECIPE = new Barcode(0x2AA);
 	
@@ -36,9 +36,9 @@ public class V1_GUI extends JPanel implements ActionListener{
 		//init buttons
 		allRecipe = new JButton("Recipe: All Processes");
 		noneRecipe = new JButton("Recipe: No Processes");
-		some1Recipe = new JButton("Recipe: First 5 Processes");
-		some2Recipe = new JButton("Recipe: Second 5 Processes");
-		some3Recipe = new JButton("Recipe: Every other process");
+		some1Recipe = new JButton("Recipe: First 6 Processes");
+		some2Recipe = new JButton("Recipe: Last 4 Processes");
+		some3Recipe = new JButton("Recipe: Select few process");
 		
 		//textPane
 		textPane = new JTextPane();

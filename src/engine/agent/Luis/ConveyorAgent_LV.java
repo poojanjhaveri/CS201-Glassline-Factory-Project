@@ -151,6 +151,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 		
 		if(channel == TChannel.SENSOR)
 		{
+			
 			if(event == TEvent.SENSOR_GUI_PRESSED)
 			{
 				if((Integer)(args[0]) == index*2)
