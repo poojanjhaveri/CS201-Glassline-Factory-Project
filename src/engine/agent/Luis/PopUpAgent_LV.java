@@ -272,6 +272,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				return true;	
 			}
 		}
+		//tweak
+		if(myGlassPieces.size()==0){
+			while(stateSemaphore.tryAcquire());
+			return true;
+		}
 		
 
 		return false;
@@ -288,7 +293,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			lowerPopUp();
 			
 		conveyor.msgPopUpFree();
-		
+		//print(""+stateSemaphore.availablePermits());
 		try{
 			stateSemaphore.acquire();
 		} catch(InterruptedException e){
