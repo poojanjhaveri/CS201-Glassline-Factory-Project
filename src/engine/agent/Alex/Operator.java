@@ -63,6 +63,7 @@ public class Operator extends Agent{
 	public void msgLoadFinished(){
 		print("Load finished");
 		glasses.get(0).lState = LoadingState.Loaded;
+		stateChanged();
 	}
 	private void msgReleaseFinished() {
 		// TODO Auto-generated method stub
@@ -78,13 +79,14 @@ public class Operator extends Agent{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
+		Do("Scheduler running");
 		if (!glasses.isEmpty() && glasses.get(0).lState == LoadingState.Waiting)
 		{
 			loadGlass();
 			return true;
 		}
 		if (!glasses.isEmpty() && glasses.get(0).mState == MachiningState.Waiting 
-				&& glasses.get(0).lState == LoadingState.Loaded)
+				 && glasses.get(0).lState == LoadingState.Loaded)
 		{
 			Do("I reached here.");
 			machineGlass(glasses.get(0));
@@ -153,5 +155,9 @@ public class Operator extends Agent{
 	public void setTransducer(Transducer t) {
 		transducer = t;
 		t.register(this, mychannel);
+	}
+	
+	public void setConveyorFamily(ConveyorFamily cft) {
+		cf = cft;
 	}
 }
