@@ -28,12 +28,12 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	State popupState;
 	State inlineState;
 	State nextState;
-	
-	boolean conveyorRunning;
+	ConveyorState conveyorState;
 	
 	SensorState sensor1State;
 	SensorState sensor2State;
 	enum SensorState {PRESSED, RELEASED, NOTHING};
+	enum ConveyorState {NEED_BREAK, NEED_RUN, STOPPED, BROKEN, RUNNING};
 	
 	//Constructors
 	
@@ -47,7 +47,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		popupState = State.FREE;
 		inlineState = State.FREE;
 		nextState = State.FREE;
-		conveyorRunning = false;
+		conveyorState = ConveyorState.STOPPED;
 		sensor1State = SensorState.NOTHING;
 		sensor2State = SensorState.NOTHING;
 		Do("Conveyor initialized. Mode has been set to " + md.toString());
@@ -123,14 +123,20 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(conveyorState == ConveyorState.NEED_BREAK) {
+			breakConveyor();
+			return true;
+		}
+		
 		if(mode == Mode.OFFLINE) {
 			//Pop-up busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
-			if( (popupState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
+			if( (popupState == State.BUSY) && (sensor2State == SensorState.PRESSED) 
+					&& (conveyorState == ConveyorState.RUNNING) ) {
 				stopConveyorAndNotify();
 				return true;
 			}
 			//Pop-up cleared; start the conveyor if it's stopped
-			if( (popupState == State.FREE) && (! conveyorRunning) ) {
+			if( (popupState == State.FREE) && (conveyorState == ConveyorState.STOPPED) ) {
 				startConveyor();
 				return true;
 			}
@@ -141,12 +147,12 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 			}
 		} else if(mode == Mode.ONLINE) {
 			//Inline busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
-			if( (inlineState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
+			if( (inlineState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorState == ConveyorState.RUNNING) ) {
 				stopConveyor();
 				return true;
 			}
 			//Inline cleared; start the conveyor if it's stopped
-			if( (inlineState == State.FREE) && (! conveyorRunning) ) {
+			if( (inlineState == State.FREE) && (conveyorState == ConveyorState.STOPPED) ) {
 				startConveyor();
 				return true;
 			}
@@ -157,12 +163,12 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 			}
 		} else {
 			//Inline busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
-			if( (nextState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorRunning) ) {
+			if( (nextState == State.BUSY) && (sensor2State == SensorState.PRESSED) && (conveyorState == ConveyorState.RUNNING) ) {
 				stopConveyor();
 				return true;
 			}
 			//Inline cleared; start the conveyor if it's stopped
-			if( (nextState == State.FREE) && (! conveyorRunning) ) {
+			if( (nextState == State.FREE) && (conveyorState == ConveyorState.STOPPED) ) {
 				startConveyor();
 				return true;
 			}
@@ -180,6 +186,16 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		return false;
 	}
 	
+	public void breakConveyor() {
+		Do("Breaking conveyor");
+		
+		Integer[] idx = new Integer[1];
+		idx[0] = conveyorIndex;
+		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, idx);
+		conveyorState = ConveyorState.BROKEN;
+
+	}
+
 	private void giveGlassToNextThing() {
 		Do("Giving glass to the next thing");
 		next.msgHereIsGlass(glasses.remove(0));
@@ -215,7 +231,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		Integer[] idx = new Integer[1];
 		idx[0] = conveyorIndex;
 		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, idx);
-		conveyorRunning = true;
+		conveyorState = ConveyorState.RUNNING;
 	}
 	
 	private void stopConveyor() {
@@ -224,7 +240,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		Integer[] idx = new Integer[1];
 		idx[0] = conveyorIndex;
 		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, idx);
-		conveyorRunning = false;
+		conveyorState = ConveyorState.STOPPED;
 	}
 
 	private void stopConveyorAndNotify() {
@@ -263,7 +279,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	}
 
 	public boolean isRunning() {
-		return conveyorRunning;
+		return (conveyorState == ConveyorState.RUNNING);
 	}
 	
 	public void setPopupState(State p) {
@@ -282,11 +298,17 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		next = cf;
 	}
 
-	
+	public void setConveyorBroken(boolean s) {
+		if(s) {
+			conveyorState = ConveyorState.NEED_BREAK;
+		} else
+			conveyorState = ConveyorState.NEED_RUN;
+	}
 
 	@Override
 	public void startThreads() {
 		this.startThread();
 	}
+
 
 }

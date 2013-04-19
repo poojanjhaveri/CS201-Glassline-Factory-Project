@@ -120,6 +120,7 @@ public class InlineAgent extends Agent implements Inline {
 		//STEP 5: Unloading finished. Notify the conveyor that I'm free.
 		Do("Notifying conveyor that I'm free.");
 		glassOnSpot = null;
+		nextFree = false;
 		conveyor.msgInlineFree();
 		//Do("LOOK! I'm here");
 	}
