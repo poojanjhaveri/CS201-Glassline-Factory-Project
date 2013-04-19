@@ -35,12 +35,12 @@ public class Glass {
 	/* CONSTRUCTOR */
 	public Glass(int number, boolean breakout, boolean manual_breakout, boolean cross_seamer, boolean drill, boolean grinder, boolean cutter, boolean washer, boolean uv_lamp, boolean oven, boolean painter){
 		this.number = number;
-		recipe.put( TChannel.BREAKOUT, breakout );
-		recipe.put( TChannel.MANUAL_BREAKOUT, manual_breakout );
-		recipe.put( TChannel.CROSS_SEAMER, cross_seamer );
+		recipe.put( TChannel.CUTTER, breakout );
+		recipe.put( TChannel.BREAKOUT, manual_breakout );
+		recipe.put( TChannel.MANUAL_BREAKOUT, cross_seamer );
 		recipe.put( TChannel.DRILL, drill );
-		recipe.put( TChannel.GRINDER, grinder );
-		recipe.put( TChannel.CUTTER, cutter );
+		recipe.put( TChannel.CROSS_SEAMER, grinder );
+		recipe.put( TChannel.GRINDER, cutter );
 		recipe.put( TChannel.WASHER, washer );
 		recipe.put( TChannel.UV_LAMP, uv_lamp );
 		recipe.put( TChannel.OVEN, oven );

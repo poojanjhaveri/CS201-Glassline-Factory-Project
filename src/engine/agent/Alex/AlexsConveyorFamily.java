@@ -70,7 +70,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 		// TODO Auto-generated method stub
 		if (channel == TChannel.SENSOR){
 			//if one of the proper sensors
-			if ((int)args[0] == cfIndex * 2){
+			if ((Integer)args[0] == cfIndex * 2){
 						
 				
 				if (event == TEvent.SENSOR_GUI_PRESSED){
@@ -80,7 +80,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 					entryAgent.msgSensorReleased();
 				}
 			}
-			if ((int)args[0] == cfIndex * 2 + 1){
+			if ((Integer)args[0] == cfIndex * 2 + 1){
 				if (event == TEvent.SENSOR_GUI_PRESSED){
 					conveyorAgent.msgSensorPressed();
 				}
