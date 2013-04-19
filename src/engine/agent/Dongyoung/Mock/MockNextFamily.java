@@ -9,51 +9,25 @@ import engine.agent.Alex.*;
  */
 public class MockNextFamily implements ConveyorFamily {
 
+	ConveyorFamily previousFamily;
+	
+	public MockNextFamily(ConveyorFamily previousFamily){
+		this.previousFamily = previousFamily;
+	}
+	
 	@Override
 	public void msgHereIsGlass(Glass glass) {
 		System.out.println("Mock Next Family : Got a glass!!");
+		previousFamily.msgIAmFree();
 	}
-
+	
 	@Override
-	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgIHaveGlassFinished(Operator operator) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgIAmFree() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setNextConveyorFamily(ConveyorFamily c3) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void startThreads() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPreviousConveyorFamily(ConveyorFamily c2) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void setConveyorBroken(boolean s) {}
+	public String getName() {	return null;	}
+	public void setNextConveyorFamily(ConveyorFamily nextFamily) {}
+	public void startThreads() {}
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {}
+	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {}
+	public void msgIHaveGlassFinished(Operator operator) {}
+	public void msgIAmFree() {}
 }

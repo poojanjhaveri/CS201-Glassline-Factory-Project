@@ -34,6 +34,7 @@ public class TestAni implements TReceiver
 				t.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
 			}
 		}, 3000);
+		
 	}
 
 	@Override
@@ -129,7 +130,7 @@ public class TestAni implements TReceiver
 			t.fireEvent(TChannel.OVEN, TEvent.WORKSTATION_RELEASE_GLASS, null);
 		}
 		else if(channel==TChannel.TRUCK && event == TEvent.TRUCK_GUI_LOAD_FINISHED){//added by monroe
-			t.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_EMPTY, null);
+			//t.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_EMPTY, null);
 		}
 	}
 }

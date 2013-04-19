@@ -3,7 +3,7 @@ package engine.agent.Dongyoung;
 import shared.Glass;
 import transducer.*;
 
-public class Machine extends Component implements TReceiver{
+public class InlineMachine extends Component implements TReceiver{
 
 	// DATA
 	protected Glass glass;
@@ -11,8 +11,8 @@ public class Machine extends Component implements TReceiver{
 	private boolean loadFinished = false, actionFinished = false, releaseFinished = false;
 	
 	// Constructor
-	protected Machine(String name, TChannel channel) {
-		super(name);
+	public InlineMachine(TChannel channel) {
+		super(channel.toString());
 		this.channel = channel;
 	}
 	
@@ -69,38 +69,35 @@ public class Machine extends Component implements TReceiver{
 		releaseFinished = false;
 	}
 	
-	protected void notifyIAmFreeAction(){}
-	protected void passGlassAction(){}
+	/* Notification */
+	private void notifyIAmFreeAction(){
+		previousComp.msgIAmFree();
+	}
+	
+	/* Glass Pass */
+	private void passGlassAction(){
+		nextComp.msgHereIsGlass( glass );
+	}
 	
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		if( channel == this.channel ){
-			if( event == TEvent.WORKSTATION_LOAD_FINISHED ){
-				if( debug ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
-				}
-				glass = tempGlass;
-				loadFinished = true;
-			}
-			else if( event == TEvent.WORKSTATION_GUI_ACTION_FINISHED ){
-				if( debug ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
-				}
-				actionFinished = true;
-			}
-			else if( event == TEvent.WORKSTATION_RELEASE_FINISHED ){
-				if( debug ){
-					System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() );
-				}
-				releaseFinished = true;
-			}
-			stateChanged();
+		if( event == TEvent.WORKSTATION_LOAD_FINISHED ){
+			glass = tempGlass;
+			loadFinished = true;
 		}
+		else if( event == TEvent.WORKSTATION_GUI_ACTION_FINISHED ){
+			actionFinished = true;
+		}
+		else if( event == TEvent.WORKSTATION_RELEASE_FINISHED ){
+			releaseFinished = true;
+		}
+		stateChanged();
 	}
 	
-	/* Setter */
-	public void setTransducer(Transducer transducer){
+	public void setter(Conveyor previousConveyor, Conveyor nextConveyor, Transducer transducer){
+		previousComp = previousConveyor;
+		nextComp = nextConveyor;
 		this.transducer = transducer;
 		transducer.register(this, channel);
 	}

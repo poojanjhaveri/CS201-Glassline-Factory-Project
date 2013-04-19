@@ -1,20 +1,22 @@
 package engine.agent.Dongyoung;
 
 import java.util.concurrent.CopyOnWriteArrayList;
-
+import engine.interfaces.ConveyorFamily;
 import shared.Glass;
 import transducer.*;
 
 public class Conveyor extends Component implements TReceiver{
 
 	// DATA
+	protected ConveyorFamily previousFamily = null;
+	protected ConveyorFamily nextFamily = null;
 	protected CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
+	protected boolean glassLeaveFront = false;
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum, sensorNum;
-	protected boolean glassLeaveFront = false;
 	
 	// Constructor
-	protected Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
+	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
 		super(name);
 		conveyorNum[0] = num;
 		this.frontSensorNum = frontSensorNum;
@@ -66,9 +68,7 @@ public class Conveyor extends Component implements TReceiver{
 		checkPass = false;
 	}
 	
-	/*
-	 * New glass on Front Sensor
-	 */
+	/* New glass on Front Sensor */
 	private void newGlassAction(){
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
 		glasses.add( tempGlass );
@@ -77,56 +77,54 @@ public class Conveyor extends Component implements TReceiver{
 		conveyorCheck();
 	}
 	
-	/*
-	 * Glass leaves Front Sensor
-	 */
+	/* Glass leaves Front Sensor */
 	private void glassLeaveFrontAction(){
 		glassLeaveFront = false;
 		notifyIAmFreeAction();
+	}
+
+	/* Notification */
+	private void notifyIAmFreeAction(){
+		if( previousFamily == null ){
+			previousComp.msgIAmFree();
+		}
+		else{
+			previousFamily.msgIAmFree();
+		}
+	}
+	
+	/* Glass Pass */
+	private void passGlassAction(){
+		if( nextFamily == null ){
+			nextComp.msgHereIsGlass( glasses.remove(0) );
+		}
+		else{
+			nextFamily.msgHereIsGlass( glasses.remove(0) );
+		}
 	}
 	
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		
 		sensorNum = (Integer)args[0];
-		if( channel == TChannel.SENSOR ){
-			if( event == TEvent.SENSOR_GUI_PRESSED ){
-				if( sensorNum == frontSensorNum ){
-					if( debug ){
-						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
-					}
-					newGlass = true;
-				}
-				else if( sensorNum == backSensorNum ){
-					if( debug ){
-						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
-					}
-					checkPass = true;
-				}
-				stateChanged();
+		if( event == TEvent.SENSOR_GUI_PRESSED ){
+			if( sensorNum == frontSensorNum ){
+				newGlass = true;
 			}
-			else if( event == TEvent.SENSOR_GUI_RELEASED ){
-				if( sensorNum == frontSensorNum ){
-					if( debug ){
-						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
-					}
-					glassLeaveFront = true;
-					stateChanged();
-				}
-				else if( sensorNum == backSensorNum ){
-					if( debug ){
-						System.out.println( "channel : " + channel.toString() + ", event : " + event.toString() + ", num : " + sensorNum );
-					}
-					// Nothing
-				}
+			else if( sensorNum == backSensorNum ){
+				checkPass = true;
+			}
+			stateChanged();
+		}
+		else if( event == TEvent.SENSOR_GUI_RELEASED ){
+			if( sensorNum == frontSensorNum ){
+				glassLeaveFront = true;
+				stateChanged();
 			}
 		}	
 	}
 	
-	/*
-	 * Everytime the conveyor status is changed, it should check the conveyor should run or stops.
-	 */
+	/* Everytime the conveyor status is changed, it should check the conveyor should run or stops. */
 	private void conveyorCheck(){
 		// Glass on Front Sensor or on Conveyor, but no Glass on Back Sensor
 		if( ( newGlass || !glasses.isEmpty() ) && !checkPass ){
@@ -136,13 +134,22 @@ public class Conveyor extends Component implements TReceiver{
 			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
 		}
 	}
-	
-	/* Setter */
-	public void setTransducer(Transducer transducer){
+
+	public void setter(Object previous, Object next, Transducer transducer){
 		this.transducer = transducer;
 		transducer.register(this, TChannel.SENSOR);
+		
+		if( previous instanceof Component ){
+			previousComp = (Component)previous;
+		}
+		else if( previous instanceof ConveyorFamily ){
+			previousFamily = (ConveyorFamily)previous;
+		}
+		if( next instanceof Component ){
+			nextComp = (Component)next;
+		}
+		else if( next instanceof ConveyorFamily ){
+			nextFamily = (ConveyorFamily)next;
+		}
 	}
-	
-	protected void passGlassAction(){}
-	protected void notifyIAmFreeAction(){}
 }

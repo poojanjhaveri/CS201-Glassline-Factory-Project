@@ -13,9 +13,7 @@ import engine.agent.Alex.AlexsConveyorFamily;
 import engine.agent.Alex.BinAgent;
 import engine.agent.Alex.Operator;
 import engine.agent.Alex.V1_GUI;
-import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily5.ConveyorFamily5;
-import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily6.ConveyorFamily6;
-import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily7.ConveyorFamily7;
+import engine.agent.Dongyoung.ConveyorFamilyDistributor;
 import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
@@ -114,7 +112,7 @@ public class FactoryPanel extends JPanel
 		// TODO initialize and start Agent threads here
 		// ===========================================================================
 		System.out.println("Back end initialization finished.");
-		
+
 		// Poojan Jhaveri
 		
 		/*
@@ -219,27 +217,15 @@ public class FactoryPanel extends JPanel
 		
 		
 		// Dongyoung =======================================
-		ConveyorFamily family5 = new ConveyorFamily5();
-		ConveyorFamily family6 = new ConveyorFamily6();
-		ConveyorFamily family7 = new ConveyorFamily7();
-				
-		((ConveyorFamily5)family5).setTransducer(transducer);
-		((ConveyorFamily6)family6).setTransducer(transducer);
-		((ConveyorFamily7)family7).setTransducer(transducer);
-		
-		c9.setNextConveyorFamily(family5);
-		family5.setPreviousConveyorFamily(c9);
-		family5.setNextConveyorFamily(family6);
-		family6.setPreviousConveyorFamily(family5);
-		family6.setNextConveyorFamily(family7);
-		family7.setPreviousConveyorFamily(family6);
+		ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
+		c9.setNextConveyorFamily(dongyoungFamily);
 		// ================================================
 		
 		// Truck ==========================================
 		Truck_Agent_LV truck = new Truck_Agent_LV("truck");
-		truck.setPreviousConveyorFamily(family7);
+		truck.setPreviousConveyorFamily(dongyoungFamily);
 		truck.setTransducer(transducer);
-		family7.setNextConveyorFamily(truck);
+		dongyoungFamily.setter(c9, truck, transducer);
 		// ================================================
 		
 		//NEED MORE HERE TO HAVE CF1 SET UP: Start thread, set everything, etc.
@@ -250,7 +236,6 @@ public class FactoryPanel extends JPanel
 		o7up.startThread();
 		o7down.startThread();
 		
-		
 		c1.startThreads();
 		c2.startThreads();
 		c3.startThreads();
@@ -260,12 +245,7 @@ public class FactoryPanel extends JPanel
 		c7.startThreads();
 		c8.startThreads();
 		c9.startThreads();
-		family5.startThreads();
-		family6.startThreads();
-		family7.startThreads();
-		truck.startThread();
-		
-		
+		truck.startThread();	
 
 	//	c1.startThreads();
 	//	c2.startThreads();
@@ -277,24 +257,10 @@ public class FactoryPanel extends JPanel
 	// NO TOUCH
 	public void runDongyoung(){
 		new TestAni(transducer);
-		ConveyorFamily5 family5 = new ConveyorFamily5();
-		ConveyorFamily6 family6 = new ConveyorFamily6();
-		ConveyorFamily7 family7 = new ConveyorFamily7();
-		MockPreviousFamily previousFamily = new MockPreviousFamily(transducer);
-		MockNextFamily nextFamily = new MockNextFamily();
-				
-		previousFamily.setNextConveyorFamily(family5);
-		
-		family5.setTransducer(transducer);
-		family6.setTransducer(transducer);
-		family7.setTransducer(transducer);
-		
-		family5.setPreviousConveyorFamily(previousFamily);
-		family5.setNextConveyorFamily(family6);
-		family6.setPreviousConveyorFamily(family5);
-		family6.setNextConveyorFamily(family7);
-		family7.setPreviousConveyorFamily(family6);
-		family7.setNextConveyorFamily(nextFamily);
+		ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
+		MockPreviousFamily previousFamily = new MockPreviousFamily(dongyoungFamily, transducer);
+		MockNextFamily nextFamily = new MockNextFamily(dongyoungFamily);
+		dongyoungFamily.setter(previousFamily, nextFamily, transducer);
 	}
 
 	/**
