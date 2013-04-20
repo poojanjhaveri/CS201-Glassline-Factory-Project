@@ -401,10 +401,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		if(isINLINEBusy)
 		{
 		Object[] cno={0};
-		if(!secondconveyorfree)
-		{
 		 myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
-		}
 		 print("Conveyor Stop because Inline Is BUSY");
 		 mg.status=GlassStatusConveyor.INLINEBUSY;
 		}
