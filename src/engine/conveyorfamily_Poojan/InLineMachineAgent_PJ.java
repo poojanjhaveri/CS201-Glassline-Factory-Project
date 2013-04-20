@@ -105,7 +105,8 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		synchronized(glassoninline){
 	    	
 			for(MyPGlass mg:glassoninline){
-			    if(mg.status == GlassStatusInline.NOPROCESSING ){
+			    if(mg.status == GlassStatusInline.NOPROCESSING && myconveyor.getsecondconveyorfree()){
+			    
 			    shiptheglasstonextconveyor(mg);
 				return true;
 			    }
@@ -117,7 +118,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 			    	
 					for(MyPGlass mg:glassoninline){
 				
-					    if(mg.status == GlassStatusInline.PROCESSINGDONE ){
+					    if(mg.status == GlassStatusInline.PROCESSINGDONE && myconveyor.getsecondconveyorfree() ){
 						shiptheglasstonextconveyor(mg);
 						return true;
 					    }
@@ -145,11 +146,13 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
-
+		
 		mg.status=GlassStatusInline.DONE;
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
+		myconveyor.setisINLINEBusy(false);
 		stateChanged();
-
+	
+		
 	}
 
 
@@ -186,6 +189,8 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 					    if(mg.status == GlassStatusInline.NEW ){
 					    	print("cutter called");
 						mg.status=GlassStatusInline.CHECKING;
+						
+						
 						stateChanged();
 						return;
 					    }	

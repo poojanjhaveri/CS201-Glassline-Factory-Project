@@ -35,11 +35,11 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.popup = new PopupAgent_PJ("MyPopup",number,this,transducer);
 		
 		this.inline = new InLineMachineAgent_PJ("MyInline",number,this,transducer);
-		this.inline.setConveyor(conveyor);
+		
 
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
+		this.inline.setConveyor(conveyor);
 	//	this.popup.setConveyor(conveyor);
-		
 		 isNextConveyorFamilyBusy=false;
 	}
 	
@@ -136,7 +136,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	@Override
 	public void setConveyorBroken(boolean s) {
 		// TODO Auto-generated method stub
-		
+	
 	}
 
 	

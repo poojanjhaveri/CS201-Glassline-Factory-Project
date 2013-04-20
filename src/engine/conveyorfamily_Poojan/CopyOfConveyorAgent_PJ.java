@@ -463,6 +463,28 @@ synchronized(glassonconveyor){
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+
+
+	@Override
+	public void setisINLINEBusy(Boolean s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+	@Override
+	public Boolean getsecondconveyorfree() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 

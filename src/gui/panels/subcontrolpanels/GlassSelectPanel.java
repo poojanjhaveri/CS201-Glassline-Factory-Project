@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import engine.agent.Alex.BinAgent;
 import engine.agent.Alex.V1_GUI;
@@ -26,6 +28,7 @@ public class GlassSelectPanel extends JPanel
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
 
+	 Timer timer = new Timer();
 	JCheckBox Cutter;
 	JCheckBox BreakOut;
 	JCheckBox ManualBreakout;
@@ -120,6 +123,13 @@ public class GlassSelectPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			
+			
+			
+		//	timer.scheduleAtFixedRate(new TimerTask() {
+  	//		  @Override
+  			//  public void run() {
+
 			Long l = Long.parseLong((""+booleanToNumber(Painter.isSelected())+booleanToNumber(Oven.isSelected())+
 					booleanToNumber(UVLamp.isSelected())+booleanToNumber(Washer.isSelected())
 					+booleanToNumber(Grinder.isSelected())+booleanToNumber(CrossSeamer.isSelected())
@@ -128,9 +138,9 @@ public class GlassSelectPanel extends JPanel
 									));
 			System.out.println("number is "+l);
 			
-			
 			binAgent.msgCreateGlass(new Barcode(l));
-			
+  			 // }
+  			//}, 1100, 1100);
 		}
 		
 	}
