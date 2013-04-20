@@ -9,6 +9,9 @@ import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
 */
+import java.util.Timer;
+import java.util.TimerTask;
+
 import engine.agent.Alex.AlexsConveyorFamily;
 import engine.agent.Alex.BinAgent;
 import engine.agent.Alex.Operator;
@@ -257,10 +260,21 @@ public class FactoryPanel extends JPanel
 	// NO TOUCH
 	public void runDongyoung(){
 		new TestAni(transducer);
-		ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
+		final ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
 		MockPreviousFamily previousFamily = new MockPreviousFamily(dongyoungFamily, transducer);
 		MockNextFamily nextFamily = new MockNextFamily(dongyoungFamily);
 		dongyoungFamily.setter(previousFamily, nextFamily, transducer);
+		/*
+		// Non-norm test
+		final int brokenConveyorNum = 13;
+		
+		new Timer().schedule(new TimerTask(){
+			public void run(){
+				dongyoungFamily.setConveyorBroken(true, brokenConveyorNum);
+				System.out.println("CONVEYOR" + brokenConveyorNum + " is BROKEN!!!");
+			}
+		}, 8000);
+		*/
 	}
 
 	/**

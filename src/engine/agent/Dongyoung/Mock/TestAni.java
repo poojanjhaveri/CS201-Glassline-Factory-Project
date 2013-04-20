@@ -29,12 +29,13 @@ public class TestAni implements TReceiver
 
 		t.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
 		
-		new Timer().schedule(new TimerTask(){
-			public void run(){
-				t.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
-			}
-		}, 3000);
-		
+		for(int i=0 ; i<6 ; i++){
+			new Timer().schedule(new TimerTask(){
+				public void run(){
+					t.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, null);
+				}
+			}, 3000*(i+1));
+		}
 	}
 
 	@Override

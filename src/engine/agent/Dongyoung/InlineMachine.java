@@ -60,6 +60,7 @@ public class InlineMachine extends Component implements TReceiver{
 			transducer.fireEvent(channel, TEvent.WORKSTATION_RELEASE_GLASS, null);
 			passGlassAction();
 			actionFinished = false;
+			nextCompFree = false;
 		}
 	}
 	
@@ -77,6 +78,15 @@ public class InlineMachine extends Component implements TReceiver{
 	/* Glass Pass */
 	private void passGlassAction(){
 		nextComp.msgHereIsGlass( glass );
+	}
+	
+	// NON-NORM.
+	public void nonNormBreak(){
+		super.stopThread();
+	}
+	
+	public void nonNormFix(){
+		super.startThread();
 	}
 	
 	// EXTRA

@@ -15,6 +15,9 @@ public class Conveyor extends Component implements TReceiver{
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum, sensorNum;
 	
+	// Non-norm DATA
+	private boolean fix = false;
+	
 	// Constructor
 	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
 		super(name);
@@ -28,6 +31,12 @@ public class Conveyor extends Component implements TReceiver{
 	// SCHEDULER
 	@Override
 	protected boolean pickAndExecuteAnAction(){
+		// Non-norm. Fix
+		if( fix ){
+			conveyorCheck();
+			return true;
+		}
+		
 		// New Glass on Front Sensor
 		if( newGlass ){
 			newGlassAction();
@@ -103,6 +112,18 @@ public class Conveyor extends Component implements TReceiver{
 		}
 	}
 	
+	// NON-NORM.
+	public void nonNormBreak(){
+		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum);
+		super.stopThread();
+	}
+	
+	public void nonNormFix(){
+		fix = true;
+		super.startThread();
+		stateChanged();
+	}
+	
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
@@ -126,8 +147,11 @@ public class Conveyor extends Component implements TReceiver{
 	
 	/* Everytime the conveyor status is changed, it should check the conveyor should run or stops. */
 	private void conveyorCheck(){
+		// When the conveyor is fixed
+		if( fix ) fix = false;
+		
 		// Glass on Front Sensor or on Conveyor, but no Glass on Back Sensor
-		if( ( newGlass || !glasses.isEmpty() ) && !checkPass ){
+		if( ( newGlass || !glasses.isEmpty() ) && !checkPass && checkDone ){
 			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
 		}
 		else{
