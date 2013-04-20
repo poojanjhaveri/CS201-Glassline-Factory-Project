@@ -450,6 +450,28 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+
+
+	@Override
+	public void setisINLINEBusy(Boolean s) {
+		// TODO Auto-generated method stub
+		isINLINEBusy=s;
+	}
+
+
+
+
+
+
+	@Override
+	public Boolean getsecondconveyorfree() {
+		// TODO Auto-generated method stub
+		return secondconveyorfree;
+	}
 	
 
 
