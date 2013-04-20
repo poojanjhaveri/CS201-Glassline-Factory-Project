@@ -47,7 +47,7 @@ public class ImageIcons
 
 	public void addToMap(String key, String icon)
 	{
-		System.out.println("Adding " + icon + " to " + key);
+	//	System.out.println("Adding " + icon + " to " + key);
 		ImageIcon temp = new ImageIcon(icon);
 		animations.get(key).add(temp);
 	}

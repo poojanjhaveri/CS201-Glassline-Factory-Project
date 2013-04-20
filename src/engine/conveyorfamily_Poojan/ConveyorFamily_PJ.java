@@ -132,6 +132,13 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		
 	}
 
+
+	@Override
+	public void setConveyorBroken(boolean s) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }

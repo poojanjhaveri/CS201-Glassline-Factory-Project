@@ -114,17 +114,27 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
+		
+		
+		
+		
+		
 		synchronized(glassonconveyor){
+			
+			
+			
+			
 	    	
 			for(MyCGlass mg:glassonconveyor){
 		
 			    if(mg.status == GlassStatusConveyor.ONENTRYSENSOR ){
-			    	print("CHecking the glass");
+			    	print("Checking the glass");
 				checktheglass(mg);
 				return true;
 			    }
 			}
 		    	};
+		    	
 		    	
 		    	synchronized(glassonconveyor){
 			    	
@@ -139,6 +149,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					}
 				    	};  
 				    	
+				    	
 				    	synchronized(glassonconveyor){
 					    	
 							for(MyCGlass mg:glassonconveyor){
@@ -152,42 +163,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 							}
 						    	};  
 						    	
-				   
-				    	
-				    	
-				    	
-				    	
-				    	synchronized(glassonconveyor){
-					    	
-							for(MyCGlass mg:glassonconveyor){
-						
-							    if(mg.status == GlassStatusConveyor.NOMACHINEPROCESSING && isPopUpBusy==false ){
-								PassingGlassToPopup(mg);
-								return true;
-							    }
-							}
-						    	};   	
-				    	   	
-						    	
-						    	synchronized(glassonconveyor){
-							    	
-									for(MyCGlass mg:glassonconveyor){
-								
-									    if(mg.status == GlassStatusConveyor.NEEDSMACHINEPROCESSING){
-									//	PassingGlassToPopupToProcess(mg);
-									    	PassingGlassToInLineMachine(mg);
-										return true;
-									    }
-									}
-								    	};   	
-				    	
-			
+
+						    		
 								    	synchronized(glassonconveyor){
 									    	
 											for(MyCGlass mg:glassonconveyor){
 										
 											    if(mg.status == GlassStatusConveyor.DONE){
-											//	PassingGlassToPopupToProcess(mg);
 										    	glassonconveyor.remove(mg);
 										    	
 										    	
@@ -275,7 +257,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
 								print("2nd sensor");
-								Object [] no={this.getNumber()};
 								isConveyorRunning=true;
 								mg.status=GlassStatusConveyor.ONEXITSENSOR;
 								stateChanged();
@@ -414,25 +395,16 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	}
 	
 	
-	private void PassingGlassToPopup(MyCGlass mg) {
-		// TODO Auto-generated method stub
-		print("Glass passed to the popup. Conveyor starts again");
-		this.mypopup.msgGlassDoesNotNeedProcessing(mg.pcglass);
-		Object[] args1={this.number};
-		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args1);
-		isConveyorRunning=true;
-		mg.status=GlassStatusConveyor.DONE;
-		stateChanged();
-	}
-	
-	
 	
 	private void PassingGlassToInLineMachine(MyCGlass mg) {
 		// TODO Auto-generated method stub
 		if(isINLINEBusy)
 		{
 		Object[] cno={0};
+		if(!secondconveyorfree)
+		{
 		 myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
+		}
 		 print("Conveyor Stop because Inline Is BUSY");
 		 mg.status=GlassStatusConveyor.INLINEBUSY;
 		}
@@ -444,7 +416,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			isINLINEBusy=true;
 		}
 		stateChanged();
-		
 	}
 	
 

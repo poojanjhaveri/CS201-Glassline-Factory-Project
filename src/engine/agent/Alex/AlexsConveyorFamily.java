@@ -225,6 +225,12 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 		this.startThread();
 	}
 
+	@Override
+	public void setConveyorBroken(boolean s) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

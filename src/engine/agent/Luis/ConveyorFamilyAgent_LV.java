@@ -78,4 +78,10 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		// TODO Auto-generated method stub
 		popup.setOperators(o5up, o5down, c);
 	}
+
+	@Override
+	public void setConveyorBroken(boolean s) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -134,4 +134,10 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	public String getName(){
 		return name;
 	}
+
+	@Override
+	public void setConveyorBroken(boolean s) {
+		// TODO Auto-generated method stub
+		
+	}
 }

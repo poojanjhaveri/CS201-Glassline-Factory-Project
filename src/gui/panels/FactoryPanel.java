@@ -72,7 +72,7 @@ public class FactoryPanel extends JPanel
 		// initialize transducer
 		transducer = new Transducer();
 		transducer.startTransducer();
-		transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
+	//	transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
 		// use default layout
 		// dPanel = new DisplayPanel(this);
 		// dPanel.setDefaultLayout();
@@ -140,9 +140,13 @@ public class FactoryPanel extends JPanel
 		
 		V1_GUI gui = new V1_GUI();
 		this.cPanel.glassInfoPanel.add(gui);
-		BinAgent bin = new BinAgent("bin agent", transducer, gui);
+		BinAgent bin = new BinAgent("bin agent", transducer, this.cPanel.glassSelectPanel);
+		
+		this.cPanel.glassSelectPanel.setBinAgent(bin);
 		gui.setBinAgent(bin);
 		bin.startThread();
+		
+		
 		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
 		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "Breakout", false);
 		bin.setNextConveyorFamily(c1);
@@ -157,9 +161,10 @@ public class FactoryPanel extends JPanel
 		( (ConveyorFamilyAgents) c3).setChannel(TChannel.MANUAL_BREAKOUT);
 		( (ConveyorFamilyAgents) c3).setTransducer(transducer);
 		c3.setPreviousConveyorFamily(c2);
+		c3.setConveyorBroken(true);
 		
 		ConveyorFamily c4 = new ConveyorAgent("Conveyor4", 4, Mode.MEDIATING);
-		c4.setConveyorBroken(true);
+	
 		c3.setNextConveyorFamily(c4);
 		c4.setPreviousConveyorFamily(c3);
 		( (ConveyorAgent) c4).setTransducer(transducer);
@@ -204,6 +209,7 @@ public class FactoryPanel extends JPanel
 		ConveyorFamily c8 = new ConveyorFamilyAgents(8,"cf8 - washer", false);
 		((ConveyorFamilyAgents)c8).setChannel(TChannel.WASHER);
 		((ConveyorFamilyAgents)c8).setTransducer(transducer);
+		
 		c7.setNextConveyorFamily(c8);
 		c8.setPreviousConveyorFamily(c7);
 		
@@ -222,6 +228,7 @@ public class FactoryPanel extends JPanel
 		// Dongyoung =======================================
 		ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
 		c9.setNextConveyorFamily(dongyoungFamily);
+		dongyoungFamily.setConveyorBroken(true);
 		// ================================================
 		
 		// Truck ==========================================

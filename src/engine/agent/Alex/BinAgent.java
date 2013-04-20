@@ -6,6 +6,7 @@ import java.util.Queue;
 import engine.agent.Agent;
 import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.interfaces.ConveyorFamily;
+import gui.panels.subcontrolpanels.GlassSelectPanel;
 import shared.Barcode;
 import shared.Glass;
 import transducer.TChannel;
@@ -16,7 +17,9 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	/*
 	 * Data
 	 */
-	V1_GUI gui;
+	GlassSelectPanel gui;
+	
+	
 	int numGlassCreated = 0;
 	ArrayList<TransducerEvent> events;
 	ArrayList<GlassRequest> requests;
@@ -47,7 +50,7 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	}
 	
 	
-	public BinAgent(String n, Transducer t, V1_GUI gui){
+	public BinAgent(String n, Transducer t, GlassSelectPanel gui){
 		super (n);
 		this.gui = gui;
 		events = new ArrayList<TransducerEvent>();
@@ -217,6 +220,13 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	public void startThreads() {
 		// TODO Auto-generated method stub
 		this.startThread();
+	}
+
+
+	@Override
+	public void setConveyorBroken(boolean s) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

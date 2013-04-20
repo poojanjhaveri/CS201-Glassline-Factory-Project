@@ -2,6 +2,8 @@
 package gui.panels.subcontrolpanels;
 
 import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +14,7 @@ import gui.panels.ControlPanel;
 import javax.swing.*;
 
 import shared.Barcode;
+import transducer.TChannel;
 
 /**
  * The GlassSelectPanel class contains buttons allowing the user to select what
@@ -25,6 +28,14 @@ public class GlassSelectPanel extends JPanel
 
 	JCheckBox Cutter;
 	JCheckBox BreakOut;
+	JCheckBox ManualBreakout;
+	JCheckBox CrossSeamer;
+	JCheckBox Grinder;
+	JCheckBox Washer;
+	JCheckBox UVLamp;
+	JCheckBox Oven;
+	JCheckBox Painter;
+	JCheckBox Drill;
 	
 	private BinAgent binAgent;
 	JTextPane textPane;
@@ -51,16 +62,38 @@ public class GlassSelectPanel extends JPanel
 		textPane = new JTextPane();
 		textOnPane = new String();
 		
+		JPanel glasschoose = new JPanel();
+		glasschoose.setLayout(new GridLayout(6,2));
+		
 		
 		Cutter = new JCheckBox("Cutter");
 		BreakOut = new JCheckBox("BreakOut");
-
+		ManualBreakout = new JCheckBox("Manual-BreakOut");
+		Drill = new JCheckBox("DRILL");
+		CrossSeamer = new JCheckBox("Cross-Seamer");
+		Grinder = new JCheckBox("Grinder");
+		Washer = new JCheckBox("Washer");
+		UVLamp = new JCheckBox("UV_LAMP");
+		Oven = new JCheckBox("OVEN");
+		Painter = new JCheckBox("Painter");
 		
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new add());
-	//	this.add(Cutter);
-	//	this.add(BreakOut);
-	//	this.add(submit);
+		glasschoose.add(Cutter);
+		glasschoose.add(BreakOut);
+		glasschoose.add(ManualBreakout);
+		glasschoose.add(Drill);
+		glasschoose.add(CrossSeamer);
+		glasschoose.add(Grinder);
+		glasschoose.add(Washer);
+		glasschoose.add(UVLamp);
+		glasschoose.add(Oven);
+		glasschoose.add(Painter);
+		this.add(glasschoose);
+	this.add(submit);
+	this.add(textPane);
+		glasschoose.setBackground(Color.GRAY);
+
 	}
 
 	public void setBinAgent(BinAgent binAgent){
@@ -87,11 +120,26 @@ public class GlassSelectPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			binAgent.msgCreateGlass(new Barcode(0x200));
+			Long l = Long.parseLong((""+booleanToNumber(Painter.isSelected())+booleanToNumber(Oven.isSelected())+
+					booleanToNumber(UVLamp.isSelected())+booleanToNumber(Washer.isSelected())
+					+booleanToNumber(Grinder.isSelected())+booleanToNumber(CrossSeamer.isSelected())
+					+booleanToNumber(Drill.isSelected())+booleanToNumber(ManualBreakout.isSelected())
+					+booleanToNumber(BreakOut.isSelected())+booleanToNumber(Cutter.isSelected())
+									));
+			System.out.println("number is "+l);
+			
+			
+			binAgent.msgCreateGlass(new Barcode(l));
 			
 		}
 		
 	}
+	
+	public int booleanToNumber(boolean b) {
+	    return b ? 1 : 0;
+	}
+	
+	
 	
 	/**
 	 * Returns the parent panel
