@@ -131,7 +131,7 @@ public class StatePanel extends JPanel
 		// add components
 		JPanel stateButtonPanel = new JPanel();
 		stateButtonPanel.setBackground(Color.black);
-		stateButtonPanel.setPreferredSize(new Dimension(300, 50));
+		stateButtonPanel.setPreferredSize(new Dimension(300, 30));
 		GridLayout grid = new GridLayout(1, 3);
 		grid.setHgap(2);
 		stateButtonPanel.setLayout(grid);

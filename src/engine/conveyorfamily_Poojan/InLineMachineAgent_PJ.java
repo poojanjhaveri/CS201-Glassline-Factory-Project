@@ -37,15 +37,16 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	
 	
 	private boolean finisheddone;
+	private boolean secondconveyorfree;
 
-	public enum GlassStatusInline{NEW,CHECKING,NOPROCESSING,PROCESSING,BEINGPROCESSED, DONE,DONE2, PROCESSINGDONE};
+	private enum GlassStatusInline{NEW,CHECKING,NOPROCESSING,PROCESSING,BEINGPROCESSED, DONE,DONE2, PROCESSINGDONE};
 	public InLineMachineAgent_PJ(String string, int i, ConveyorFamily conveyorFamily,
 			Transducer transducer) {
 		// TODO Auto-generated constructor stub
 		
 		this.name=string;
 		this.number=i;
-		
+		secondconveyorfree=true;
 		this.MyFamily=conveyorFamily;
 		
 		myTransducer = transducer;
@@ -105,7 +106,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		synchronized(glassoninline){
 	    	
 			for(MyPGlass mg:glassoninline){
-			    if(mg.status == GlassStatusInline.NOPROCESSING && myconveyor.getsecondconveyorfree()){
+			    if(mg.status == GlassStatusInline.NOPROCESSING && secondconveyorfree){
 			    
 			    shiptheglasstonextconveyor(mg);
 				return true;
@@ -114,11 +115,12 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		    	};
 		    	
 		    	
+		    	print("yo processing");
 		    	synchronized(glassoninline){
 			    	
 					for(MyPGlass mg:glassoninline){
-				
-					    if(mg.status == GlassStatusInline.PROCESSINGDONE && myconveyor.getsecondconveyorfree() ){
+					    if(mg.status == GlassStatusInline.PROCESSINGDONE && secondconveyorfree ){
+					    	
 						shiptheglasstonextconveyor(mg);
 						return true;
 					    }
@@ -146,7 +148,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
-		
+		secondconveyorfree=false;
 		mg.status=GlassStatusInline.DONE;
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
 		myconveyor.setisINLINEBusy(false);
@@ -296,6 +298,21 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 			
 		}
 		stateChanged();
+	}
+
+
+	@Override
+	public void msgwakeup() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void msgIamFreeForGlass() {
+		// TODO Auto-generated method stub
+		secondconveyorfree = true;
+		
 	}
 
 

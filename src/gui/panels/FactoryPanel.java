@@ -143,6 +143,7 @@ public class FactoryPanel extends JPanel
 		BinAgent bin = new BinAgent("bin agent", transducer, this.cPanel.glassSelectPanel);
 		
 		this.cPanel.glassSelectPanel.setBinAgent(bin);
+		
 		gui.setBinAgent(bin);
 		bin.startThread();
 		
@@ -153,8 +154,11 @@ public class FactoryPanel extends JPanel
 		c1.setNextConveyorFamily(c2);
 		c2.setPreviousConveyorFamily(c1);
 		
+		
+		
 		( (ConveyorFamilyAgents) c2).setChannel(TChannel.BREAKOUT);
 		( (ConveyorFamilyAgents) c2).setTransducer(transducer);
+		
 		
 		ConveyorFamily c3 = new ConveyorFamilyAgents(3, "Manual_Breakout", false);
 		c2.setNextConveyorFamily(c3);
@@ -168,6 +172,9 @@ public class FactoryPanel extends JPanel
 		c3.setNextConveyorFamily(c4);
 		c4.setPreviousConveyorFamily(c3);
 		( (ConveyorAgent) c4).setTransducer(transducer);
+		
+		
+		
 		
 		ConveyorFamily c5 = new ConveyorFamilyAgent_LV(5, transducer, 0);
 		((ConveyorFamilyAgent_LV)c5).setChannel(TChannel.DRILL);	

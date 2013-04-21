@@ -11,6 +11,7 @@ import java.util.TimerTask;
 
 import engine.agent.Alex.BinAgent;
 import engine.agent.Alex.V1_GUI;
+import engine.interfaces.ConveyorFamily;
 import gui.panels.ControlPanel;
 
 import javax.swing.*;
@@ -25,6 +26,8 @@ import transducer.TChannel;
 @SuppressWarnings("serial")
 public class GlassSelectPanel extends JPanel
 {
+	
+	ConveyorFamily c;
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
 
@@ -39,6 +42,8 @@ public class GlassSelectPanel extends JPanel
 	JCheckBox Oven;
 	JCheckBox Painter;
 	JCheckBox Drill;
+	
+	
 	
 	private BinAgent binAgent;
 	JTextPane textPane;
@@ -81,6 +86,8 @@ public class GlassSelectPanel extends JPanel
 		Painter = new JCheckBox("Painter");
 		
 		JButton submit = new JButton("Submit");
+		
+		
 		submit.addActionListener(new add());
 		glasschoose.add(Cutter);
 		glasschoose.add(BreakOut);
@@ -93,8 +100,12 @@ public class GlassSelectPanel extends JPanel
 		glasschoose.add(Oven);
 		glasschoose.add(Painter);
 		this.add(glasschoose);
-	this.add(submit);
-	this.add(textPane);
+		this.add(submit);
+		this.add(textPane);
+		
+		
+		
+		
 		glasschoose.setBackground(Color.GRAY);
 
 	}
@@ -145,8 +156,19 @@ public class GlassSelectPanel extends JPanel
 		
 	}
 	
+	
+	
+	
+	
+	
 	public int booleanToNumber(boolean b) {
 	    return b ? 1 : 0;
+	}
+	
+	
+	public void setConveyorFamily(ConveyorFamily ctemp)
+	{
+		c=ctemp;
 	}
 	
 	

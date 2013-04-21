@@ -46,10 +46,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	public boolean isNextConveyorFamilyBusy;
 	
 	
+	enum ConveyorState{Running,Stopped,Jammed};
+	ConveyorState conveyor0;
+	ConveyorState conveyor1;
+	
 	private Boolean secondconveyorfree;
 	
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
-	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
 	
 	public ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
@@ -61,7 +64,10 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	this.myinline=p2;
 	this.PREVIOUSFamily=cp;
 	
-	secondconveyorfree=true;
+	//secondconveyorfree=true;
+	conveyor1=ConveyorState.Running;
+	
+	
 	this.isPopUpBusy=false;
 	this.isINLINEBusy=false;
 	myTransducer = transducer;
@@ -82,13 +88,12 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		private Glass pcglass;
 		private GlassStatusConveyor status;
 		private Boolean NeedsProcessing;
-		private MyOperators myoperator;
+
 		
 		public MyCGlass(Glass g)
 		{
 			this.pcglass=g;
 			this.status=GlassStatusConveyor.NEW;
-			
 			
 		}
 		
@@ -109,30 +114,19 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	}
 	
 	
-	
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-		
-		
-		
-		
-		
 		synchronized(glassonconveyor){
-			
-			
-			
-			
-	    	
 			for(MyCGlass mg:glassonconveyor){
 		
 			    if(mg.status == GlassStatusConveyor.ONENTRYSENSOR ){
-			    	print("Checking the glass");
+			    print("Checking the glass");
 				checktheglass(mg);
 				return true;
 			    }
-			}
+				}
 		    	};
 		    	
 		    	
@@ -154,7 +148,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					    	
 							for(MyCGlass mg:glassonconveyor){
 						
-							    if(mg.status == GlassStatusConveyor.INLINEBUSY && secondconveyorfree ){
+							    if(mg.status == GlassStatusConveyor.INLINEBUSY && conveyor1==ConveyorState.Running ){
 							    	{starttheconveyor(mg);
 							    	return true;
 							    	}
@@ -256,7 +250,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					for(MyCGlass mg:glassonconveyor){
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
-								print("2nd sensor");
 								isConveyorRunning=true;
 								mg.status=GlassStatusConveyor.ONEXITSENSOR;
 								stateChanged();
@@ -282,7 +275,8 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 					print("NCCUTTER : 3rd sensor");
 					myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 					}   
-					 secondconveyorfree=false;
+				//	 secondconveyorfree=false;
+					 conveyor1=ConveyorState.Stopped;
 				}
 			}
 			
@@ -292,7 +286,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				if((Integer)args[0]==2)
 				{
 					isINLINEBusy=false;
-					secondconveyorfree=true;
+					this.myinline.msgIamFreeForGlass();
+				//	secondconveyorfree=true;
+					 conveyor1=ConveyorState.Running;
 				}
 							
 			}
@@ -371,17 +367,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		isPopUpBusy=false;
 	}
 	
-	@Override
-	public void msgOperatorIsfree(Operator_PJ operatorAgent) {
-		// TODO Auto-generated method stub
-		for(MyOperators mg:operatorlist){
-			
-		    if(mg.op == operatorAgent ){
-			mg.occupied=false;
-		    }
-		}
-	}
-	
 	
 	
 	// ACTIONS
@@ -429,8 +414,8 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
         return glassonconveyor.size();
     }
 	
-	public int getoperatorlist(){
-        return operatorlist.size();
+	public void getoperatorlist(){
+
     }
 	
 	public Boolean getisPopUpBusy(){
@@ -470,7 +455,55 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public Boolean getsecondconveyorfree() {
 		// TODO Auto-generated method stub
+		
+		if(conveyor1==ConveyorState.Running)
+		{
+			secondconveyorfree=true;
+		}
+		else
+		{
+			secondconveyorfree=false;
+		}
 		return secondconveyorfree;
+		
+	}
+
+
+
+
+
+
+	@Override
+	public void msgOperatorIsfree(Operator_PJ operatorAgent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+	public void setbrokenstatus(boolean s) {
+		// TODO Auto-generated method stub
+		
+		ConveyorState conveyor0backup = null;
+		ConveyorState conveyor1backup = null;
+		
+		
+		System.out.println("conv brokeeee"+s);
+		if(s==true)
+		{
+		conveyor0backup = conveyor0;
+		conveyor1backup = conveyor1;
+		conveyor1=ConveyorState.Jammed;
+		}
+		else
+		{
+			conveyor1=ConveyorState.Running;
+		}
+	
+		stateChanged();
 	}
 	
 
