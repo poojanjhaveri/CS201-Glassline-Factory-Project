@@ -22,7 +22,7 @@ public class MockNextFamily implements ConveyorFamily {
 	}
 	
 	@Override
-	public void setConveyorBroken(boolean s) {}
+	
 	public String getName() {	return null;	}
 	public void setNextConveyorFamily(ConveyorFamily nextFamily) {}
 	public void startThreads() {}
@@ -30,4 +30,10 @@ public class MockNextFamily implements ConveyorFamily {
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {}
 	public void msgIHaveGlassFinished(Operator operator) {}
 	public void msgIAmFree() {}
+
+	@Override
+	public void setConveyorBroken(boolean s, int conveyorno) {
+		// TODO Auto-generated method stub
+		
+	}
 }

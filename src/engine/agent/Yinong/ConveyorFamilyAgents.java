@@ -107,7 +107,7 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 			inline.setChannel(c);
 	}
 	
-	public void setConveyorBroken(boolean s) {
+	public void setConveyorBroken(boolean s,int conveyorno) {
 		conveyor.setConveyorBroken(s);
 	}
 	

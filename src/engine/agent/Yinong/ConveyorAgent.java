@@ -310,5 +310,13 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		this.startThread();
 	}
 
+	@Override
+	public void setConveyorBroken(boolean s, int conveyorno) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 
 }

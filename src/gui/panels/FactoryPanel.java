@@ -264,6 +264,18 @@ public class FactoryPanel extends JPanel
 		c9.startThreads();
 		truck.startThread();	
 
+		
+		this.cPanel.nonNormPanel.setConveyorFamily(c1);
+		this.cPanel.nonNormPanel.setConveyorFamily(c2);
+		this.cPanel.nonNormPanel.setConveyorFamily(c3);
+		this.cPanel.nonNormPanel.setConveyorFamily(c4);
+		this.cPanel.nonNormPanel.setConveyorFamily(c5);
+		this.cPanel.nonNormPanel.setConveyorFamily(c6);
+		this.cPanel.nonNormPanel.setConveyorFamily(c7);
+		this.cPanel.nonNormPanel.setConveyorFamily(c8);
+		this.cPanel.nonNormPanel.setConveyorFamily(c9);
+		this.cPanel.nonNormPanel.setConveyorFamily(truck);
+		
 	//	c1.startThreads();
 	//	c2.startThreads();
 	//	c3.startThreads();

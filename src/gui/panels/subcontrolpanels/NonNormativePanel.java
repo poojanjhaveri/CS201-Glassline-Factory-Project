@@ -7,11 +7,15 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import engine.agent.Alex.BinAgent;
 import engine.agent.Alex.V1_GUI;
+import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
 import engine.interfaces.ConveyorFamily;
 import gui.panels.ControlPanel;
 
@@ -28,12 +32,14 @@ import transducer.TChannel;
 public class NonNormativePanel extends JPanel
 {
 	
+	private List<ConveyorFamily> myconveyorfamilies = Collections.synchronizedList(new ArrayList<ConveyorFamily>());
 	
-	ConveyorFamily c;
+	
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
 	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
 	
+	JComboBox selectconv;
 	
 	
 	/**
@@ -49,7 +55,8 @@ public class NonNormativePanel extends JPanel
 		glasschoose.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
-		JComboBox selectconv = new JComboBox(conveyornames);
+		selectconv = new JComboBox(conveyornames);
+		selectconv.addActionListener(new selectglassfromdropdown());
 		
 		JButton breakbutton = new JButton("break");
 		JButton unbreakbutton = new JButton("UNbreak");
@@ -78,8 +85,7 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			c.setConveyorBroken(true);
-			
+			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
 		}
 		
 	}
@@ -91,10 +97,25 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			c.setConveyorBroken(false);
+			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
 		}
 		
 	}
+	
+	
+
+	public class selectglassfromdropdown implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			
+			
+		}
+		
+	}
+	
 	
 	
 	public int booleanToNumber(boolean b) {
@@ -104,7 +125,7 @@ public class NonNormativePanel extends JPanel
 	
 	public void setConveyorFamily(ConveyorFamily ctemp)
 	{
-		c=ctemp;
+		myconveyorfamilies.add(ctemp);
 	}
 	
 	

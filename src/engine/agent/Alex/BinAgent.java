@@ -223,8 +223,11 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	}
 
 
+	
+
+
 	@Override
-	public void setConveyorBroken(boolean s) {
+	public void setConveyorBroken(boolean s, int conveyorno) {
 		// TODO Auto-generated method stub
 		
 	}

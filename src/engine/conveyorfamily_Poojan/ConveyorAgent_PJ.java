@@ -46,7 +46,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	public boolean isNextConveyorFamilyBusy;
 	
 	
-	enum ConveyorState{Running,Stopped,Jammed};
+	enum ConveyorState{Running,Stopped,Jammed,Need_Fix};
 	ConveyorState conveyor0;
 	ConveyorState conveyor1;
 	
@@ -117,6 +117,17 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		
+		
+		while(conveyor1==ConveyorState.Jammed)
+		{
+			Object [] conv1={this.number+1};
+			print("JAMMED JAMMED ALERT");
+			myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,conv1);
+			conveyor1=ConveyorState.Need_Fix;
+			stateChanged();
+		}
+		
 
 		synchronized(glassonconveyor){
 			for(MyCGlass mg:glassonconveyor){
@@ -265,7 +276,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			{
 				if((Integer)args[0]==2)
 				{	
-					if(isNextConveyorFamilyBusy)
+					if(isNextConveyorFamilyBusy  && conveyor1==ConveyorState.Running)
 					{
 						
 					}
@@ -308,7 +319,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 								
 								Object[] cno ={1};
 								myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
-								  if(!(isNextConveyorFamilyBusy))
+								  if(!(isNextConveyorFamilyBusy) && conveyor1==ConveyorState.Running)
 									{
 									  print("4th sensor");
 										Object[] cno1 ={1};
@@ -464,6 +475,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		{
 			secondconveyorfree=false;
 		}
+		print("second conevyor free"+secondconveyorfree);
 		return secondconveyorfree;
 		
 	}
@@ -484,7 +496,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 
 
-	public void setbrokenstatus(boolean s) {
+	public void setbrokenstatus(boolean s,int conveyorno) {
 		// TODO Auto-generated method stub
 		
 		ConveyorState conveyor0backup = null;

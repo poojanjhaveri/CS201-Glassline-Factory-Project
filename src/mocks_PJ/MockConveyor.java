@@ -51,6 +51,18 @@ public class MockConveyor extends MockAgent implements Conveyor_PJ{
 				"Received message msgHereIsGlass from ConveyorFamily"));
 	}
 
+	@Override
+	public void setisINLINEBusy(Boolean s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean getsecondconveyorfree() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

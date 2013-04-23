@@ -24,7 +24,7 @@ public interface ConveyorFamily{
 	public abstract void setNextConveyorFamily(ConveyorFamily c3);
 	public abstract void setPreviousConveyorFamily(ConveyorFamily c2);
 	
-	public abstract void setConveyorBroken(boolean s);
+	public abstract void setConveyorBroken(boolean s,int conveyorno);
 	
 	public abstract void startThreads();
 
