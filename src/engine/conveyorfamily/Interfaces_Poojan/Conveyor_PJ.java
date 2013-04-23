@@ -15,7 +15,6 @@ public interface Conveyor_PJ {
 	public void setOperator(Operator_PJ o1);
 	
 	public void setisINLINEBusy(Boolean s);
-	
-	public Boolean getsecondconveyorfree();
+
 	
 }

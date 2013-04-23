@@ -24,7 +24,7 @@ import engine.conveyorfamily_Poojan.PopupAgent_PJ.GlassStatusPopup;
 import engine.interfaces.ConveyorFamily;
 
 
-public class CopyOfConveyorAgent_PJ extends Agent implements Conveyor_PJ {
+public class Copy_2_of_ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 	
 	private String name;
@@ -34,35 +34,34 @@ public class CopyOfConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	public ConveyorFamily NEXTFamily;
 	public ConveyorFamily PREVIOUSFamily;
 	
-
 	private InLineMachine_PJ myinline;
 	
-	public enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE};
+	public enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY};
 	
 	private Boolean isPopUpBusy;
 	private Boolean isINLINEBusy;
 	private Boolean isConveyorRunning;
-	
-	
-	private boolean firstsensor;
-	
-	
 	public boolean isNextConveyorFamilyBusy;
 	
+	
+	enum ConveyorState{Running,Stopped,Jammed,Need_Fix};
+	ConveyorState conveyor0;
+	ConveyorState conveyor1;
+	
+	private Boolean secondconveyorfree;
+	
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
-	private List<MyOperators> operatorlist = Collections.synchronizedList(new ArrayList<MyOperators>());
 	
 	
-	public CopyOfConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
-		// TODO Auto-generated constructor stub
+	
+	
+	public Copy_2_of_ConveyorAgent_PJ(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
 	this.name=string;
 	this.number=number;
 	this.MyFamily=c1;
-	//this.mypopup=p1;
 	this.myinline=p2;
 	this.PREVIOUSFamily=cp;
-	
-	
+
 	this.isPopUpBusy=false;
 	this.isINLINEBusy=false;
 	myTransducer = transducer;
@@ -71,26 +70,25 @@ public class CopyOfConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	myTransducer.register(this, TChannel.SENSOR);
 	myTransducer.register(this, TChannel.ALL_AGENTS);
 	
-	Object[] args={number};
+	Object[] conveyornumber={this.number};
 	isConveyorRunning=true;
 	isNextConveyorFamilyBusy=false;
-	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args);
+	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,conveyornumber);
+	conveyor1=ConveyorState.Running;
 	
 	}
+	
 	
 	public class MyCGlass
 	{
 		private Glass pcglass;
 		private GlassStatusConveyor status;
 		private Boolean NeedsProcessing;
-		private MyOperators myoperator;
-		
+	
 		public MyCGlass(Glass g)
 		{
 			this.pcglass=g;
 			this.status=GlassStatusConveyor.NEW;
-			
-			
 		}
 		
 	}
@@ -110,37 +108,33 @@ public class CopyOfConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	}
 	
 	
-	
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		
+		
+		while(conveyor1==ConveyorState.Jammed)
+		{
+			Object [] conv1={this.number+1};
+			print("JAMMED JAMMED ALERT");
+			myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,conv1);
+			conveyor1=ConveyorState.Need_Fix;
+			
+			stateChanged();
+		}
+		
 
-		
-synchronized(glassonconveyor){
-	    	
-			for(MyCGlass mg:glassonconveyor){
-		
-			    if(mg.status == GlassStatusConveyor.NEW && firstsensor ){
-				newglass(mg);
-				return true;
-			    }
-			}
-		    	};
-		
-		
-		
-		
 		synchronized(glassonconveyor){
-	    	
 			for(MyCGlass mg:glassonconveyor){
 		
 			    if(mg.status == GlassStatusConveyor.ONENTRYSENSOR ){
-			    print("CHecking the glass");
+			    print("Checking the glass");
 				checktheglass(mg);
 				return true;
 			    }
-			}
+				}
 		    	};
+		    	
 		    	
 		    	synchronized(glassonconveyor){
 			    	
@@ -155,47 +149,32 @@ synchronized(glassonconveyor){
 					}
 				    	};  
 				    	
+				    	
 				    	synchronized(glassonconveyor){
 					    	
 							for(MyCGlass mg:glassonconveyor){
 						
-							    if(mg.status == GlassStatusConveyor.NOMACHINEPROCESSING && isPopUpBusy==false ){
-								PassingGlassToPopup(mg);
-								return true;
+							    if(mg.status == GlassStatusConveyor.INLINEBUSY && conveyor1==ConveyorState.Running ){
+							    	{starttheconveyor(mg);
+							    	return true;
+							    	}
+								
 							    }
 							}
-						    	};   	
-				    	   	
+						    	};  
 						    	
-						    	synchronized(glassonconveyor){
-							    	
-									for(MyCGlass mg:glassonconveyor){
-								
-									    if(mg.status == GlassStatusConveyor.NEEDSMACHINEPROCESSING){
-									//	PassingGlassToPopupToProcess(mg);
-									    	PassingGlassToInLineMachine(mg);
-										return true;
-									    }
-									}
-								    	};   	
-				    	
-			
+
+						    		
 								    	synchronized(glassonconveyor){
 									    	
 											for(MyCGlass mg:glassonconveyor){
 										
 											    if(mg.status == GlassStatusConveyor.DONE){
-											//	PassingGlassToPopupToProcess(mg);
 										    	glassonconveyor.remove(mg);
-										    	
-										    	
 												return true;
 											    }
 											}
 								    	}
-		    	
-		
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -204,13 +183,13 @@ synchronized(glassonconveyor){
 	
 
 
-	private void newglass(MyCGlass mg) {
+	private void starttheconveyor(MyCGlass mg) {
 		// TODO Auto-generated method stub
-		firstsensor=false;
-		Object[] args={this.number};
-		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args);
-		mg.status=GlassStatusConveyor.ONENTRYSENSOR;
-		stateChanged();
+		print("start conveyor 0");
+		Object [] no={this.getNumber()};
+    	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
+    	mg.status=GlassStatusConveyor.ONEXITSENSOR;
+    	stateChanged();
 	}
 
 
@@ -231,11 +210,28 @@ synchronized(glassonconveyor){
 				
 				if((Integer)args[0]==0)
 				{
-					firstsensor=true;
+					synchronized(glassonconveyor){
+					for(MyCGlass mg:glassonconveyor){
 					
+						if(mg.pcglass.getNumber() == (Integer)args[1]){
+							{
+								Object [] no={this.getNumber()};
+								if(isConveyorRunning)
+								{
+						    	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
+						    	isConveyorRunning=true;
+								}
+								mg.status=GlassStatusConveyor.ONENTRYSENSOR;
+								print("SENSOR PRESSED");
+								print("Conveyor started"+this.getNumber());
+								stateChanged();
+								return;
+							}
+						}
 					}
-			    }    	
-			
+					}
+			    };    	
+			}
 			
 			
 			if(event == TEvent.SENSOR_GUI_RELEASED)
@@ -255,9 +251,6 @@ synchronized(glassonconveyor){
 					for(MyCGlass mg:glassonconveyor){
 						if(mg.pcglass.getNumber() == (Integer)args[1]){
 							{
-							
-								print("2nd sensor");
-								Object [] no={this.getNumber()};
 								isConveyorRunning=true;
 								mg.status=GlassStatusConveyor.ONEXITSENSOR;
 								stateChanged();
@@ -273,7 +266,7 @@ synchronized(glassonconveyor){
 			{
 				if((Integer)args[0]==2)
 				{	
-					if(isNextConveyorFamilyBusy)
+					if(isNextConveyorFamilyBusy  && conveyor1==ConveyorState.Running)
 					{
 						
 					}
@@ -283,7 +276,8 @@ synchronized(glassonconveyor){
 					print("NCCUTTER : 3rd sensor");
 					myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 					}   
-					
+				//	 secondconveyorfree=false;
+					 conveyor1=ConveyorState.Stopped;
 				}
 			}
 			
@@ -293,6 +287,9 @@ synchronized(glassonconveyor){
 				if((Integer)args[0]==2)
 				{
 					isINLINEBusy=false;
+					this.myinline.msgIamFreeForGlass();
+				//	secondconveyorfree=true;
+					 conveyor1=ConveyorState.Running;
 				}
 							
 			}
@@ -312,7 +309,7 @@ synchronized(glassonconveyor){
 								
 								Object[] cno ={1};
 								myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
-								  if(!(isNextConveyorFamilyBusy))
+								  if(!(isNextConveyorFamilyBusy) && conveyor1==ConveyorState.Running)
 									{
 									  print("4th sensor");
 										Object[] cno1 ={1};
@@ -371,17 +368,6 @@ synchronized(glassonconveyor){
 		isPopUpBusy=false;
 	}
 	
-	@Override
-	public void msgOperatorIsfree(Operator_PJ operatorAgent) {
-		// TODO Auto-generated method stub
-		for(MyOperators mg:operatorlist){
-			
-		    if(mg.op == operatorAgent ){
-			mg.occupied=false;
-		    }
-		}
-	}
-	
 	
 	
 	// ACTIONS
@@ -395,18 +381,6 @@ synchronized(glassonconveyor){
 	}
 	
 	
-	private void PassingGlassToPopup(MyCGlass mg) {
-		// TODO Auto-generated method stub
-		print("Glass passed to the popup. Conveyor starts again");
-	//	this.mypopup.msgGlassDoesNotNeedProcessing(mg.pcglass);
-		Object[] args1={this.number};
-		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,args1);
-		isConveyorRunning=true;
-		mg.status=GlassStatusConveyor.DONE;
-		stateChanged();
-	}
-	
-	
 	
 	private void PassingGlassToInLineMachine(MyCGlass mg) {
 		// TODO Auto-generated method stub
@@ -415,16 +389,16 @@ synchronized(glassonconveyor){
 		Object[] cno={0};
 		 myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_STOP,cno);
 		 print("Conveyor Stop because Inline Is BUSY");
+		 mg.status=GlassStatusConveyor.INLINEBUSY;
 		}
 		else
 		{
+			this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
 			print("Glass passed to inline machine");
+			mg.status=GlassStatusConveyor.FIRSTDONE;	
+			isINLINEBusy=true;
 		}
-		this.myinline.msgGlassNeedsProcessing(mg.pcglass,mg.NeedsProcessing);
-		isINLINEBusy=true;
-		mg.status=GlassStatusConveyor.FIRSTDONE;	
 		stateChanged();
-		
 	}
 	
 
@@ -441,8 +415,8 @@ synchronized(glassonconveyor){
         return glassonconveyor.size();
     }
 	
-	public int getoperatorlist(){
-        return operatorlist.size();
+	public void getoperatorlist(){
+
     }
 	
 	public Boolean getisPopUpBusy(){
@@ -471,11 +445,71 @@ synchronized(glassonconveyor){
 	@Override
 	public void setisINLINEBusy(Boolean s) {
 		// TODO Auto-generated method stub
+		isINLINEBusy=s;
+	}
+
+
+
+
+
+/*
+	@Override
+	public Boolean getsecondconveyorfree() {
+		// TODO Auto-generated method stub
+		
+		if(conveyor1==ConveyorState.Running)
+		{
+			secondconveyorfree=true;
+		}
+		else
+		{
+			secondconveyorfree=false;
+		}
+		print("second conevyor free"+secondconveyorfree);
+		return secondconveyorfree;
+		
+	}
+*/
+
+
+
+
+
+	@Override
+	public void msgOperatorIsfree(Operator_PJ operatorAgent) {
+		// TODO Auto-generated method stub
 		
 	}
 
 
 
+
+
+
+	public void setbrokenstatus(boolean s,int conveyorno) {
+		// TODO Auto-generated method stub
+		
+		ConveyorState conveyor0backup = null;
+		ConveyorState conveyor1backup = null;
+		
+		
+		System.out.println("conv brokeeee"+s);
+		if(s==true)
+		{
+		conveyor0backup = conveyor0;
+		conveyor1backup = conveyor1;
+		conveyor1=ConveyorState.Jammed;
+		this.stopAgent();
+		}
+		else
+		{
+			conveyor1=ConveyorState.Running;
+			
+		}
+	
+		stateChanged();
+	}
+	
 
 
 	

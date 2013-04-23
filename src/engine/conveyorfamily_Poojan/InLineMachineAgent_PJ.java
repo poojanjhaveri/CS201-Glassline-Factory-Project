@@ -114,8 +114,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 			}
 		    	};
 		    	
-		    	
-		    	print("yo processing");
 		    	synchronized(glassoninline){
 			    	
 					for(MyPGlass mg:glassoninline){
@@ -151,7 +149,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		secondconveyorfree=false;
 		mg.status=GlassStatusInline.DONE;
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
-		myconveyor.setisINLINEBusy(false);
+		myconveyor.msgIamFree();
 		stateChanged();
 	
 		

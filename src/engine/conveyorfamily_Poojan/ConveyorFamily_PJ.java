@@ -3,7 +3,6 @@ package engine.conveyorfamily_Poojan;
 
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
-import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.ConveyorState;
 import engine.interfaces.ConveyorFamily;
 import engine.agent.Alex.*;
 import shared.Glass;
