@@ -144,6 +144,18 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		}
 		
 		
+		while(conveyor0==ConveyorState.Need_Fix)
+		{
+			unbreakConveyor(0);
+		}
+		
+		while(conveyor1==ConveyorState.Need_Fix)
+		{
+			unbreakConveyor(1);
+		}
+		
+		
+		
 		while(conveyor0==ConveyorState.Need_Run)
 		{
 			startconveyor0();
@@ -239,6 +251,24 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		 }
 		 
 		return false;
+	}
+
+
+
+	private void unbreakConveyor(int i) {
+		Object [] no={i};
+		if(i==0)
+		{
+			myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
+			conveyor0=ConveyorState.Running;
+		}
+		else
+		{
+			myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
+			conveyor1=ConveyorState.Running;
+		}
+    	stateChanged();
+		
 	}
 
 
@@ -383,7 +413,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 
 	private void onthelastsensor(Integer args) {
-		// TODO Auto-generated method stub
+		// 
 		synchronized(glassonconveyor){
 			for(MyCGlass mg:glassonconveyor){
 			
@@ -579,7 +609,8 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 	public void setbrokenstatus(boolean s,int i) {
 		// 
-		
+		if(s)
+		{
 		Object [] no={i};
 		if(i==0)
 		{
@@ -589,6 +620,20 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		{
 			conveyor1=ConveyorState.Need_Break;
 		}
+		}
+		else
+		{
+			Object [] no={i};
+			if(i==0)
+			{
+				conveyor0=ConveyorState.Need_Fix;
+			}
+			else
+			{
+				conveyor1=ConveyorState.Need_Fix;
+			}
+		}
+			
     	stateChanged();
 		
 	}

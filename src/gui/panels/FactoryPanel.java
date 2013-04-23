@@ -158,7 +158,6 @@ public class FactoryPanel extends JPanel
 		
 		( (ConveyorFamilyAgents) c2).setChannel(TChannel.BREAKOUT);
 		( (ConveyorFamilyAgents) c2).setTransducer(transducer);
-		c2.setConveyorBroken(true, 2);
 		
 		ConveyorFamily c3 = new ConveyorFamilyAgents(3, "Manual_Breakout", false);
 		c2.setNextConveyorFamily(c3);
