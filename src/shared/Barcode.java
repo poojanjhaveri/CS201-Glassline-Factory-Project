@@ -3,6 +3,9 @@ package shared;
 public class Barcode {
 	long barcode;
 	public Barcode(long n){barcode = n;
+	
+	
+	
 	System.out.println("Barcode registered: " + Integer.toBinaryString((int)n));
 	}
 	

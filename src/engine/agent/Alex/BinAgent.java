@@ -83,6 +83,7 @@ public class BinAgent extends Agent implements ConveyorFamily{
 		System.out.println(name + ": Message to create glass recieved");
 		boolean[] recipe = bc.translateToRecipe();
 		
+		
 		GlassRequest glassReq = 
 		new GlassRequest(
 		new Glass(numGlassCreated++, recipe[0], recipe[1], 

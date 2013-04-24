@@ -132,27 +132,30 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		
+		while(conveyor1==ConveyorState.Need_Break)
+		{
+			breakConveyor(1);
+		}
 		
 		while(conveyor0==ConveyorState.Need_Break)
 		{
 			breakConveyor(0);
 		}
 		
-		while(conveyor1==ConveyorState.Need_Break)
-		{
-			breakConveyor(1);
-		}
 		
+		
+		
+		while(conveyor1==ConveyorState.Need_Fix)
+		{
+			unbreakConveyor(1);
+		}
 		
 		while(conveyor0==ConveyorState.Need_Fix)
 		{
 			unbreakConveyor(0);
 		}
 		
-		while(conveyor1==ConveyorState.Need_Fix)
-		{
-			unbreakConveyor(1);
-		}
+		
 		
 		
 		
@@ -533,6 +536,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 
 	private void mediatingconveyorstart() {
+		
+		
+		print("NEXTCONVEYORFAMILY STATUS"+isNextConveyorFamilyBusy);
 		
 		if(!isNextConveyorFamilyBusy && conveyor1!=ConveyorState.Jammed)
 		{
