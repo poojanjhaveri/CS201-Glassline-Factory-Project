@@ -20,6 +20,7 @@ public class InlineAgent extends Agent implements Inline {
 	Glass glassOnSpot;
 	ConveyorFamily next;
 	boolean nextFree;
+	boolean isBroken;
 	
 	Conveyor conveyor;
 	Semaphore machineSemaphore = new Semaphore(0, true);
@@ -34,6 +35,7 @@ public class InlineAgent extends Agent implements Inline {
 		
 		glassOnSpot = null;
 		nextFree = true;
+		isBroken = false;
 	}
 
 	//Messages and Eventfires
@@ -77,7 +79,7 @@ public class InlineAgent extends Agent implements Inline {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(glassOnSpot != null) {
+		if(glassOnSpot != null && ! isBroken ) {
 			processGlass();
 			return true;
 		}
@@ -156,6 +158,10 @@ public class InlineAgent extends Agent implements Inline {
 	
 	public void setNextFree(boolean nf) {
 		nextFree = nf;
+	}
+	
+	public void setInlineBroken(boolean b) {
+		isBroken = b;
 	}
 	
 }

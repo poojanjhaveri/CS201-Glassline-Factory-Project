@@ -111,4 +111,7 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 		conveyor.setConveyorBroken(s);
 	}
 	
+	public void setInlineBroken(boolean b) {
+		inline.setInlineBroken(b);
+	}
 }
