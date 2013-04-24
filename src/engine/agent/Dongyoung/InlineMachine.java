@@ -21,6 +21,9 @@ public class InlineMachine extends Component implements TReceiver{
 	// SCHEDULER
 	@Override
 	protected boolean pickAndExecuteAnAction(){
+		if( broken ){
+			return false;
+		}
 		
 		if( loadFinished ){
 			doWorkAction();
@@ -51,7 +54,7 @@ public class InlineMachine extends Component implements TReceiver{
 			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
 		}
 		else if( !glass.getRecipe( channel ) ){
-			actionFinishedAction();
+			actionFinished = true;
 		}
 	}
 	
@@ -82,11 +85,11 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	// NON-NORM.
 	public void nonNormBreak(){
-		super.stopThread();
+		broken = true;
 	}
 	
 	public void nonNormFix(){
-		super.startThread();
+		broken = false;
 		stateChanged();
 	}
 	

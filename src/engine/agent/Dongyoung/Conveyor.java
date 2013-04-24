@@ -30,11 +30,16 @@ public class Conveyor extends Component implements TReceiver{
 	
 	// SCHEDULER
 	@Override
-	protected boolean pickAndExecuteAnAction(){
+	protected boolean pickAndExecuteAnAction(){		
 		// Non-norm. Fix
 		if( fix ){
-			conveyorCheck();
+			fixNonNorm();
 			return true;
+		}
+		
+		// Conveyor is broken
+		if( broken ){
+			return false;
 		}
 		
 		// New Glass on Front Sensor
@@ -59,6 +64,14 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	// ACTION
+	/*
+	 * 
+	 */
+	private void fixNonNorm(){
+		fix = false;
+		broken = false;
+		conveyorCheck();
+	}
 	/*
 	 * Check if next component is ready to accept glasses.
 	 * If not, the conveyor keeps the glass waiting.
@@ -115,12 +128,12 @@ public class Conveyor extends Component implements TReceiver{
 	// NON-NORM.
 	public void nonNormBreak(){
 		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum);
-		super.stopThread();
+		broken = true;
 	}
 	
 	public void nonNormFix(){
 		fix = true;
-		super.startThread();
+		broken = false;
 		stateChanged();
 	}
 	
@@ -147,9 +160,6 @@ public class Conveyor extends Component implements TReceiver{
 	
 	/* Everytime the conveyor status is changed, it should check the conveyor should run or stops. */
 	private void conveyorCheck(){
-		// When the conveyor is fixed
-		if( fix ) fix = false;
-		
 		// Glass on Front Sensor or on Conveyor, but no Glass on Back Sensor
 		if( ( newGlass || !glasses.isEmpty() ) && !checkPass && checkDone ){
 			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
