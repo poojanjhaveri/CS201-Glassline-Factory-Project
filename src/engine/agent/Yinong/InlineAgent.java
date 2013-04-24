@@ -162,6 +162,7 @@ public class InlineAgent extends Agent implements Inline {
 	
 	public void setInlineBroken(boolean b) {
 		isBroken = b;
+		stateChanged();
 	}
 	
 }

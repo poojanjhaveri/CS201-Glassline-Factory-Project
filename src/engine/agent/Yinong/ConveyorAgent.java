@@ -130,6 +130,11 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 			return true;
 		}
 		
+		if(conveyorState == ConveyorState.NEED_RUN) {
+			startConveyor();
+			return true;
+		}
+		
 		if(mode == Mode.OFFLINE) {
 			//Pop-up busy, a piece of glass is ready to enter; should prevent collision. Highest priority.
 			if( (popupState == State.BUSY) && (sensor2State == SensorState.PRESSED) 
