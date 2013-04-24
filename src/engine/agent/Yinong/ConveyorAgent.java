@@ -323,6 +323,11 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		setConveyorBroken(s);
 	}
 
+	@Override
+	public void setInlineBroken(boolean s, TChannel channel) {
+		Do("Shouldn't receive setInlineBroken.");
+	}
+
 	
 
 

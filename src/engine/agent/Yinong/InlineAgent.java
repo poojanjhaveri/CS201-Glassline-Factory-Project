@@ -153,9 +153,11 @@ public class InlineAgent extends Agent implements Inline {
 		nextFree = nf;
 	}
 	
-	public void setInlineBroken(boolean b) {
-		isBroken = b;
-		stateChanged();
+	public void setInlineBroken(boolean b, TChannel c) {
+		if(channel == c) {
+			isBroken = b;
+			stateChanged();
+		}
 	}
 	
 }

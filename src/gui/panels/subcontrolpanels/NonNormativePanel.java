@@ -38,8 +38,10 @@ public class NonNormativePanel extends JPanel
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
 	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+	String[] inlinenames = { "NCCutter", "Breakout", "Manual Breakout", "Washer", "Painter", "UV_Lamp", "Oven" };
 	
 	JComboBox selectconv;
+	JComboBox selectinlineconv;
 	
 	
 	/**
@@ -57,6 +59,8 @@ public class NonNormativePanel extends JPanel
 		
 		selectconv = new JComboBox(conveyornames);
 		selectconv.addActionListener(new selectglassfromdropdown());
+		
+		selectinlineconv = new JComboBox(inlinenames);
 		
 		JButton breakbutton = new JButton("break");
 		JButton unbreakbutton = new JButton("UNbreak");
