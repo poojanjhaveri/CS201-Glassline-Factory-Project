@@ -1,7 +1,4 @@
 package engine.agent.Alex;
-import engine.interfaces.*;
-
-import java.util.ArrayList;
 
 import engine.agent.Agent;
 
@@ -9,57 +6,46 @@ import engine.agent.Agent;
 import transducer.*;
 
 public class EntryAgent extends Agent {
+	public AlexsConveyorFamily parentCF;
+	public ConveyorAgent conveyor;
+	private enum ConveyorStatus {BUSY, FREE};
+	private enum SensorStatus {DOWN, UP};
+	private boolean notifiedPreviousCF;
+	private ConveyorStatus conveyorStatus;
+	private SensorStatus sensorStatus;
+
 	
 	public EntryAgent(String name, AlexsConveyorFamily cf){
 	//initialize it all!	
 		super(name);
-	conveyorStatus = ConveyorStatus.Free;
-	lineStatus = LineStatus.freeNotNotified;
+
+		
+	conveyorStatus = ConveyorStatus.FREE;
+	sensorStatus = SensorStatus.UP;
+	notifiedPreviousCF = true;
 	parentCF = cf;
 	
-	events = new ArrayList<EntryEvent>();
 	
 	}
-	
-	public AlexsConveyorFamily parentCF;
-	public ConveyorFamily previousCF;
-	public ConveyorAgent conveyor;
 
-
-	public enum LineStatus {busy, freeNotNotified, freeNotified};
-	public enum SensorStatus {pressed, released};
-	public SensorStatus sensorStatus = SensorStatus.released;
-	public LineStatus lineStatus;
-
-	public enum ConveyorStatus {Busy, Free};
-
-	public  ConveyorStatus conveyorStatus;
-
-	public enum EntryEvent {sensorPressed, sensorReleased};
-	public ArrayList<EntryEvent> events;
 //	MSGS:
+
+	public void msgConveyorFree() {
+		print("Message conveyor free");
+		conveyorStatus = ConveyorStatus.FREE;
+		stateChanged();
+	}
 	
 	public void msgSensorPressed() {
-		// TODO Auto-generated method stub
-		String msg = new String(name + ": msg sensor pressed");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		EntryEvent event = EntryEvent.sensorPressed;
-		sensorStatus = SensorStatus.pressed;
-		lineStatus = LineStatus.busy;
-		events.add(event);
+		print("Message, sensor pressed");
+		sensorStatus = SensorStatus.DOWN;
 		stateChanged();
 	}
 
 	public void msgSensorReleased() {
-		// TODO Auto-generated method stub
-		String msg = new String(name + ": msg sensor released");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		EntryEvent event = EntryEvent.sensorReleased;
-		sensorStatus = SensorStatus.released;
-		lineStatus = LineStatus.freeNotified;
-		events.add(event);
+		print("Message, sensor released");
+		sensorStatus = SensorStatus.UP;
+		notifiedPreviousCF = false;
 		stateChanged();
 	}
 
@@ -68,107 +54,53 @@ public class EntryAgent extends Agent {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
 
+		if (sensorStatus == SensorStatus.UP && conveyorStatus == ConveyorStatus.FREE && !notifiedPreviousCF){
+			axnNotifyPreviousCFFree();
+		}
+		/*else if (sensorStatus == SensorStatus.DOWN && conveyorStatus == ConveyorStatus.FREE){
+			//do nothing, let it move on
+		}
+		else if (sensorStatus == SensorStatus.UP && conveyorStatus == ConveyorStatus.BUSY){
+			//do nothing, 
+		}
+		else if (sensorStatus == SensorStatus.DOWN && conveyorStatus == ConveyorStatus.BUSY){
+			//do nothing
+		}*/
 		
-	if (!events.isEmpty())
-	{
-		EntryEvent event;
-		event = events.remove(0);
-		if (event == EntryEvent.sensorPressed){
-			//told by the gui that a glass is on the sensor
-			if (conveyorStatus == ConveyorStatus.Busy){
-				stopConveyor();
-				
-			}
-			else if (conveyorStatus == ConveyorStatus.Free){
-				startConveyor();
-				//let the glass move on through
-				//pushGlass();
-				
-			}
-		}
-		else if (event == EntryEvent.sensorReleased){
-			notifyPreviousCFFree();
-		}
-	
+		
 		return true;
 	}
 		
 		
-
-
-	if (lineStatus == LineStatus.freeNotNotified){
-		notifyPreviousCFFree();
-		return true;
-	}
-	return false;
-}
 
 
 //	ACTIONS:
 
 
-	/*private void pushGlass() {
-		// TODO Auto-generated method stub
-		lineStatus = LineStatus.freeNotNotified;
-		//dont stop conveyor
-		conveyor.msgHereIsGlass();
-	}*/
+	
 
-	private void startConveyor() {
-		// TODO Auto-generated method stub
-		
-		lineStatus = LineStatus.freeNotNotified;
-		parentCF.startConveyor();
+	public void axnNotifyPreviousCFFree(){
+		print("AXN, notified previous CF free");
+		notifiedPreviousCF = true;
+		parentCF.notifyPreviousCFFree();
 	}
-
-	private void stopConveyor() {
-		// TODO Auto-generated method stub
-		lineStatus = LineStatus.busy;
-		parentCF.stopConveyor();
-	}
-
 
 	
 
-	public void notifyPreviousCFFree(){
-		//let previous cf know (through parent CF)
-		previousCF.msgIAmFree();
-		//change state
-		lineStatus = LineStatus.freeNotified;
-	}
-
-	
-	//Inherited, not used
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void msgConveyorFree() {
-		// TODO Auto-generated method stub
-		String msg = new String(name +": msg conveyor free");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		conveyorStatus = conveyorStatus.Free;
-		stateChanged();
-	}
 
 	public void setConveyorAgent(ConveyorAgent ca) {
 		// TODO Auto-generated method stub
 		conveyor = ca;
 	}
 
-	public void setPreviousConveyorFamily(ConveyorFamily c2) {
-		// TODO Auto-generated method stub
-		previousCF = c2;
-	}
+
 
 
 }

@@ -9,177 +9,154 @@ import transducer.TChannel;
 import transducer.TEvent;
 
 public class ConveyorAgent extends Agent {
-	private PopupStatus nextCFStatus;
+	
+	private AlexsConveyorFamily parentCF;
+	private EntryAgent entryAgent;
+	
+	private enum NextCFStatus {BUSY, FREE};
+	private enum SensorState {DOWN, UP};
+	private enum ConveyorState {STOPPED, RUNNING};
+	private enum BreakConveyor {BROKEN, NEED_BREAK, RUNNING, NEED_RUN};
 
+	private BreakConveyor breakConveyor;
+	
+	public ConveyorState conveyorState;
+	private NextCFStatus nextCFStatus;
+	private SensorState sensorState;
+	
 	public ConveyorAgent(String n,AlexsConveyorFamily parent){
 		super(n);
-		popupPush = new Semaphore(1);
-		nextCFStatus =  PopupStatus.free;
-		conveyorState = ConveyorState.freeNotNotified;
-		events = new ArrayList<ConveyorEvent>();
-
+		nextCFStatus = NextCFStatus.FREE;
+		conveyorState = ConveyorState.RUNNING;
+		sensorState = SensorState.UP;
+		breakConveyor = BreakConveyor.RUNNING;
 		parentCF = parent;
 	}
 	
-
+	
 	public void setEntryAgent(EntryAgent ea){
 		entryAgent = ea;
 	}
 	
 	
-	public Semaphore popupPush;
-	public AlexsConveyorFamily parentCF;
-	public EntryAgent entryAgent;
-	
-	public enum ConveyorEvent {sensorPressed, sensorReleased};
-	public ArrayList<ConveyorEvent> events;
-	public enum ConveyorState {busy, freeNotNotified, freeNotified};
-	public enum PopupStatus {busy, unknown, free};
-	
-	public ConveyorState conveyorState;
-	private ConveyorFamily nextCF;
+	public void msgImFree() {
+		print("Message recieved, I'm free");
+		nextCFStatus = NextCFStatus.FREE;
+	}
+
+
 	
 	public void msgSensorPressed() {
-		// TODO Auto-generated method stub
-		String msg = new String(name + ": msg sensor pressed");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		events.add(ConveyorEvent.sensorPressed);
+		print("Message,Sensor pressed");
+		sensorState = SensorState.DOWN;
 		stateChanged();
 	}
 
 	public void msgSensorReleased() {
-		// TODO Auto-generated method stub
-		String msg = new String(name + ": msg sensor released");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		events.add(ConveyorEvent.sensorReleased);
+		print("Message, sensor released");
+		sensorState = SensorState.UP;
 		stateChanged();
 	}
 
-	/*public void msgHereIsGlass() {
-		// TODO Auto-generated method stub
-		
-	}*/
-	public void msgPopupIsReady(){
-		String msg = new String(name + ": nextCF is ready");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		nextCFStatus = PopupStatus.free;
-		popupPush.release();
-	}
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
-		if (!events.isEmpty())
-		{
-			ConveyorEvent event;
-			event = events.remove(0);
-			if (event == ConveyorEvent.sensorPressed){
-				try {
-					pushGlass();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} //multistep action, will use a semaphore to guarantee not to push on next cf
-				/*
-				//told by the gui that a glass is on the sensor
-				if (popupStatus != PopupStatus.free){
-					stopConveyor();
-					
-				}
-				else if (popupStatus == PopupStatus.free){
-					
-					//let the glass move on through
-					
-					
-				}*/
-			}
-			else if (event == ConveyorEvent.sensorReleased){
-				notifyEntryFree();
-			}
-		
+		if (breakConveyor == BreakConveyor.NEED_BREAK && conveyorState == ConveyorState.RUNNING){
+			axnBreakConveyor();
 			return true;
 		}
-		
-		if (conveyorState == ConveyorState.freeNotNotified){
-			notifyEntryFree();
+		else if(breakConveyor == BreakConveyor.BROKEN){
+			return false;
+		}
+		else if (breakConveyor == BreakConveyor.NEED_RUN && nextCFStatus == NextCFStatus.FREE){
+			axnFixConveyor();
+			return true;
+		}
+		if (sensorState == SensorState.DOWN && nextCFStatus == NextCFStatus.BUSY && conveyorState == ConveyorState.STOPPED){
+			//already stopped, wait for free msg
+			return true;
+		}
+		else if (sensorState == SensorState.DOWN && nextCFStatus == NextCFStatus.BUSY && conveyorState == ConveyorState.RUNNING){
+			//sensor is pressed, but next is busy
+			axnStopConveyor();
+		}
+		else if (sensorState == SensorState.DOWN && nextCFStatus == NextCFStatus.FREE && conveyorState == ConveyorState.STOPPED){
+			axnStartConveyor();
+		}
+		else if (sensorState == SensorState.DOWN && nextCFStatus == NextCFStatus.FREE && conveyorState == ConveyorState.RUNNING){
+			axnPushGlass();
+		}
+		else if (sensorState == SensorState.UP && nextCFStatus == NextCFStatus.BUSY && conveyorState == ConveyorState.STOPPED){
+			//nothing on sensor
+			
+		}
+		else if (sensorState == SensorState.UP && nextCFStatus == NextCFStatus.FREE && conveyorState == ConveyorState.STOPPED){
+			axnStartConveyor();
+		}
+		else if (sensorState == SensorState.UP && nextCFStatus == NextCFStatus.BUSY && conveyorState == ConveyorState.RUNNING){
+			//do nothing
+		}
+		else if (sensorState == SensorState.UP && nextCFStatus == NextCFStatus.FREE && conveyorState == ConveyorState.RUNNING){
+			axnStartConveyor();
 		}
 		return false;
 	}
 
-	public void stopConveyor() {
-		String msg = new String(name + ": stopping conveyor");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
-		parentCF.stopConveyor();
-		conveyorState = ConveyorState.busy;
+	private void axnFixConveyor() {
+		// TODO Auto-generated method stub
+			axnStartConveyor();
+			entryAgent.msgConveyorFree();
+			breakConveyor = BreakConveyor.RUNNING;
+
 	}
 
-	public void notifyEntryFree() {
 
-		String msg = new String(name + ": notified entry agent that I'm free");
-		
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
+	private void axnBreakConveyor() {
+		print("AXN, Break Conveyor");
+		breakConveyor = BreakConveyor.BROKEN;
+		axnStopConveyor();
+	}
+
+
+	private void axnPushGlass() {
+		print("AXN, Push glass");
+		nextCFStatus = NextCFStatus.BUSY;
+		//PUSH THE GLASS
+		parentCF.pushGlass();
+		//SEND MSG TO ENTRYTHAT IM FREE
 		entryAgent.msgConveyorFree();
-		conveyorState = ConveyorState.freeNotified;;
-		
 	}
-	public void startConveyor(){
-		String msg = new String(name + ": starting conveyor");
-		System.out.println(msg);
-		//log.add(new //loggedEvent(msg));
+	
+	public void axnStopConveyor() {
+		print("AXN, Stop Conveyor");
+		//SET STATE
+		conveyorState = ConveyorState.STOPPED;
+		//STOP CONVEYOR
+		parentCF.stopConveyor();
+	}
+
+	public void axnStartConveyor(){
+		print("AXN, Start conveyor");
+		conveyorState = ConveyorState.RUNNING;
+		
 		parentCF.startConveyor();
 		
 	}
-	
-	public void pushGlass() throws InterruptedException {
-		String msg = new String(name + ": letting popup know i have glass, stopping conveyor in mean time...");
-		System.out.println(msg);
-		////log.add(new //loggedEvent(msg));
-		
-		//nextCF.msgHereIsGlass();
-		//parentCF.pushGlassOnPopup();
-		parentCF.pushGlassOnPopup();
-		
-		stopConveyor();
-		
-		popupPush.acquire();
-		
-		startConveyor();
-		System.out.println(name + ": glass pushed to popup.");
-		//assume popup is busy
-		nextCFStatus = PopupStatus.busy;
-	}
+
 
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void msgImFree() {
-		// TODO Auto-generated method stub
 		
 	}
 
 
-	public void setNextConveyorFamily(ConveyorFamily c3) {
-		// TODO Auto-generated method stub
-		nextCF = c3;
-		}
-	
-
+	public void setConveyorBroken(boolean s) {
+		if (s && breakConveyor != BreakConveyor.BROKEN)
+			breakConveyor = BreakConveyor.NEED_BREAK;
+		else if (!s && breakConveyor != BreakConveyor.RUNNING)
+			breakConveyor = BreakConveyor.NEED_RUN;
+		stateChanged();
+	}
 
 
 }

@@ -96,9 +96,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	}
 	public void msgHereIsGlass(Glass g){
 	//from previous CFring m
-
-		String msg = new String(name + ": msg here is glass");
-		System.out.println(msg);
+		print("Message, here is glass");
 		MyGlass mg = new MyGlass(g);
 		
 		glassOnCF.add(mg);
@@ -107,13 +105,11 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	public void msgIHaveGlassFinshed(Operator o){
 		int a  = 6/0; //throw if you get here, this has no popup
 		
-		//popupAgent.msgIHaveFinshedGlass(o);
 	}
 	
 	public void msgHereIsFinishedGlass(Operator o, Glass g){
 		int a  = 6/0; //throw if you get here, this has no popup
 		
-		///popupAgent.msgHereIsFinishedGlass(o);
 		
 	}
 	public void msgSendImFreeMsgToCF() {
@@ -137,6 +133,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	}
  
 	public void movePopupDown(){
+		int a = 6 / 0;
 		System.out.println("CF moving popup down!");
 		Integer [] args= new Integer[1];
 		args[0] = cfIndex;
@@ -144,6 +141,8 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	}
 	
 	public void movePopupUp(){
+		
+		int a = 6 /0;
 		System.out.println("telling transducer to move up");
 		Integer [] args= new Integer[1];
 		args[0] = cfIndex;
@@ -154,11 +153,11 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	
 
 	
-	public void pushGlassOnPopup(){
+	public void pushGlass(){
 		Integer [] args= new Integer[1];
 		args[0] = cfIndex;
-		transducer.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
 		nextCF.msgHereIsGlass(glassOnCF.remove(glassOnCF.size()-1).glass);
+		transducer.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
 	}
 	public boolean doesLastGlassOnCFNeedProcessing(){
 		if (!glassOnCF.isEmpty())
@@ -186,7 +185,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	}
 
 	public void giveGlassToOperator(Operator operator) {
-		// TODO Auto-generated method stub
+		
 		if (!glassOnCF.isEmpty())
 			operator.msgHereIsGlass( glassOnCF.remove(glassOnCF.size() - 1).glass);
 	}
@@ -200,26 +199,21 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	@Override
 	public void msgIAmFree() {
 		// TODO Auto-generated method stub
-		conveyorAgent.msgPopupIsReady();
+		conveyorAgent.msgImFree();
 	}
 
 	@Override
 	public void setNextConveyorFamily(ConveyorFamily c3) {
-		// TODO Auto-generated method stub
-		conveyorAgent.setNextConveyorFamily(c3);
 		nextCF = c3;
 	}
 
 	@Override
 	public void setPreviousConveyorFamily(ConveyorFamily c2) {
-		// TODO Auto-generated method stub
-		entryAgent.setPreviousConveyorFamily(c2);
 		previousCF = c2;
 	}
 
 	@Override
 	public void startThreads() {
-		// TODO Auto-generated method stub
 		entryAgent.startThread();
 		conveyorAgent.startThread();
 		this.startThread();
@@ -228,8 +222,13 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
-		// TODO Auto-generated method stub
-		
+		print("******");
+
+		conveyorAgent.setConveyorBroken(s);
+	}
+
+	public void notifyPreviousCFFree() {
+		previousCF.msgIAmFree();
 	}
 
 	
