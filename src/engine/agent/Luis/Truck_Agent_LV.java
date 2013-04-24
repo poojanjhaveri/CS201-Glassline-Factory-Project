@@ -18,7 +18,7 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	ConveyorFamily previousFamily;
 	Transducer t;
 	List<Glass> truckGlass;
-	boolean broken;
+	boolean broken= true;
 	enum TruckState{PARKED,COMMUTING,ARRIVED,LOADING,BROKEN};
 	Semaphore drivingSemaphore = new Semaphore(0,true);
 	TruckState state;
@@ -34,9 +34,11 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	//Messages
 	@Override
 	public void msgHereIsGlass(Glass glass)
-	{
-		truckGlass.add(glass);
-		stateChanged();
+	{	if(!broken)
+		{
+			truckGlass.add(glass);
+			stateChanged();
+		}
 	}
 	
 	//Scheduler
@@ -89,7 +91,7 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	}
 	
 	public void moveGlass(Glass g)
-	{	if(state != TruckState.BROKEN)
+	{	if(!broken)
 		{
 			print("Delivering Glass");
 			Integer[] args = new Integer[1];
@@ -136,13 +138,12 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	
 	public void setBroken()
 	{
-		tempState = state;
-		state = TruckState.BROKEN;
+		broken = true;
 	}
 	
 	public void fixBroken()
 	{
-		state = tempState;
+		broken = false;
 	}
 
 	@Override
