@@ -24,6 +24,7 @@ public class InlineAgent extends Agent implements Inline {
 	
 	Conveyor conveyor;
 	Semaphore machineSemaphore = new Semaphore(0, true);
+	Semaphore nextSemaphore = new Semaphore(1, true);
 	
 	//Constructor
 	private InlineAgent () {}
@@ -66,6 +67,7 @@ public class InlineAgent extends Agent implements Inline {
 	public void msgIAmFree() {
 		Do("Received msgIAmFree from the next conveyor (family).");
 		nextFree = true;
+		nextSemaphore.release();
 		stateChanged();
 	}
 	
@@ -101,7 +103,11 @@ public class InlineAgent extends Agent implements Inline {
 		}
 		
 		//STEP 3: Code will get stuck here unless next thing is free
-		while(! nextFree) {}
+		try {
+			nextSemaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		//Do("LOOK! I'm here");
 		//STEP 4: Release glass to the next thing
 		Do("Asking GUI machine to release the glass. I'll wait until it's fully released.");
