@@ -265,6 +265,7 @@ public class FactoryPanel extends JPanel
 
 		
 		this.cPanel.nonNormPanel.setConveyorFamily(c1);
+		this.cPanel.nonNormPanel.setConveyorFamily(c1);
 		this.cPanel.nonNormPanel.setConveyorFamily(c2);
 		this.cPanel.nonNormPanel.setConveyorFamily(c3);
 		this.cPanel.nonNormPanel.setConveyorFamily(c4);
@@ -273,6 +274,11 @@ public class FactoryPanel extends JPanel
 		this.cPanel.nonNormPanel.setConveyorFamily(c7);
 		this.cPanel.nonNormPanel.setConveyorFamily(c8);
 		this.cPanel.nonNormPanel.setConveyorFamily(c9);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
 		this.cPanel.nonNormPanel.setConveyorFamily(truck);
 		
 	//	c1.startThreads();

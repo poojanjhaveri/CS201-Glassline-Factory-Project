@@ -147,7 +147,7 @@ public class GlassSelectPanel extends JPanel
 					+booleanToNumber(Drill.isSelected())+booleanToNumber(ManualBreakout.isSelected())
 					+booleanToNumber(BreakOut.isSelected())+booleanToNumber(Cutter.isSelected())
 									));
-			System.out.println("number is "+l);
+			
 			
 			binAgent.msgCreateGlass(new Barcode(l));
   			 // }
