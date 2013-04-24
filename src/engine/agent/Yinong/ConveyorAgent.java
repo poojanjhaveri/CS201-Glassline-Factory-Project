@@ -33,7 +33,9 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	SensorState sensor1State;
 	SensorState sensor2State;
 	enum SensorState {PRESSED, RELEASED, NOTHING};
-	enum ConveyorState {NEED_BREAK, NEED_RUN, STOPPED, BROKEN, RUNNING};
+	enum ConveyorState {NEED_BREAK, NEED_RUN, STOPPED, BROKEN, RUNNING, TIMED_OUT};
+	
+	Timer timer = new Timer();
 	
 	//Constructors
 	
@@ -299,10 +301,11 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	}
 
 	public void setConveyorBroken(boolean s) {
-		if(s) {
+		if(s)
 			conveyorState = ConveyorState.NEED_BREAK;
-		} else
+		else
 			conveyorState = ConveyorState.NEED_RUN;
+		stateChanged();
 	}
 
 	@Override
@@ -312,8 +315,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
-		// TODO Auto-generated method stub
-		
+		setConveyorBroken(s);
 	}
 
 	
