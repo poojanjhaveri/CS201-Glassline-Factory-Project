@@ -17,6 +17,7 @@ public class Component extends Agent{
 	protected boolean checkPass = false;   // New glass on Next Sensor
 	protected boolean checkDone = true;   // Glass passed to next Component safely?
 	protected boolean debug = true;
+	protected boolean broken = false;
 	
 	// Constructor
 	protected Component(String name){
