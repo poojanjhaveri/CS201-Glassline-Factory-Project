@@ -8,6 +8,7 @@ package engine.interfaces;
  */
 
 import shared.Glass;   // My file has this. You can delete this import.
+import transducer.TChannel;
 import engine.agent.Alex.*;
 
 public interface ConveyorFamily{
@@ -25,6 +26,7 @@ public interface ConveyorFamily{
 	public abstract void setPreviousConveyorFamily(ConveyorFamily c2);
 	
 	public abstract void setConveyorBroken(boolean s,int conveyorno);
+	public abstract void setInlineBroken(boolean s, TChannel channel);
 	
 	public abstract void startThreads();
 
