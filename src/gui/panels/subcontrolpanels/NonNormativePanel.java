@@ -86,7 +86,6 @@ public class NonNormativePanel extends JPanel
 		glasschoose.add(new JLabel("CONVEYORS"),c);
 		
 		
-		
 		c.gridx=0;
 		c.gridy=1;
 		glasschoose.add(selectconv,c);

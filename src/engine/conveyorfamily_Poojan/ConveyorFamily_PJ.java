@@ -68,7 +68,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void msgIAmFree() {
 		System.out.println("My CFnumber is"+this.ConveryorFamilyNo+"I am Free received from NEXT CONVEYOR FAMILY");
 		isNextConveyorFamilyBusy=false;
-		this.conveyor.isNextConveyorFamilyBusy=false;
+		this.conveyor.msgIsNextConveyorFamilyBusy();
+		
 	}
 
 

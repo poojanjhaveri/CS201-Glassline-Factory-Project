@@ -144,7 +144,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		
 		
 		
-		
 		while(conveyor1==ConveyorState.Need_Fix)
 		{
 			unbreakConveyor(1);
@@ -217,7 +216,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			 for(MyCGlass mg:glassonconveyor){
 						
 				 if(mg.status == GlassStatusConveyor.ONLASTSENSOR && conveyor1!=ConveyorState.Jammed ){
-					 {stopconveyor1(mg);
+					 {
+						 print("STATUS : ON THE LAST SENSOR");
+						 stopconveyor1(mg);
 					 return true;
 					 }			
 				 }
@@ -233,7 +234,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			 for(MyCGlass mg:glassonconveyor){
 						
 				 if(mg.status == GlassStatusConveyor.ONLASTSENSORSTOP && !isNextConveyorFamilyBusy && conveyor1!=ConveyorState.Jammed){
-					 {shiptheglasstonexyfamily(mg);
+					 {
+						 print("STATUS : ON THE LAST SENSORSTOP");
+						 shiptheglasstonexyfamily(mg);
 					 return true;
 					 }			
 				 }
@@ -388,7 +391,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				{
 					isINLINEBusy=false;
 					this.myinline.msgIamFreeForGlass();
-					conveyor1=ConveyorState.Running;
+					
 				}
 							
 			}
@@ -472,6 +475,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		
 		isPopUpBusy=false;
 		isINLINEBusy=false;
+		stateChanged();
 	}
 	
 	
@@ -598,6 +602,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	public void setisINLINEBusy(Boolean s) {
 		// 
 		isINLINEBusy=s;
+		stateChanged();
 	}
 
 
@@ -642,6 +647,14 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			
     	stateChanged();
 		
+	}
+
+
+
+	public void msgIsNextConveyorFamilyBusy() {
+		// TODO Auto-generated method stub
+		isNextConveyorFamilyBusy=false;
+		stateChanged();
 	}
 	
 
