@@ -58,13 +58,6 @@ public class InlineAgent extends Agent implements Inline {
 	}
 
 	public void msgHereIsGlass(Glass glass) {
-		if(glassOnSpot != null) {
-			try {
-				throw new Exception ("Anyone shouldn't send in a glass when I already have a glass.");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 		glassOnSpot = glass;
 		Do("Received a glass.");
 		stateChanged();
