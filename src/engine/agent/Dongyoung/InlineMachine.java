@@ -87,6 +87,7 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	public void nonNormFix(){
 		super.startThread();
+		stateChanged();
 	}
 	
 	// EXTRA

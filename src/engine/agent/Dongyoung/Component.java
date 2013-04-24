@@ -28,11 +28,15 @@ public class Component extends Agent{
 	// MESSAGE
 	public void msgIAmFree(){
 		if( debug ){	print("Received message 'IAmFree'");	}
+		
+		// For Conveyor ------------------------------
 		nextCompFree = true;
 		// If a glass still stays, it needs to be sent.
 		if( !checkDone ){
 			checkPass = true;
 		}
+		// -------------------------------------------
+		
 		stateChanged();
 	}
 	
