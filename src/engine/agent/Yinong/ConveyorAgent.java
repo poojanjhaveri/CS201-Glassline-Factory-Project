@@ -120,6 +120,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	public void msgIAmFree() {
 		Do("Received msgIAmFree from the next conveyor (family).");
 		nextState = State.FREE;
+		stateChanged();
 	}
 	
 	//Scheduler
