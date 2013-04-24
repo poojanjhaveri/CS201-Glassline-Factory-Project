@@ -37,8 +37,8 @@ public class NonNormativePanel extends JPanel
 	
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
-	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
-	String[] inlinenames = { "NCCutter", "Breakout", "Manual Breakout", "Washer", "Painter", "UV_Lamp", "Oven" };
+	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14","Truck"};
+	String[] inlinenames = { "NCCutter", "Breakout", "Manual Breakout","Drill","Cross-Seamer","Grinder", "Washer", "UV_Lamp", "Oven","Painter" };
 	
 	JComboBox selectconv;
 	JComboBox selectinlineconv;
@@ -69,10 +69,10 @@ public class NonNormativePanel extends JPanel
 		unbreakbutton.addActionListener(new unbreakbuttonaction());
 		breakbutton.addActionListener(new breakbuttonaction());
 		
-		JButton breakbutton2 = new JButton("Break");
-		JButton unbreakbutton2 = new JButton("Unbreak");
-		unbreakbutton2.addActionListener(new unbreakbuttonaction2());
-		breakbutton2.addActionListener(new breakbuttonaction2());
+		JButton breakinline = new JButton("Break");
+		JButton unbreakinline = new JButton("Unbreak");
+		unbreakinline.addActionListener(new unbreakinline());
+		breakinline.addActionListener(new breakinline());
 		
 		
 		
@@ -108,10 +108,10 @@ public class NonNormativePanel extends JPanel
 		glasschoose.add(selectinlineconv,c);
 		
 		c.gridx=1;
-		glasschoose.add(breakbutton2,c);
+		glasschoose.add(breakinline,c);
 		
 		c.gridx=2;
-		glasschoose.add(unbreakbutton2,c);
+		glasschoose.add(unbreakinline,c);
 		
 		
 
@@ -125,7 +125,6 @@ public class NonNormativePanel extends JPanel
 	
 	public class breakbuttonaction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
@@ -145,24 +144,25 @@ public class NonNormativePanel extends JPanel
 		
 	}
 	
-	public class breakbuttonaction2 implements ActionListener
+	public class breakinline implements ActionListener
 	{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
+			myconveyorfamilies.get(selectinlineconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
 		}
 		
 	}
 	
 	
 	
-	public class unbreakbuttonaction2 implements ActionListener
+	public class unbreakinline implements ActionListener
 	{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
+			myconveyorfamilies.get(selectinlineconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
 		}
 		
 	}
