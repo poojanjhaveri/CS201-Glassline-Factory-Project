@@ -33,12 +33,14 @@ public class NonNormativePanel extends JPanel
 {
 	
 	private List<ConveyorFamily> myconveyorfamilies = Collections.synchronizedList(new ArrayList<ConveyorFamily>());
+	private List<ConveyorFamily> myinlinefamilies = Collections.synchronizedList(new ArrayList<ConveyorFamily>());
 	
 	
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
 	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14","Truck"};
 	String[] inlinenames = { "NCCutter", "Breakout", "Manual Breakout","Drill","Cross-Seamer","Grinder", "Washer", "UV_Lamp", "Oven","Painter" };
+	TChannel[] tchannelnames = { TChannel.CUTTER,TChannel.BREAKOUT,TChannel.MANUAL_BREAKOUT,TChannel.DRILL,TChannel.CROSS_SEAMER,TChannel.GRINDER,TChannel.WASHER,TChannel.UV_LAMP,TChannel.OVEN,TChannel.PAINTER };
 	
 	JComboBox selectconv;
 	JComboBox selectinlineconv;
@@ -150,7 +152,8 @@ public class NonNormativePanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-			myconveyorfamilies.get(selectinlineconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
+			myinlinefamilies.get(selectinlineconv.getSelectedIndex()).setInlineBroken(true,tchannelnames[selectinlineconv.getSelectedIndex()]);
+
 		}
 		
 	}
@@ -162,7 +165,7 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			myconveyorfamilies.get(selectinlineconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
+			myinlinefamilies.get(selectinlineconv.getSelectedIndex()).setInlineBroken(false,tchannelnames[selectinlineconv.getSelectedIndex()]);
 		}
 		
 	}
@@ -197,9 +200,13 @@ public class NonNormativePanel extends JPanel
 	}
 	
 	
-	public void setConveyorFamily(ConveyorFamily ctemp)
+	public void setConveyorFamily(ConveyorFamily ctemp,boolean b)
 	{
 		myconveyorfamilies.add(ctemp);
+		if(b)
+		{
+		myinlinefamilies.add(ctemp);
+		}
 	}
 	
 	

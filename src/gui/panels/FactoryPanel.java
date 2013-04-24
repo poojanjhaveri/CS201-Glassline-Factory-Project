@@ -264,22 +264,22 @@ public class FactoryPanel extends JPanel
 		truck.startThread();	
 
 		
-		this.cPanel.nonNormPanel.setConveyorFamily(c1);
-		this.cPanel.nonNormPanel.setConveyorFamily(c1);
-		this.cPanel.nonNormPanel.setConveyorFamily(c2);
-		this.cPanel.nonNormPanel.setConveyorFamily(c3);
-		this.cPanel.nonNormPanel.setConveyorFamily(c4);
-		this.cPanel.nonNormPanel.setConveyorFamily(c5);
-		this.cPanel.nonNormPanel.setConveyorFamily(c6);
-		this.cPanel.nonNormPanel.setConveyorFamily(c7);
-		this.cPanel.nonNormPanel.setConveyorFamily(c8);
-		this.cPanel.nonNormPanel.setConveyorFamily(c9);
-		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
-		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
-		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
-		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
-		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily);
-		this.cPanel.nonNormPanel.setConveyorFamily(truck);
+		this.cPanel.nonNormPanel.setConveyorFamily(c1, true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c1,false);
+		this.cPanel.nonNormPanel.setConveyorFamily(c2,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c3,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c4,false);
+		this.cPanel.nonNormPanel.setConveyorFamily(c5,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c6,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c7,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c8,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(c9,false);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,true);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,false);
+		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,false);
+		this.cPanel.nonNormPanel.setConveyorFamily(truck,false);
 		
 		
 		

@@ -141,6 +141,13 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		conveyor.setbrokenstatus(s,conveyorno);
 	}
 
+
+	@Override
+	public void setInlineBroken(boolean s, TChannel channel) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }
