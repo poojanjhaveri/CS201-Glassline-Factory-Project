@@ -61,11 +61,17 @@ public class NonNormativePanel extends JPanel
 		selectconv.addActionListener(new selectglassfromdropdown());
 		
 		selectinlineconv = new JComboBox(inlinenames);
+		selectinlineconv.addActionListener(new selectinlinestationfromdropdown());
 		
 		JButton breakbutton = new JButton("break");
 		JButton unbreakbutton = new JButton("UNbreak");
 		unbreakbutton.addActionListener(new unbreakbuttonaction());
 		breakbutton.addActionListener(new breakbuttonaction());
+		
+		JButton breakbutton2 = new JButton("break");
+		JButton unbreakbutton2 = new JButton("UNbreak");
+		unbreakbutton2.addActionListener(new unbreakbuttonaction2());
+		breakbutton2.addActionListener(new breakbuttonaction2());
 		
 		
 		
@@ -106,6 +112,28 @@ public class NonNormativePanel extends JPanel
 		
 	}
 	
+	public class breakbuttonaction2 implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+		}
+		
+	}
+	
+	
+	
+	public class unbreakbuttonaction2 implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
+		}
+		
+	}
+	
 	
 
 	public class selectglassfromdropdown implements ActionListener
@@ -118,6 +146,15 @@ public class NonNormativePanel extends JPanel
 			
 		}
 		
+	}
+	
+	public class selectinlinestationfromdropdown implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			
+			
+		}
 	}
 	
 	
