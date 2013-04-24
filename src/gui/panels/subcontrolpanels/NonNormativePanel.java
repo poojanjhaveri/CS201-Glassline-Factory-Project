@@ -57,30 +57,63 @@ public class NonNormativePanel extends JPanel
 		glasschoose.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		
 		selectconv = new JComboBox(conveyornames);
 		selectconv.addActionListener(new selectglassfromdropdown());
 		
 		selectinlineconv = new JComboBox(inlinenames);
 		selectinlineconv.addActionListener(new selectinlinestationfromdropdown());
 		
-		JButton breakbutton = new JButton("break");
-		JButton unbreakbutton = new JButton("UNbreak");
+		JButton breakbutton = new JButton("Break");
+		JButton unbreakbutton = new JButton("Unbreak");
 		unbreakbutton.addActionListener(new unbreakbuttonaction());
 		breakbutton.addActionListener(new breakbuttonaction());
 		
-		JButton breakbutton2 = new JButton("break");
-		JButton unbreakbutton2 = new JButton("UNbreak");
+		JButton breakbutton2 = new JButton("Break");
+		JButton unbreakbutton2 = new JButton("Unbreak");
 		unbreakbutton2.addActionListener(new unbreakbuttonaction2());
 		breakbutton2.addActionListener(new breakbuttonaction2());
 		
 		
 		
 		this.add(glasschoose);
+		
+		
 		c.gridx=0;
 		c.gridy=0;
+		glasschoose.add(new JLabel("CONVEYORS"),c);
+		
+		
+		
+		c.gridx=0;
+		c.gridy=1;
 		glasschoose.add(selectconv,c);
-		this.add(breakbutton);
-		this.add(unbreakbutton);
+		
+		c.gridx=1;
+		glasschoose.add(breakbutton,c);
+		
+		c.gridx=2;
+		glasschoose.add(unbreakbutton,c);
+		
+		
+		
+		c.gridx=0;
+		c.gridy=3;
+		glasschoose.add(new JLabel("INLINE"),c);
+		
+		
+		
+		c.gridx=0;
+		c.gridy=4;
+		glasschoose.add(selectinlineconv,c);
+		
+		c.gridx=1;
+		glasschoose.add(breakbutton2,c);
+		
+		c.gridx=2;
+		glasschoose.add(unbreakbutton2,c);
+		
+		
 
 		
 		glasschoose.setBackground(Color.GRAY);
