@@ -33,11 +33,9 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 
 	//Messages
 	public void msgHereIsGlass(Glass glass)
-	{	if(state != TruckState.BROKEN)
-		{
+	{
 			truckGlass.add(glass);
 			stateChanged();
-		}
 	}
 
 	//Scheduler
