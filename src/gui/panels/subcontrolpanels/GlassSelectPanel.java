@@ -149,13 +149,24 @@ public class GlassSelectPanel extends JPanel
 					+booleanToNumber(Drill.isSelected())+booleanToNumber(ManualBreakout.isSelected())
 					+booleanToNumber(BreakOut.isSelected())+booleanToNumber(Cutter.isSelected())
 									));
-			System.out.println("number is "+l);
 			
-			System.out.println("drill is "+l);
-			System.out.println("grinder is "+l);
-			System.out.println("washer is "+l);
+	
+			String s= ((""+booleanToNumber(Painter.isSelected())+booleanToNumber(Oven.isSelected())+
+					booleanToNumber(UVLamp.isSelected())+booleanToNumber(Washer.isSelected())
+					+booleanToNumber(Grinder.isSelected())+booleanToNumber(CrossSeamer.isSelected())
+					+booleanToNumber(Drill.isSelected())+booleanToNumber(ManualBreakout.isSelected())
+					+booleanToNumber(BreakOut.isSelected())+booleanToNumber(Cutter.isSelected())
+									));
 			
-			binAgent.msgCreateGlass(new Barcode(l));
+			long l1 = Long.parseLong(s, 2);
+			
+			System.out.println("number is "+l1);
+			
+			System.out.println("drill is "+Drill.isSelected());
+			System.out.println("grinder is "+Grinder.isSelected());
+			System.out.println("washer is "+Washer.isSelected());
+			
+			binAgent.msgCreateGlass(new Barcode(l1));
   			
   			  /*
   			  }
