@@ -136,13 +136,17 @@ public class GlassSelectPanel extends JPanel
 			// TODO Auto-generated method stub
 			
 			
-			 /*
+			/*
+			 
 			timer.scheduleAtFixedRate(new TimerTask() {
   			  @Override
   			  public void run() {
   				  
   				 */
 
+		
+			
+			
 			Long l = Long.parseLong((""+booleanToNumber(Painter.isSelected())+booleanToNumber(Oven.isSelected())+
 					booleanToNumber(UVLamp.isSelected())+booleanToNumber(Washer.isSelected())
 					+booleanToNumber(Grinder.isSelected())+booleanToNumber(CrossSeamer.isSelected())
@@ -170,7 +174,7 @@ public class GlassSelectPanel extends JPanel
   			
   			  /*
   			  }
-  			}, 1100, 1100); */
+  			}, 1500, 1500); */
 		}
 		
 	}
