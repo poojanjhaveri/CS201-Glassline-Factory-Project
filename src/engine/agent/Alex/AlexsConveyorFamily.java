@@ -231,6 +231,12 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 		previousCF.msgIAmFree();
 	}
 
+	@Override
+	public void setInlineBroken(boolean s, TChannel channel) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

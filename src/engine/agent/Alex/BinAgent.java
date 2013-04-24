@@ -234,6 +234,13 @@ public class BinAgent extends Agent implements ConveyorFamily{
 	}
 
 
+	@Override
+	public void setInlineBroken(boolean s, TChannel channel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 
 

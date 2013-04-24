@@ -42,6 +42,7 @@ public class ConveyorAgent extends Agent {
 	public void msgImFree() {
 		print("Message recieved, I'm free");
 		nextCFStatus = NextCFStatus.FREE;
+		stateChanged();
 	}
 
 
