@@ -136,19 +136,16 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 		t.register(this, TChannel.TRUCK);
 	}
 	
-	public void setBroken()
+	public void setBroken(boolean s)
 	{
-		broken = true;
-	}
-	
-	public void fixBroken()
-	{
-		broken = false;
+		if(s)
+			broken = true;
+		else
+			broken = false;
 	}
 
-	@Override
 	public void startThreads() {
-		// Nothing
+		this.startThread();
 	}
 	
 	@Override
@@ -158,7 +155,13 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
-		// TODO Auto-generated method stub
+		
+		
+	}
+
+	@Override
+	public void setInlineBroken(boolean s, TChannel channel) {
+		print("no inline for truck");
 		
 	}
 

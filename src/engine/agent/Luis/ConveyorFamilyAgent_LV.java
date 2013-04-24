@@ -65,7 +65,7 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		conveyor.setInteractions(c2, popup);
 	}
 
-	@Override
+
 	public void startThreads() {
 		conveyor.startThread();
 		popup.startThread();
@@ -83,6 +83,12 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
+		conveyor.setBroken(s);
+		
+	}
+
+	@Override
+	public void setInlineBroken(boolean s, TChannel channel) {
 		// TODO Auto-generated method stub
 		
 	}

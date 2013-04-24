@@ -12,14 +12,16 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 
-public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
+public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFamily{
 	
 	int index;
 	boolean moving;
 	List<Glass> glassPieces;
 	enum PopUpState {OPEN, BUSY};
 	enum SensorState {PRESSED, RELEASED, NULL};
+	enum ConveyorState {NEEDS_BREAK, BROKEN, NEEDS_FIX, FIXED};
 	MyPopUp myPopUp;
+	ConveyorState state;
 	SensorState sensorOne = SensorState.NULL;
 	SensorState sensorTwo = SensorState.NULL;
 	ConveyorFamily previousFamily;
@@ -45,6 +47,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 		moving = false;
 		sensorOne = SensorState.NULL;
 		sensorOne = SensorState.NULL;
+		state = ConveyorState.FIXED;
 	}
 	
 	/*
@@ -75,13 +78,23 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 
 	public boolean pickAndExecuteAnAction() {
 			
+		if(state == ConveyorState.NEEDS_BREAK) {
+			breakConveyor();
+			return true;
+		}
+		
+		if(state == ConveyorState.NEEDS_FIX) {
+			startUpConveyor();
+			return true;
+		}
+		
 		if((myPopUp.state == PopUpState.BUSY) && (sensorTwo == SensorState.PRESSED) && (moving))
 		{
 			letPopUpKnowGlassIsWaiting();
 			return true;
 			}
 			
-		if((myPopUp.state == PopUpState.OPEN) && (!moving))
+		if((myPopUp.state == PopUpState.OPEN) && (!moving) && (state != ConveyorState.BROKEN))
 		{
 			startUpConveyor();
 			return true;
@@ -113,6 +126,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 		args[0] = index;
 		t.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, args);
 		moving = true; 
+		state = ConveyorState.FIXED;
 	}
 	
 	private void stopConveyor()
@@ -145,6 +159,17 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 		print("Letting previous Family know I am free");
 		previousFamily.msgIAmFree();
 		sensorOne = SensorState.NULL;
+	}
+	
+	public void breakConveyor() {
+		Do("Breaking conveyor");
+		
+		Integer[] args = new Integer[1];
+		args[0] = index;
+		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, args);
+		state = ConveyorState.BROKEN;
+		moving = false;
+
 	}
 
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
@@ -217,11 +242,43 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV{
 	{
 		return glassPieces.size();
 	}
+	
+	public void setBroken(boolean s)
+	{
+		if(s)
+			state = ConveyorState.NEEDS_BREAK;
+		else
+			state = ConveyorState.NEEDS_FIX;
+		stateChanged();
+	}
 
 	public void setInteractions(ConveyorFamily c2, PopUpAgent_LV popup) {
-		// TODO Auto-generated method stub
 		previousFamily = c2;
 		setPopUp(popup);
+	}
+
+	public void msgIAmFree() {
+		
+	}
+
+	public void setNextConveyorFamily(ConveyorFamily c3) {
+	
+	}
+
+	public void setPreviousConveyorFamily(ConveyorFamily c2) {
+		previousFamily = c2;
+	}
+
+	public void setConveyorBroken(boolean s, int conveyorno) {
+		setBroken(s);
+	}
+
+	public void setInlineBroken(boolean s, TChannel channel) {
+		print("no inline to break");
+	}
+
+	public void startThreads() {
+		this.startThread();
 	}
 	
 }
