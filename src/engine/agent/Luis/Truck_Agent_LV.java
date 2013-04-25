@@ -19,7 +19,7 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	Transducer t;
 	List<Glass> truckGlass;
 	boolean broken= false;
-	enum TruckState{PARKED,COMMUTING,ARRIVED,LOADING,BROKEN,NEEDS_BREAK,NEEDS_FIX};
+	enum TruckState{PARKED,COMMUTING,ARRIVED,LOADING,BROKEN,FIXED,NEEDS_BREAK,NEEDS_FIX};
 	Semaphore drivingSemaphore = new Semaphore(0,true);
 	TruckState state;
 	TruckState tempState;
@@ -52,6 +52,20 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 		    fixTruck();
 		    return true;
 		}
+	    
+	    if(state == TruckState.BROKEN)
+		{
+		    broken = true;
+		    state = TruckState.PARKED;
+		    return true;
+		}
+	    
+	    if(state == TruckState.FIXED)
+		{
+		    broken = false;
+		    damageControl();
+		    return true;
+		}
 
 		if(state == TruckState.ARRIVED)
 		{
@@ -61,9 +75,16 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 
 		if(state == TruckState.LOADING)
 		{
-			for(Glass g : truckGlass)
+			if(!broken)
 			{
-				moveGlass(g);
+				for(Glass g : truckGlass)
+				{
+					moveGlass(g);
+					return true;
+				}
+			}
+			else
+			{
 				return true;
 			}
 		}
@@ -73,20 +94,19 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 
-		if(channel == TChannel.TRUCK)
-		{
-			if(event == TEvent.TRUCK_GUI_LOAD_FINISHED)
+			if(channel == TChannel.TRUCK)
 			{
-				state = TruckState.LOADING;
+				if(event == TEvent.TRUCK_GUI_LOAD_FINISHED)
+				{
+					state = TruckState.LOADING;
+				}
+				else if(event == TEvent.TRUCK_GUI_EMPTY_FINISHED)
+				{
+					state = TruckState.ARRIVED;
+				}
 			}
-			else if(event == TEvent.TRUCK_GUI_EMPTY_FINISHED)
-			{
-				state = TruckState.ARRIVED;
-			}
-		}
-
-		stateChanged();
-
+	
+			stateChanged();
 	}
 
 	//Actions
@@ -100,55 +120,60 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	}
 
 	public void moveGlass(Glass g)
-	{	if(state != TruckState.BROKEN)
-		{
+	{	
 			print("Delivering Glass");
 			Integer[] args = new Integer[1];
 			args[0] = 0;
 			t.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_EMPTY,args);
 			state = TruckState.COMMUTING;	
-		}
 	}
 
     public void breakTruck()
     {
-	print("Truck broken");
-	state = TruckState.BROKEN;
+    	print("Truck broken");
+    	state = TruckState.BROKEN;
     }
 
     public void fixTruck()
     {
-	print("Truck fixed");
-	if(truckGlass.size()!=0)
-	    {
-		state = TruckState.LOADING;
-		stateChanged();
+    	print("Truck fixed");
+    	state = TruckState.FIXED;
+    }
+    
+    public void damageControl()
+    {
+    	if(truckGlass.size()!=0)
+    	{
+    		for(int i=0; i<truckGlass.size();i++)
+			{
+    			print("Delivering Glass");
+    			Integer[] args = new Integer[1];
+    			args[0] = 0;
+    			t.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_EMPTY,args);
+    			state = TruckState.COMMUTING;	
+			}
 	    }
-	else
+    	else
 	    {
-		state = TruckState.ARRIVED;
-		stateChanged();
+    		state = TruckState.ARRIVED;
+    		stateChanged();
 	    }
     }
 
-	@Override
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
-		// Nothing
+		print("N/A");
 	}
 
-	@Override
 	public void msgIHaveGlassFinished(Operator operator) {
-		// Nothing	
+		print("N/A");
 	}
 
-	@Override
 	public void msgIAmFree() {
-		// Nothing	
+		print("N/A");
 	}
 
-	@Override
 	public void setNextConveyorFamily(ConveyorFamily c3) {
-		// Nothing
+		print("N/A");
 	}
 
 	@Override
@@ -179,21 +204,17 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 		this.startThread();
 	}
 
-	@Override
 	public String getName(){
 		return name;
 	}
 
-	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
 	    setBroken(s);
 
 	}
 
-	@Override
 	public void setInlineBroken(boolean s, TChannel channel) {
 		print("no inline for truck");
-
 	}
 
 
