@@ -174,16 +174,10 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	/*
 	 * SCHEDULER
 	 */
-	boolean notifiedBusy = false;
 	public boolean pickAndExecuteAnAction() {
 
 		GlassPackage temp = null;
-		//temp solution
-		if ((getOperatorStatus(0) == true && getOperatorStatus(1) == true && !notifiedBusy)){
-			notifiedBusy = true;
-			conveyor.msgPopUpBusy();
-			return true;
-		}
+
 		if(state == PopUpState.OPEN)
 		{
 			synchronized(myGlassPieces)
@@ -196,9 +190,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			}
 			if(temp != null)
 			{
-				if((!temp.glass.getRecipe(channel)) || (getOperatorStatus(0) == false || getOperatorStatus(1) == false))
+				if((!temp.glass.getRecipe(channel)) || (getOperatorStatus(0) == false || getOperatorStatus(1) == false) || (!operators.get(0).working || !operators.get(1).working))
 				{
-					notifiedBusy = false;
 					takeGlass(temp);
 					return true;
 				}
@@ -208,14 +201,14 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if(state == PopUpState.OPEN)
 			{
 			synchronized(myGlassPieces)
-			{
+			{	
 				for(GlassPackage g : myGlassPieces)
 				{
 					if(g.state == GlassState.FINISHED)
 						temp = g;
 				}
 			}
-			if(temp != null)
+			if(temp != null )
 			{
 				takeFinishedGlass(temp, temp.operatorNumber);
 				return true;
@@ -295,7 +288,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if(status == Status.RAISED)
 			lowerPopUp();
 			
-		conveyor.msgPopUpFree();
+		//conveyor.msgPopUpFree();
 		//print(""+stateSemaphore.availablePermits());
 		try{
 			stateSemaphore.acquire();
@@ -326,6 +319,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		operators.get(operatorNumber).occupied = true;
 		g.state = GlassState.NONE;
 		state = PopUpState.OPEN;
+		conveyor.msgPopUpFree();
 		currentGlass = null;
 		stateChanged();
 	}
@@ -553,10 +547,12 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		}
 		else {
 			print("Popup " +operatorNum +"is working again");
-			if (!operators.get(operatorNum).working )
+			if (!operators.get(operatorNum).working && operators.get(operatorNum).occupied == true)
 				{operators.get(operatorNum).occupied = false;
 				operators.get(operatorNum).working = true;
 				}
+			else
+				print("Popup was not seen as broken, why would you unbreak it?");
 		}
 		stateChanged();
 	}

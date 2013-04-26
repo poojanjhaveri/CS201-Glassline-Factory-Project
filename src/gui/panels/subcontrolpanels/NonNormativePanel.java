@@ -14,7 +14,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import engine.agent.Alex.BinAgent;
+import engine.agent.Alex.Operator;
 import engine.agent.Alex.V1_GUI;
+import engine.agent.Luis.ConveyorFamilyAgent_LV;
+import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
 import engine.interfaces.ConveyorFamily;
 import gui.panels.ControlPanel;
@@ -22,7 +25,8 @@ import gui.panels.ControlPanel;
 import javax.swing.*;
 
 import shared.Barcode;
-import transducer.*;
+import transducer.TChannel;
+import transducer.Transducer;
 
 /**
  * The GlassSelectPanel class contains buttons allowing the user to select what
@@ -32,20 +36,35 @@ import transducer.*;
 public class NonNormativePanel extends JPanel
 {
 	
+	private class selectOfflineStationFromDropDown implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	Transducer transducer;
+
 	private List<ConveyorFamily> myconveyorfamilies = Collections.synchronizedList(new ArrayList<ConveyorFamily>());
 	private List<ConveyorFamily> myinlinefamilies = Collections.synchronizedList(new ArrayList<ConveyorFamily>());
-	
+
 	
 	/** The ControlPanel this is linked to */
 	private ControlPanel parent;
 	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14","Truck"};
 	String[] inlinenames = { "NCCutter", "Breakout", "Manual Breakout","Drill","Cross-Seamer","Grinder", "Washer", "UV_Lamp", "Oven","Painter" };
+	String[] offlineNames = { "Machine 1 - Up", "Machine 1- Down", "Machine 2 - Up", "Machine 2- Down","Machine 3 - Up", "Machine 3- Down"};
+	
 	TChannel[] tchannelnames = { TChannel.CUTTER,TChannel.BREAKOUT,TChannel.MANUAL_BREAKOUT,TChannel.DRILL,TChannel.CROSS_SEAMER,TChannel.GRINDER,TChannel.WASHER,TChannel.UV_LAMP,TChannel.OVEN,TChannel.PAINTER };
 	
 	JComboBox selectconv;
 	JComboBox selectinlineconv;
-	
-	Transducer transducer;
+	JComboBox selectOffline;
+	private ArrayList<ConveyorFamily> offlineConveyorFamilies;
+	private ArrayList<Operator> offlineAgents;
 	
 	/**
 	 * Creates a new GlassSelect and links it to the control panel
@@ -67,6 +86,9 @@ public class NonNormativePanel extends JPanel
 		selectinlineconv = new JComboBox(inlinenames);
 		selectinlineconv.addActionListener(new selectinlinestationfromdropdown());
 		
+		selectOffline = new JComboBox(offlineNames);
+		selectOffline.addActionListener(new selectOfflineStationFromDropDown());
+		
 		JButton breakbutton = new JButton("Break");
 		JButton unbreakbutton = new JButton("Unbreak");
 		unbreakbutton.addActionListener(new unbreakbuttonaction());
@@ -77,6 +99,10 @@ public class NonNormativePanel extends JPanel
 		unbreakinline.addActionListener(new unbreakinline());
 		breakinline.addActionListener(new breakinline());
 		
+		JButton breakOffline = new JButton("Break");
+		JButton unbreakOffline = new JButton("Unbreak");
+		unbreakOffline.addActionListener(new unbreakOffline());
+		breakOffline.addActionListener(new breakOffline());
 		
 		
 		this.add(glasschoose);
@@ -115,6 +141,18 @@ public class NonNormativePanel extends JPanel
 		c.gridx=2;
 		glasschoose.add(unbreakinline,c);
 		
+		c.gridx=0;
+		c.gridy=5;
+		glasschoose.add(new JLabel("OFFLINE"),c);
+		c.gridy=6;
+		
+		glasschoose.add(selectOffline,c);
+		c.gridx=1;
+		glasschoose.add(breakOffline,c);
+		
+		c.gridx=2;
+		glasschoose.add(unbreakOffline,c);
+		
 		
 
 		
@@ -129,10 +167,7 @@ public class NonNormativePanel extends JPanel
 	{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
-			Integer[] idx = new Integer[1];
-			idx[0] = selectconv.getSelectedIndex();
-			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_BREAK, idx);
+			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
 		}
 		
 	}
@@ -144,10 +179,7 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
-			Integer[] idx = new Integer[1];
-			idx[0] = selectconv.getSelectedIndex();
-			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_FIX, idx);
+			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
 		}
 		
 	}
@@ -176,6 +208,18 @@ public class NonNormativePanel extends JPanel
 		
 	}
 	
+	public class unbreakOffline implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("GUI unbreaking offline machine " + selectOffline.getSelectedIndex());
+			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
+			cfOffline.msgOperatorBroken(false, selectOffline.getSelectedIndex() % 2);
+		}
+		
+	}
+	
 	
 
 	public class selectglassfromdropdown implements ActionListener
@@ -199,6 +243,16 @@ public class NonNormativePanel extends JPanel
 		}
 	}
 	
+	private class breakOffline implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("GUI breaking offline machine " + selectOffline.getSelectedIndex());
+			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
+					cfOffline.msgOperatorBroken(true, selectOffline.getSelectedIndex() % 2);
+		}
+
+	}
 	
 	
 	public int booleanToNumber(boolean b) {
@@ -214,8 +268,15 @@ public class NonNormativePanel extends JPanel
 		myinlinefamilies.add(ctemp);
 		}
 	}
+	public void setOfflineConveyorFamilies(ArrayList<ConveyorFamily> cfList){
+		offlineConveyorFamilies = cfList;
+	}
 	
-	
+	public void addOfflineAgent(Operator o){
+		if (offlineAgents == null)
+			offlineAgents = new ArrayList<Operator>();
+		offlineAgents.add(o);
+	}
 	
 	/**
 	 * Returns the parent panel
@@ -225,8 +286,10 @@ public class NonNormativePanel extends JPanel
 	{
 		return parent;
 	}
-	
-	public void setTransducer (Transducer t) {
-		transducer = t;
+
+
+	public void setTransducer(Transducer transducer) {
+		// TODO Auto-generated method stub
+		this.transducer = transducer;
 	}
 }
