@@ -243,7 +243,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
 			if(event == TEvent.SENSOR_GUI_PRESSED)
 			{
-				if((Integer)args[0]==3)
+				if((Integer)args[0]==2)
 				{
 					onexitsensor((Integer)args[1]);
 			    };    	
