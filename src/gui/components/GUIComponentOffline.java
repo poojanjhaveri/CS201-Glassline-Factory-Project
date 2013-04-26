@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 
@@ -33,6 +35,8 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 	Integer popUpIndex;
 
 	TChannel channel;
+	
+	Timer timer = new Timer();
 
 	/**
 	 * Frame counter
@@ -98,7 +102,6 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		}
 		else
 		{
-
 			setIcon(imageicons.get(0));
 			counter = 0;
 
@@ -121,8 +124,10 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		}
 		if (animationState.equals(AnimationState.ANIMATING))
 		{
-			doAnimate();
+				doAnimate();
 		}
+
+			//doAnimate();
 	}
 
 	@Override
@@ -168,8 +173,14 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		{
 			if (event == TEvent.WORKSTATION_DO_ACTION)
 			{
-				animationState = AnimationState.ANIMATING;
-				return;
+				timer.schedule(new TimerTask(){
+				    public void run(){//this routine is like a message reception    ;
+						animationState = AnimationState.ANIMATING;
+						return;
+				    }
+				},10000);
+				//animationState = AnimationState.ANIMATING;
+				//return;
 			}
 			if (event == TEvent.WORKSTATION_DO_LOAD_GLASS)
 			{
