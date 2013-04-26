@@ -36,13 +36,14 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private List<MyPGlass> finishedglassonpopup = Collections.synchronizedList(new ArrayList<MyPGlass>());
 	
 	
-	private boolean finisheddone;
 	private boolean secondconveyorfree;
+	
+	private boolean inlinebroken;
 
 	private enum GlassStatusInline{NEW,CHECKING,NOPROCESSING,PROCESSING,BEINGPROCESSED, DONE,DONE2, PROCESSINGDONE};
 	public InLineMachineAgent_PJ(String string, int i, ConveyorFamily conveyorFamily,
 			Transducer transducer) {
-		// TODO Auto-generated constructor stub
+	
 		
 		this.name=string;
 		this.number=i;
@@ -74,6 +75,33 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		}
 	}
 	
+	
+	// MESSAGES
+
+		@Override
+		public void msgGlassDoesNotNeedProcessing(Glass glass) {
+			print("Glass received. Glass does not need processing");
+			
+			glassoninline.add(new MyPGlass(glass,false));
+			stateChanged();
+		}
+		
+		public void msgGlassNeedsProcessing(Glass pcglass,Boolean choice) {
+			
+			print("Glass received. Glass needs processing"+choice+pcglass.getNumber());
+			glassoninline.add(new MyPGlass(pcglass,choice));
+			stateChanged();
+		}
+		
+
+		@Override
+		public void msgIamFreeForGlass() {
+			
+			secondconveyorfree = true;
+			stateChanged();
+		}
+	
+	
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
@@ -95,7 +123,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 			    	
 					for(MyPGlass mg:glassoninline){
 				
-					    if(mg.status == GlassStatusInline.PROCESSING ){
+					    if(mg.status == GlassStatusInline.PROCESSING && !inlinebroken ){
 					    processtheglassaction(mg);
 						return true;
 					    }
@@ -106,7 +134,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		synchronized(glassoninline){
 	    	
 			for(MyPGlass mg:glassoninline){
-			    if(mg.status == GlassStatusInline.NOPROCESSING && secondconveyorfree){
+			    if(mg.status == GlassStatusInline.NOPROCESSING && secondconveyorfree && !inlinebroken){
 			    
 			    shiptheglasstonextconveyor(mg);
 				return true;
@@ -117,7 +145,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		    	synchronized(glassoninline){
 			    	
 					for(MyPGlass mg:glassoninline){
-					    if(mg.status == GlassStatusInline.PROCESSINGDONE && secondconveyorfree ){
+					    if(mg.status == GlassStatusInline.PROCESSINGDONE && secondconveyorfree && !inlinebroken ){
 					    	
 						shiptheglasstonextconveyor(mg);
 						return true;
@@ -139,13 +167,13 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 						    	}; 	
 
 		
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
 	
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
-		// TODO Auto-generated method stub
+		// 
 		print("RELEASING GLASS");
 		secondconveyorfree=false;
 		mg.status=GlassStatusInline.DONE;
@@ -166,7 +194,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 
 
 	private void processtheglassaction(MyPGlass mg) {
-		// TODO Auto-generated method stub
+		// 
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_DO_ACTION, null);
 		print("Workstation do action");
 		mg.status=GlassStatusInline.DONE2;
@@ -180,7 +208,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		// TODO Auto-generated method stub
+		
 		if(channel == TChannel.CUTTER)
 		{
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
@@ -259,27 +287,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
     }
 	
 
-	public void setConveyor(Conveyor_PJ conveyor) {
-		// TODO Auto-generated method stub
-		this.myconveyor=conveyor;
-	}
-
-	// MESSAGES
-
-	@Override
-	public void msgGlassDoesNotNeedProcessing(Glass glass) {
-		print("Glass received. Glass does not need processing");
-		// TODO Auto-generated method stub
-		glassoninline.add(new MyPGlass(glass,false));
-		stateChanged();
-	}
-	
-	public void msgGlassNeedsProcessing(Glass pcglass,Boolean choice) {
-		// TODO Auto-generated method stub
-		print("Glass received. Glass needs processing"+choice+pcglass.getNumber());
-		glassoninline.add(new MyPGlass(pcglass,choice));
-		stateChanged();
-	}
 	
 	
 	
@@ -300,22 +307,21 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	}
 
 
-	@Override
-	public void msgwakeup() {
-		// TODO Auto-generated method stub
+
+
+
+	public void setConveyor(Conveyor_PJ conveyor) {
+		
+		this.myconveyor=conveyor;
+	}
+
+	public void setbrokenstatus(boolean brokenstate) {
+		inlinebroken=true;
+		stateChanged();
 		
 	}
 
-
-	@Override
-	public void msgIamFreeForGlass() {
-		// TODO Auto-generated method stub
-		secondconveyorfree = true;
-		stateChanged();
-	}
-
-
-
+	
 	
 	
 
