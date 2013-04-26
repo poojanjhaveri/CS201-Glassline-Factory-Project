@@ -16,6 +16,7 @@ public interface InLineMachine_PJ {
 
 	void msgGlassNeedsProcessing(Glass pcglass, Boolean needsProcessing);
 
+	void msgwakeup();
 
 	void msgIamFreeForGlass();
 
