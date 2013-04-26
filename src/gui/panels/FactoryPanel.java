@@ -94,6 +94,7 @@ public class FactoryPanel extends JPanel
 
 		// initialize control panel
 		cPanel = new ControlPanel(this, transducer);
+		cPanel.setTransducer(transducer);
 
 		// initialize display panel
 		dPanel = new DisplayPanel(this, transducer);

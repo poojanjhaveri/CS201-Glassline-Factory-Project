@@ -342,6 +342,15 @@ public class GUIConveyor extends GuiComponent
 			{
 				moving = false;
 			}
+			if (event.equals(TEvent.CONVEYOR_DO_BREAK)) {
+				
+				moving = false;
+				transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_BROKEN, args);
+			}
+			if (event.equals(TEvent.CONVEYOR_DO_FIX)) {
+				//System.out.println("Fixed");
+				transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_FIXED, args);
+			}
 		}
 		// Andrew added this to check if glass leaves end conveyor.
 		// The animation always sets the end sensor index to the conveyorIndex * 2 + 1, so this is a bit of a hack.
