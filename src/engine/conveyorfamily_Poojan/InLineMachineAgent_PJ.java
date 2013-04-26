@@ -29,6 +29,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private String name;
 	private Transducer myTransducer;
 	public Conveyor_PJ myconveyor;
+	public Conveyor_PJ myhalfconveyor;
 	public ConveyorFamily MyFamily;
 	private ConveyorFamily NEXTFamily;
 
@@ -149,6 +150,8 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		print("RELEASING GLASS");
 		secondconveyorfree=false;
 		mg.status=GlassStatusInline.DONE;
+		this.myhalfconveyor.msgHereIsGlass(mg.pcglass);
+		
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
 		myconveyor.msgIamFree();
 		stateChanged();
@@ -259,9 +262,10 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
     }
 
 
-	public void setConveyor(Conveyor_PJ conveyor) {
+	public void setConveyor(Conveyor_PJ conveyor,Conveyor_PJ halfconveyor) {
 		// TODO Auto-generated method stub
 		this.myconveyor=conveyor;
+		this.myhalfconveyor=halfconveyor;
 	}
 
 	// MESSAGES
@@ -307,6 +311,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	public void msgIamFreeForGlass() {
 		// TODO Auto-generated method stub
 		secondconveyorfree = true;
+		print("SECOND CONVEYOR FREE : true");
 		stateChanged();
 	}
 

@@ -1,6 +1,7 @@
 package engine.conveyorfamily.Interfaces_Poojan;
 
 import mocks_PJ.MockOperator;
+import shared.Glass;
 import transducer.TChannel;
 import transducer.TEvent;
 
@@ -16,5 +17,6 @@ public interface Conveyor_PJ {
 	
 	public void setisINLINEBusy(Boolean s);
 
+	public void msgHereIsGlass(Glass pcglass);
 	
 }

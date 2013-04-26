@@ -16,6 +16,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 {
 	private int ConveryorFamilyNo;
 	private ConveyorAgent_PJ conveyor;
+	private HalfConveyorAgent halfconveyor;
 	private PopupAgent_PJ popup;
 	private InLineMachineAgent_PJ inline;
 	private ConveyorFamily nextConveyorFamily;
@@ -35,10 +36,10 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.popup = new PopupAgent_PJ("MyPopup",number,this,transducer);
 		
 		this.inline = new InLineMachineAgent_PJ("NCCUTTER",number,this,transducer);
-		
 
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
-		this.inline.setConveyor(conveyor);
+		this.halfconveyor = new HalfConveyorAgent("HalfConveyor",number+1,this,transducer, popup, inline,cprev);
+		this.inline.setConveyor(conveyor,halfconveyor);
 	//	this.popup.setConveyor(conveyor);
 		 isNextConveyorFamilyBusy=false;
 	}
@@ -68,7 +69,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void msgIAmFree() {
 		System.out.println("My CFnumber is"+this.ConveryorFamilyNo+"I am Free received from NEXT CONVEYOR FAMILY");
 		isNextConveyorFamilyBusy=false;
-		this.conveyor.msgIsNextConveyorFamilyBusy();
+	//	this.conveyor.msgIsNextConveyorFamilyBusy();
+		this.halfconveyor.msgIsNextConveyorFamilyBusy();
 		
 	}
 
@@ -112,7 +114,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		// TODO Auto-generated method stub
 		nextConveyorFamily=c3;
 		this.conveyor.NEXTFamily=nextConveyorFamily;
-		
+		this.halfconveyor.NEXTFamily=nextConveyorFamily;
 	}
 
 
@@ -120,7 +122,9 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void startThreads() {
 		// TODO Auto-generated method stub
 		this.conveyor.startThread();
+		this.halfconveyor.startThread();
 		this.inline.startThread();
+		
 		//this.popup.startThread();
 	}
 
@@ -137,6 +141,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
 		conveyor.setbrokenstatus(s,conveyorno);
+		halfconveyor.setbrokenstatus(s, conveyorno);
 	}
 
 
