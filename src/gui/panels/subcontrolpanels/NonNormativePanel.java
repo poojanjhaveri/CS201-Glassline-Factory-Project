@@ -248,7 +248,7 @@ public class NonNormativePanel extends JPanel
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("GUI breaking offline machine " + selectOffline.getSelectedIndex());
 			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
-					cfOffline.msgOperatorBroken(true, selectOffline.getSelectedIndex());
+					cfOffline.msgOperatorBroken(true, selectOffline.getSelectedIndex() % 2);
 		}
 
 	}

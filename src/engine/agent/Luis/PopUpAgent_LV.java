@@ -174,11 +174,16 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	/*
 	 * SCHEDULER
 	 */
-	
+	boolean notifiedBusy = false;
 	public boolean pickAndExecuteAnAction() {
 
 		GlassPackage temp = null;
-		
+		//temp solution
+		if ((getOperatorStatus(0) == true && getOperatorStatus(1) == true && !notifiedBusy)){
+			notifiedBusy = true;
+			conveyor.msgPopUpBusy();
+			return true;
+		}
 		if(state == PopUpState.OPEN)
 		{
 			synchronized(myGlassPieces)
@@ -193,6 +198,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			{
 				if((!temp.glass.getRecipe(channel)) || (getOperatorStatus(0) == false || getOperatorStatus(1) == false))
 				{
+					notifiedBusy = false;
 					takeGlass(temp);
 					return true;
 				}
@@ -272,11 +278,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				return true;	
 			}
 		}
-		//tweak
-		if(myGlassPieces.size()==0){
-			while(stateSemaphore.tryAcquire());
-			return true;
-		}
+		
+
 		
 
 		return false;
@@ -536,11 +539,13 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 
 	public void msgOperatorBroken(boolean isBroken, int operatorNum) {
+
 		if (isBroken){
 			print("Popup " +operatorNum + " is broken, not using");
 			if (operators.get(operatorNum).working && !operators.get(operatorNum).occupied)
-				operators.get(operatorNum).occupied = false;
-				
+				{operators.get(operatorNum).occupied = true;
+				operators.get(operatorNum).working = false;
+				}
 			else {
 				print("Already broken or occupied!");
 			}
@@ -549,9 +554,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		else {
 			print("Popup " +operatorNum +"is working again");
 			if (!operators.get(operatorNum).working )
-				operators.get(operatorNum).occupied = true;
+				{operators.get(operatorNum).occupied = false;
+				operators.get(operatorNum).working = true;
+				}
 		}
-		
+		stateChanged();
 	}
 
 
