@@ -22,7 +22,7 @@ import gui.panels.ControlPanel;
 import javax.swing.*;
 
 import shared.Barcode;
-import transducer.TChannel;
+import transducer.*;
 
 /**
  * The GlassSelectPanel class contains buttons allowing the user to select what
@@ -45,6 +45,7 @@ public class NonNormativePanel extends JPanel
 	JComboBox selectconv;
 	JComboBox selectinlineconv;
 	
+	Transducer transducer;
 	
 	/**
 	 * Creates a new GlassSelect and links it to the control panel
@@ -128,7 +129,10 @@ public class NonNormativePanel extends JPanel
 	{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
+			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
+			Integer[] idx = new Integer[1];
+			idx[0] = selectconv.getSelectedIndex();
+			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_BREAK, idx);
 		}
 		
 	}
@@ -140,7 +144,10 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
+			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
+			Integer[] idx = new Integer[1];
+			idx[0] = selectconv.getSelectedIndex();
+			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_FIX, idx);
 		}
 		
 	}
@@ -217,5 +224,9 @@ public class NonNormativePanel extends JPanel
 	public ControlPanel getGuiParent()
 	{
 		return parent;
+	}
+	
+	public void setTransducer (Transducer t) {
+		transducer = t;
 	}
 }

@@ -79,6 +79,15 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 				}
 			}
 		}
+		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == conveyorIndex ) ) {
+			if(event == TEvent.CONVEYOR_BROKEN) {
+				Do("Get Notified that Conveyor is Broken");
+				conveyorState = ConveyorState.NEED_BREAK;
+			} else if (event == TEvent.CONVEYOR_FIXED) {
+				Do("Get Notified that Conveyor is Fixed");
+				conveyorState = ConveyorState.NEED_RUN;
+			}
+		}
 		stateChanged();
 	}
 
@@ -197,9 +206,9 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	public void breakConveyor() {
 		Do("Breaking conveyor");
 		
-		Integer[] idx = new Integer[1];
+		/*Integer[] idx = new Integer[1];
 		idx[0] = conveyorIndex;
-		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, idx);
+		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, idx);*/
 		conveyorState = ConveyorState.BROKEN;
 
 	}
@@ -279,6 +288,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	public void setTransducer(Transducer t) {
 		transducer = t;
 		transducer.register(this, TChannel.SENSOR);
+		transducer.register(this, TChannel.CONVEYOR);
 	}
 	
 	//Tests
