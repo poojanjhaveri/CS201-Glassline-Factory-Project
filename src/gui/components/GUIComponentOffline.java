@@ -173,14 +173,9 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		{
 			if (event == TEvent.WORKSTATION_DO_ACTION)
 			{
-				timer.schedule(new TimerTask(){
-				    public void run(){//this routine is like a message reception    ;
-						animationState = AnimationState.ANIMATING;
-						return;
-				    }
-				},10000);
-				//animationState = AnimationState.ANIMATING;
-				//return;
+
+				animationState = AnimationState.ANIMATING;
+				return;
 			}
 			if (event == TEvent.WORKSTATION_DO_LOAD_GLASS)
 			{
