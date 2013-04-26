@@ -75,8 +75,6 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	public void msgIHaveFinishedGlass(Operator_PJ o) {
 		// TODO Auto-generated method stub
-		System.out.println("operator has finished processing Glass");
-		
 		this.popup.msgOperatorHasFinishedGlass(o);
 		
 	}

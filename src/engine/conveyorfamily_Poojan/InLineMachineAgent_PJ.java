@@ -81,7 +81,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		@Override
 		public void msgGlassDoesNotNeedProcessing(Glass glass) {
 			print("Glass received. Glass does not need processing");
-			
 			glassoninline.add(new MyPGlass(glass,false));
 			stateChanged();
 		}
@@ -218,8 +217,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 					    if(mg.status == GlassStatusInline.NEW ){
 					    	print("cutter called");
 						mg.status=GlassStatusInline.CHECKING;
-						
-						
 						stateChanged();
 						return;
 					    }	
@@ -235,7 +232,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 						 if(mg.status == GlassStatusInline.DONE2 ){
 							 mg.status=GlassStatusInline.PROCESSINGDONE;
 							 print("Load fininshed");
-							 
 								stateChanged();
 								return;
 							    }	
