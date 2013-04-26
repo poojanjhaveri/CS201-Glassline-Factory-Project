@@ -26,6 +26,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	SensorState sensorTwo = SensorState.NULL;
 	ConveyorFamily previousFamily;
 	Transducer t;
+	private ConveyorFamilyAgent_LV parentCF;
 	
 	public class MyPopUp
 	{
@@ -39,8 +40,9 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		}
 	}
 	
-	public ConveyorAgent_LV(String s, int i)
+	public ConveyorAgent_LV(String s, int i, ConveyorFamilyAgent_LV parent)
 	{
+		parentCF = parent;
 		name = s;
 		index = i;
 		glassPieces = Collections.synchronizedList(new ArrayList<Glass>());
@@ -142,7 +144,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	{
 		stopConveyor();
 		print("Letting popup know glass is waiting");
-		myPopUp.popUp.msgIHaveGlassReady(glassPieces.get(0));
+		myPopUp.popUp.msgIHaveGlassReady(glassPieces.get(0).getRecipe(parentCF.popup.channel));
 	}
 	
 	private void moveToPopUp()
@@ -257,9 +259,6 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		setPopUp(popup);
 	}
 
-	public void msgIAmFree() {
-		
-	}
 
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 	
@@ -279,6 +278,12 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 
 	public void startThreads() {
 		this.startThread();
+	}
+
+	@Override
+	public void msgIAmFree() {
+		// TODO Auto-generated method stub
+		msgPopUpFree();
 	}
 	
 }

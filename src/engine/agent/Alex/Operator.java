@@ -79,7 +79,7 @@ public class Operator extends Agent{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		Do("Scheduler running");
+		//Do("Scheduler running");
 		if (!glasses.isEmpty() && glasses.get(0).lState == LoadingState.Waiting)
 		{
 			loadGlass();

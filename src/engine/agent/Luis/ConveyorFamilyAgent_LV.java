@@ -13,11 +13,12 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 	PopUpAgent_LV popup;
 	Transducer t;
 	ConveyorFamily previousFamily, nextFamily;
+	public TChannel mychannel;
 	
 	public ConveyorFamilyAgent_LV(int i, Transducer trans, int popupIndex)
 	{
 		index = i;
-		conveyor = new ConveyorAgent_LV("Conveyor " + index, index);
+		conveyor = new ConveyorAgent_LV("Conveyor " + index, index, this);
 		popup = new PopUpAgent_LV("PopUp " + index, popupIndex);
 		conveyor.setInteractions(previousFamily, popup, trans);
 		popup.setInteractions(nextFamily, conveyor, trans);
@@ -31,7 +32,7 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {
 		
-		popup.msgHereIsFinishedGlass(glass);
+		popup.msgHereIsFinishedGlass(operator,glass);
 		
 	}
 
@@ -98,4 +99,5 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		popup.msgOperatorBroken(i, operatorNum);
 		
 	}
+
 }

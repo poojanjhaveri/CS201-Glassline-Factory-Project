@@ -12,13 +12,12 @@ public interface PopUp_LV
 {
 	public abstract void msgIAmFree();
 	
-	public abstract void msgIHaveGlassReady(Glass glass);
 
 	public abstract void msgHereIsGlass(Glass glass); 
 
 	public abstract void msgIHaveGlassFinished(Operator operator); 
 	
-	public abstract void msgHereIsFinishedGlass(Glass glass); 
+	public abstract void msgHereIsFinishedGlass(Operator operator,Glass glass); 
 	
 	public abstract void msgCannotPass();
 
@@ -31,5 +30,9 @@ public interface PopUp_LV
 	public abstract void setInteractions(ConveyorFamily cf, Conveyor_LV c, Transducer trans);
 	
 	public abstract String getName();
+
+
+
+	public abstract void msgIHaveGlassReady(boolean needsProc);
 	
 }
