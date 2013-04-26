@@ -34,7 +34,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.transducer=transducer2;
 		this.popup = new PopupAgent_PJ("MyPopup",number,this,transducer);
 		
-		this.inline = new InLineMachineAgent_PJ("MyInline",number,this,transducer);
+		this.inline = new InLineMachineAgent_PJ("NCCUTTER",number,this,transducer);
 		
 
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);

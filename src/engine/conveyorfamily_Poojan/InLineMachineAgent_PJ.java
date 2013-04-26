@@ -146,6 +146,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
+		print("RELEASING GLASS");
 		secondconveyorfree=false;
 		mg.status=GlassStatusInline.DONE;
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
@@ -310,7 +311,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	public void msgIamFreeForGlass() {
 		// TODO Auto-generated method stub
 		secondconveyorfree = true;
-		
+		stateChanged();
 	}
 
 

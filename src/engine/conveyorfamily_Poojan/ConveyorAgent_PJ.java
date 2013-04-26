@@ -36,7 +36,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 	private InLineMachine_PJ myinline;
 	
-	public enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY, ONLASTSENSOR, ONLASTSENSORSTOP};
+	public enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY, ONLASTSENSOR, ONLASTSENSORSTOP, ONTHIRDSENSOR, THIRDSENSORDONE};
 	
 	private Boolean isPopUpBusy;
 	private Boolean isINLINEBusy;
@@ -58,7 +58,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private Boolean secondconveyorfree;
 	
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
-	
 	
 	
 	
@@ -208,6 +207,21 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				 }
 			 }
 		 };  
+		 
+		 
+		 synchronized(glassonconveyor){
+		    	
+			 for(MyCGlass mg:glassonconveyor){
+						
+				 if(mg.status == GlassStatusConveyor.ONTHIRDSENSOR && !isNextConveyorFamilyBusy &&conveyor1!=ConveyorState.Jammed ){
+					 {
+						 print("STATUS : ON THE THIRD SENSOR");
+						mediatingconveyorstart(mg);
+					 return true;
+					 }			
+				 }
+			 }
+		 };
 		 
 		 
 		 
@@ -380,7 +394,8 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			{
 				if((Integer)args[0]==2)
 				{	
-					mediatingconveyorstart();
+					//mediatingconveyorstart();
+					OnThirdSensor((Integer)args[1]);
 				}
 			}
 			
@@ -415,6 +430,27 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 	
 
+
+
+
+	private void OnThirdSensor(Integer glassno) {
+		// 
+		synchronized(glassonconveyor){
+			for(MyCGlass mg:glassonconveyor){
+			
+				if(mg.pcglass.getNumber() == glassno){
+					{
+						mg.status=GlassStatusConveyor.ONTHIRDSENSOR;
+						stateChanged();
+						return;
+					}
+				}
+			}
+			}
+		
+		
+		
+	}
 
 
 
@@ -539,7 +575,21 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	
 	
 
-	private void mediatingconveyorstart() {
+	private void mediatingconveyorstart(MyCGlass mg) {
+		
+		
+		print("NEXTCONVEYORFAMILY STATUS"+isNextConveyorFamilyBusy);
+		
+		Object[] cno ={1};
+		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
+		conveyor1=ConveyorState.Running;
+		mg.status=GlassStatusConveyor.THIRDSENSORDONE;
+		 stateChanged();
+	}
+		
+	
+	/*
+private void mediatingconveyorstart(MyCGlass mg) {
 		
 		
 		print("NEXTCONVEYORFAMILY STATUS"+isNextConveyorFamilyBusy);
@@ -560,7 +610,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		}
 		 stateChanged();
 	}
-		
+*/
 	
 	
 	public String getName(){
