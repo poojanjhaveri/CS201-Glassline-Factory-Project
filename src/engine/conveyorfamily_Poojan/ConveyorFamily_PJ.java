@@ -142,7 +142,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	@Override
 	public void setInlineBroken(boolean s, TChannel channel) {
-		inline.setbrokenstatus(s);
+		
 	}
 
 	
