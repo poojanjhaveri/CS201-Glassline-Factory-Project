@@ -119,7 +119,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			{
 				if(g.glass == glass)
 				{
-					g.state = GlassState.WAITING;
+					g.state = GlassState.INCOMING;
 					currentGlass = g;
 					stateChanged();
 					return;
@@ -303,6 +303,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		state = PopUpState.FULL;
 		g.state = GlassState.WAITING;
 		conveyor.msgPopUpBusy();
+		stateChanged();
 	}
 	
 	private void giveGlassToOperator(GlassPackage g, int operatorNumber)
@@ -323,6 +324,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		g.state = GlassState.NONE;
 		state = PopUpState.OPEN;
 		currentGlass = null;
+		stateChanged();
 	}
 	
 	private void moveGlass(GlassPackage g)
@@ -345,6 +347,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		conveyor.msgPopUpFree();
 		currentGlass = null;
 		nextComponentFree= false;
+		stateChanged();
 	}
 	
 	private void checkGlass(GlassPackage g)
@@ -354,6 +357,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			g.state = GlassState.NEEDS_WORK;
 		else
 			g.state = GlassState.MOVE;
+		
+		stateChanged();
 	}
 	
 	private void lowerPopUp()
@@ -407,6 +412,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		operators.get(operatorNum).occupied = false;
 		g.state = GlassState.MOVE;
 		state = PopUpState.FULL;
+		stateChanged();
 	}
 	
 	
