@@ -9,6 +9,7 @@ import engine.agent.Dongyoung.Mock.MockNextFamily;
 import engine.agent.Dongyoung.Mock.MockPreviousFamily;
 import engine.agent.Dongyoung.Mock.TestAni;
 */
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -280,6 +281,16 @@ public class FactoryPanel extends JPanel
 		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,false);
 		this.cPanel.nonNormPanel.setConveyorFamily(dongyoungFamily,false);
 		this.cPanel.nonNormPanel.setConveyorFamily(truck,false);
+		
+		ArrayList<ConveyorFamily> cfListOffline = new ArrayList<ConveyorFamily>();
+		cfListOffline.add(c5);cfListOffline.add(c6);cfListOffline.add(c7);
+		this.cPanel.nonNormPanel.setOfflineConveyorFamilies(cfListOffline);
+		this.cPanel.nonNormPanel.addOfflineAgent(o5up);
+		this.cPanel.nonNormPanel.addOfflineAgent(o5down);
+		this.cPanel.nonNormPanel.addOfflineAgent(o5up);
+		this.cPanel.nonNormPanel.addOfflineAgent(o6down);
+		this.cPanel.nonNormPanel.addOfflineAgent(o7up);
+		this.cPanel.nonNormPanel.addOfflineAgent(o7down);
 		
 		
 		

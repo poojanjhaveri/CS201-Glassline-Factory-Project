@@ -92,4 +92,10 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void msgOperatorBroken(boolean i, int operatorNum) {
+		System.out.println("Recieved message that operator" + operatorNum + "is/isnt working");
+		popup.msgOperatorBroken(i, operatorNum);
+		
+	}
 }

@@ -44,7 +44,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		Operator operator;
 		int number;
 		TChannel channel;
-		boolean occupied;
+		boolean occupied, working = true;
 		Semaphore semaphore = new Semaphore(0,true);
 		
 		public Machine(Operator o, TChannel t, boolean b,  int n)
@@ -532,6 +532,26 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	public void setInteractions(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
 		next = c3;
+	}
+
+
+	public void msgOperatorBroken(boolean isBroken, int operatorNum) {
+		if (isBroken){
+			print("Popup " +operatorNum + " is broken, not using");
+			if (operators.get(operatorNum).working && !operators.get(operatorNum).occupied)
+				operators.get(operatorNum).occupied = false;
+				
+			else {
+				print("Already broken or occupied!");
+			}
+			
+		}
+		else {
+			print("Popup " +operatorNum +"is working again");
+			if (!operators.get(operatorNum).working )
+				operators.get(operatorNum).occupied = true;
+		}
+		
 	}
 
 

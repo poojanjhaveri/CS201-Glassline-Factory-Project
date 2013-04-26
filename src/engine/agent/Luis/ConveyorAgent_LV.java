@@ -124,7 +124,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		print("starting conveyor");
 		Integer[] args = new Integer[1];
 		args[0] = index;
-		t.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, args);
+		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, args);
 		moving = true; 
 		state = ConveyorState.FIXED;
 	}
@@ -134,7 +134,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		print("stopping conveyor");
 		Integer[] args = new Integer[1];
 		args[0] = index;
-		t.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, args);
+		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, args);
 		moving = false; 
 	}
 	
@@ -213,8 +213,8 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	{
 		previousFamily = cf;
 		myPopUp = new MyPopUp(popUp);
-		t = trans;
-		t.register(this, TChannel.SENSOR);
+		transducer = trans;
+		trans.register(this, TChannel.SENSOR);
 	}
 	
 	public PopUp_LV getPopUp()
@@ -229,8 +229,8 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	
 	public void setTransducer(Transducer trans)
 	{
-		t = trans;
-		t.register(this, TChannel.SENSOR);
+		transducer = trans;
+		transducer.register(this, TChannel.SENSOR);
 	}
 	
 	public ConveyorFamily getPrevious()
