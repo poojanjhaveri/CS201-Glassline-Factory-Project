@@ -215,7 +215,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 				 if(mg.status == GlassStatusConveyor.ONTHIRDSENSOR && !isNextConveyorFamilyBusy &&conveyor1!=ConveyorState.Jammed ){
 					 {
-						 print("STATUS : ON THE THIRD SENSOR");
+						print("STATUS : ON THE THIRD SENSOR");
 						mediatingconveyorstart(mg);
 					 return true;
 					 }			
@@ -224,6 +224,10 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		 };
 
 
+		
+		 
+		 
+		 
 
 		 synchronized(glassonconveyor){
 
@@ -257,6 +261,8 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			 }
 		 };
 
+		 
+	
 
 
 		 synchronized(glassonconveyor){
@@ -344,6 +350,15 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
     	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
     	mg.status=GlassStatusConveyor.ONEXITSENSOR;
     	conveyor0=ConveyorState.Running;
+    	stateChanged();
+	}
+	
+	
+	private void starttheconveyor1() {
+		print("start conveyor 1");
+		Object [] no={this.getNumber()+1};
+    	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
+    	conveyor1=ConveyorState.Running;
     	stateChanged();
 	}
 
@@ -584,6 +599,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,cno);
 		conveyor1=ConveyorState.Running;
 		mg.status=GlassStatusConveyor.THIRDSENSORDONE;
+		print("THIRD SENSOR DONE");
 		 stateChanged();
 	}
 
@@ -703,6 +719,7 @@ private void mediatingconveyorstart(MyCGlass mg) {
 
 	public void msgIsNextConveyorFamilyBusy() {
 		// TODO Auto-generated method stub
+		
 		isNextConveyorFamilyBusy=false;
 		stateChanged();
 	}
