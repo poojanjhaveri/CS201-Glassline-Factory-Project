@@ -139,10 +139,10 @@ public class Conveyor extends Component implements TReceiver{
 				stateChanged();
 			}
 		}
-		else if(args[0] == conveyorNum &&  event == TEvent.CONVEYOR_BROKEN ){
+		else if(args[0] == conveyorNum[0] && event == TEvent.CONVEYOR_BROKEN ){
 			broken = true;
 		}
-		else if(args[0] == conveyorNum && event == TEvent.CONVEYOR_FIXED ){
+		else if(args[0] == conveyorNum[0] && event == TEvent.CONVEYOR_FIXED ){
 			fix = true;
 			stateChanged();
 		}
