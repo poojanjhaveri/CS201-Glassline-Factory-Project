@@ -50,10 +50,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	ConveyorState conveyor0;
 	ConveyorState conveyor1;
 
-	SensorState sensor0;
-	SensorState sensor1;
-	SensorState sensor2;
-	SensorState sensor3;
 
 	private Boolean secondconveyorfree;
 
@@ -73,12 +69,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	myTransducer = transducer;
 
 	conveyor0=ConveyorState.Need_Run;
-
-	sensor0=SensorState.None;
-	sensor1=SensorState.None;
-	sensor2=SensorState.None;
-	sensor3=SensorState.None;
-
 
 	myTransducer.register(this, TChannel.CUTTER);
 	myTransducer.register(this, TChannel.SENSOR);
@@ -390,6 +380,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			    };    	
 			}
 
+			/*
 			if(event == TEvent.SENSOR_GUI_PRESSED)
 			{
 				if((Integer)args[0]==2)
@@ -410,7 +401,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				}
 
 			}
-
+	
 
 
 
@@ -422,7 +413,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 				}
 			}
-
+*/
 
 		}
 
