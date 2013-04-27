@@ -15,7 +15,7 @@ public class ConveyorAgent extends Agent {
 	private enum NextCFStatus {BUSY, FREE};
 	private enum SensorState {DOWN, UP};
 	private enum ConveyorState {STOPPED, RUNNING};
-	private enum BreakConveyor {BROKEN, NEED_BREAK, RUNNING, NEED_RUN};
+	private enum BreakConveyor {BROKEN, RUNNING, NEED_RUN};
 
 	private BreakConveyor breakConveyor;
 	
@@ -110,7 +110,6 @@ public class ConveyorAgent extends Agent {
 	private void axnFixConveyor() {
 		// TODO Auto-generated method stub
 			axnStartConveyor();
-			entryAgent.msgConveyorFree();
 			breakConveyor = BreakConveyor.RUNNING;
 
 	}
@@ -152,12 +151,13 @@ public class ConveyorAgent extends Agent {
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		if (channel == TChannel.CONVEYOR && (Integer) (args[0]) == conveyorIndex) {
-			if (event == TEvent.CONVEYOR_BROKEN && breakConveyor != BreakConveyor.BROKEN) {
-				breakConveyor = BreakConveyor.BROKEN;
-				stateChanged();
+			if (event == TEvent.CONVEYOR_BROKEN) {
+				setConveyorBroken(true);
+				print("Conveyor set as Broken");
 			}
-			else if (event == TEvent.CONVEYOR_FIXED && breakConveyor != BreakConveyor.RUNNING) {
-				breakConveyor = BreakConveyor.NEED_RUN;
+			else if (event == TEvent.CONVEYOR_FIXED) {
+				setConveyorBroken(false);
+				print("Conveyor set as fixed");
 				stateChanged();
 			}
 		}
@@ -165,9 +165,10 @@ public class ConveyorAgent extends Agent {
 
 
 	public void setConveyorBroken(boolean s) {
-		if (s && breakConveyor != BreakConveyor.BROKEN)
-			breakConveyor = BreakConveyor.NEED_BREAK;
-		else if (!s && breakConveyor != BreakConveyor.RUNNING)
+		
+		if (s )
+			breakConveyor = BreakConveyor.BROKEN;
+		else if (!s)
 			breakConveyor = BreakConveyor.NEED_RUN;
 		stateChanged();
 	}

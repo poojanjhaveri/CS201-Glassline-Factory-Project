@@ -8,6 +8,10 @@ import transducer.TChannel;
 import transducer.TEvent;
 import transducer.Transducer;
 import engine.agent.Agent;
+import engine.agent.Luis.ConveyorAgent_LV;
+import engine.agent.Luis.ConveyorFamilyAgent_LV;
+import engine.agent.Luis.PopUpAgent_LV;
+import engine.agent.Luis.Interface.PopUp_LV;
 import engine.interfaces.ConveyorFamily;
 
 public class Operator extends Agent{
@@ -19,13 +23,19 @@ public class Operator extends Agent{
 		mychannel = tc;
 		workstation_number = workStationNum ;
 		glasses = new ArrayList<MyGlass>();
+		breakNextGlassPiece = false;
 	}
 	/*
 	 * DATA
 	*****/
+	enum LoadingState {Waiting, Loading, Loaded};
+	enum MachiningState {Waiting, Machining, Finished};
+	private Transducer transducer;
+	private TChannel mychannel;
+	boolean breakNextGlassPiece;
 	
 	int workstation_number;
-	ConveyorFamily cf;
+	ConveyorFamilyAgent_LV myPopupAgent;
 	ArrayList<MyGlass> glasses; //should only have one piece, but just in case
 	class MyGlass{
 		public Glass glass;
@@ -40,10 +50,7 @@ public class Operator extends Agent{
 	 * Messages
 	 *
 	 */
-	enum LoadingState {Waiting, Loading, Loaded};
-	enum MachiningState {Waiting, Machining, Finished};
-	private Transducer transducer;
-	private TChannel mychannel;
+
 	
 	public void msgHereIsGlass(Glass g){
 		Do("Received a glass");
@@ -61,9 +68,18 @@ public class Operator extends Agent{
 	}
 	//from tr
 	public void msgLoadFinished(){
-		print("Load finished");
-		glasses.get(0).lState = LoadingState.Loaded;
-		stateChanged();
+		if (!glasses.isEmpty())
+		{
+			print("Load finished");
+			
+			glasses.get(0).lState = LoadingState.Loaded;
+			stateChanged();
+		}
+		else
+		{
+			print("Glass couldn't be found, must be broken/taken off line");
+		}
+			
 	}
 	private void msgReleaseFinished() {
 		// TODO Auto-generated method stub
@@ -88,8 +104,10 @@ public class Operator extends Agent{
 		if (!glasses.isEmpty() && glasses.get(0).mState == MachiningState.Waiting 
 				 && glasses.get(0).lState == LoadingState.Loaded)
 		{
-			Do("I reached here.");
-			machineGlass(glasses.get(0));
+			if (breakNextGlassPiece)
+				breakGlass(glasses.get(0));
+			else
+				machineGlass(glasses.get(0));
 			return true;
 		}
 		return false;
@@ -112,6 +130,21 @@ public class Operator extends Agent{
 	/*
 	Actions
 	*/
+
+	private void breakGlass(MyGlass myGlass) {
+		print("AXN, breaking glass");
+		breakNextGlassPiece = false;
+		print("Removing glass");
+		glasses.remove(myGlass);
+		myPopupAgent.msgIHaveNoGlass(this);
+		try {
+			popup.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	private void loadGlass() {
 		// TODO Auto-generated method stub
@@ -134,7 +167,7 @@ public class Operator extends Agent{
 			e.printStackTrace();
 		}
 		print("Done machining glass piece" + myGlass.glass.getNumber());
-		cf.msgIHaveGlassFinished(this);
+		myPopupAgent.msgIHaveGlassFinished(this);
 		try {
 			popup.acquire();
 		} catch (InterruptedException e) {
@@ -142,7 +175,7 @@ public class Operator extends Agent{
 			e.printStackTrace();
 		}
 		Glass g = glasses.remove(0).glass;
-		cf.msgHereIsFinishedGlass(this,g);
+		myPopupAgent.msgHereIsFinishedGlass(this,g);
 		print("Releasing glass");
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_RELEASE_GLASS, args);
 		print("Released glass piece to popup, glass #" + myGlass.glass.getNumber());
@@ -157,7 +190,7 @@ public class Operator extends Agent{
 		t.register(this, mychannel);
 	}
 	
-	public void setConveyorFamily(ConveyorFamily cft) {
-		cf = cft;
+	public void setConveyorFamily(ConveyorFamily c5) {
+		this.myPopupAgent = (ConveyorFamilyAgent_LV) c5;
 	}
 }

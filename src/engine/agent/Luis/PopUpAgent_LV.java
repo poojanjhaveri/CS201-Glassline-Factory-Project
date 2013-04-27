@@ -146,7 +146,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		//waitingForOperatorToGiveBack.release();
 		
 	} 
-	
+
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) 
 	{
 		
@@ -154,6 +154,10 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		myGlassPieces.add(g);
 		currentGlass = g;
 		waitingForFinshedGlass.release();
+	}
+	public void msgIHaveNoGlass(Operator operator) {
+		waitingForFinshedGlass.release();
+		currentGlass = null;
 	}
 	
 	public void msgCannotPass()
@@ -303,17 +307,25 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		print("Message that finished glass is here recieved, waiting for load..");
-		//load finished
-		try {
-			stateSemaphore.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (currentGlass == null){
+			print("No glass returned, lost by machine");
+			machine.occupied = false;
 		}
-		machine.occupied = false;
-		machine.readyToGiveFinishedGlass = false;
-		state = PopUpState.FULL;
+		else{
+			
+			
+			print("Message that finished glass is here recieved, waiting for load..");
+			//load finished
+			try {
+				stateSemaphore.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			machine.occupied = false;
+			machine.readyToGiveFinishedGlass = false;
+			state = PopUpState.FULL;
+		}
 		
 	}
 
