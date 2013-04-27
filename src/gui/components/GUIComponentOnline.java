@@ -29,8 +29,6 @@ public class GUIComponentOnline extends GuiAnimationComponent implements ActionL
 
 	boolean releasePart = false;
 
-	boolean broken = false;
-	
 	int originalY;
 
 	int imageCounter = 0;
@@ -198,19 +196,18 @@ public class GUIComponentOnline extends GuiAnimationComponent implements ActionL
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if(! broken) {
-			if (animationState == AnimationState.MOVING)
-			{
-				movePartsIn();
-			}
-			else if (animationState == AnimationState.ANIMATING)
-			{
-				doAnimate();
-			}
-			else if (animationState == AnimationState.DONE)
-			{
-				movePartsOut();
-			}
+
+		if (animationState == AnimationState.MOVING)
+		{
+			movePartsIn();
+		}
+		else if (animationState == AnimationState.ANIMATING)
+		{
+			doAnimate();
+		}
+		else if (animationState == AnimationState.DONE)
+		{
+			movePartsOut();
 		}
 
 		repaint();
@@ -334,28 +331,12 @@ public class GUIComponentOnline extends GuiAnimationComponent implements ActionL
 		{
 			if (event == TEvent.WORKSTATION_DO_ACTION)
 			{
-				if(! broken) 
-					animationState = AnimationState./*MOVING*/ANIMATING;//changed by monroe
-				else
-					System.out.println("ONLINE WORKSTATION "+this.channel.toString()+" : GUI BROKEN, CAN'T PROCESS THE REQUEST.");
+				animationState = AnimationState./*MOVING*/ANIMATING;//changed by monroe
 			}
 			if (event == TEvent.WORKSTATION_RELEASE_GLASS)
 			{
-				if(! broken) {
-					animationState = AnimationState.DONE;
-					releasePart = true;
-				} else
-					System.out.println("ONLINE WORKSTATION "+this.channel.toString()+" : GUI BROKEN, CAN'T PROCESS THE REQUEST.");
-			}
-			if (event == TEvent.WORKSTATION_DO_BREAK)
-			{
-				transducer.fireEvent(this.channel, TEvent.WORKSTATION_BROKEN, null);
-				broken = true;
-			}
-			if (event == TEvent.WORKSTATION_DO_FIX)
-			{
-				transducer.fireEvent(this.channel, TEvent.WORKSTATION_FIXED, null);
-				broken = false;
+				animationState = AnimationState.DONE;
+				releasePart = true;
 			}
 		}
 

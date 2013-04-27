@@ -203,8 +203,8 @@ public class NonNormativePanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-			//myinlinefamilies.get(selectinlineconv.getSelectedIndex()).setInlineBroken(true,tchannelnames[selectinlineconv.getSelectedIndex()]);
-			transducer.fireEvent(tchannelnames[selectinlineconv.getSelectedIndex()], TEvent.WORKSTATION_DO_BREAK, null);
+			myinlinefamilies.get(selectinlineconv.getSelectedIndex()).setInlineBroken(true,tchannelnames[selectinlineconv.getSelectedIndex()]);
+
 		}
 		
 	}
@@ -216,8 +216,7 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			//myinlinefamilies.get(selectinlineconv.getSelectedIndex()).setInlineBroken(false,tchannelnames[selectinlineconv.getSelectedIndex()]);
-			transducer.fireEvent(tchannelnames[selectinlineconv.getSelectedIndex()], TEvent.WORKSTATION_DO_FIX, null);
+			myinlinefamilies.get(selectinlineconv.getSelectedIndex()).setInlineBroken(false,tchannelnames[selectinlineconv.getSelectedIndex()]);
 		}
 		
 	}
