@@ -119,6 +119,9 @@ public class ControlPanel extends JPanel implements TReceiver
 		UIManager.put("TabbedPane.selected", Color.gray);
 
 		JTabbedPane selectTabbedPanel = new JTabbedPane(JTabbedPane.TOP);
+		//POOJAN
+		selectTabbedPanel.setPreferredSize(new Dimension(350, 400));
+		
 		selectTabbedPanel.add("Glass Select", glassSelectPanel);
 		selectTabbedPanel.add("Non Norms", nonNormPanel);
 		selectTabbedPanel.setBackground(Color.black);
@@ -156,6 +159,7 @@ public class ControlPanel extends JPanel implements TReceiver
 		this.add(colorLines);
 		this.add(statePanel);
 		this.add(selectTabbedPanel);
+		
 		this.add(colorLinesPanel1);
 		this.add(infoTabbedPanel);
 		this.add(colorLinesPanel2);
