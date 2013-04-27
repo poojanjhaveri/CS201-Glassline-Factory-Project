@@ -68,11 +68,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	this.isINLINEBusy=false;
 	myTransducer = transducer;
 
+	
 	conveyor0=ConveyorState.Need_Run;
 
 	myTransducer.register(this, TChannel.CUTTER);
 	myTransducer.register(this, TChannel.SENSOR);
 	myTransducer.register(this, TChannel.ALL_AGENTS);
+	myTransducer.register(this, TChannel.CONVEYOR);
 
 	Object[] conveyornumber={this.number};
 	isConveyorRunning=true;
@@ -121,6 +123,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
+<<<<<<< HEAD
 		while(conveyor1==ConveyorState.Need_Break)
 		{
 			breakConveyor(1);
@@ -146,6 +149,8 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 
 
+=======
+>>>>>>> 48bd935d868ab2ba7f4c0813873bf096adbc3f07
 
 		while(conveyor0==ConveyorState.Need_Run)
 		{
@@ -380,6 +385,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			    };    	
 			}
 
+<<<<<<< HEAD
 			/*
 			if(event == TEvent.SENSOR_GUI_PRESSED)
 			{
@@ -415,7 +421,29 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			}
 */
 
+=======
 		}
+		
+		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == this.number) ) {
+			if(event == TEvent.CONVEYOR_BROKEN) {
+				
+				print("BREAKKK");
+				conveyor0 = ConveyorState.Jammed;
+				print("");
+				stateChanged();		
+				return;
+				
+			} else if (event == TEvent.CONVEYOR_FIXED) {
+			
+				print("NEED RUN RECIEVED");
+				conveyor0 = ConveyorState.Need_Run;
+				stateChanged();		
+				return;
+			}
+>>>>>>> 48bd935d868ab2ba7f4c0813873bf096adbc3f07
+		}
+		
+		
 
 	}
 

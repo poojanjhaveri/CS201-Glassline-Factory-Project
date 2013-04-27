@@ -21,6 +21,11 @@ public class InlineMachine extends Component implements TReceiver{
 	// SCHEDULER
 	@Override
 	protected boolean pickAndExecuteAnAction(){
+		if( fix ){
+			fixNonNorm();
+			return true;
+		}
+		
 		if( broken ){
 			return false;
 		}
@@ -84,13 +89,9 @@ public class InlineMachine extends Component implements TReceiver{
 	}
 	
 	// NON-NORM.
-	public void nonNormBreak(){
-		broken = true;
-	}
-	
-	public void nonNormFix(){
+	private void fixNonNorm(){
+		fix = false;
 		broken = false;
-		stateChanged();
 	}
 	
 	// EXTRA
@@ -105,6 +106,12 @@ public class InlineMachine extends Component implements TReceiver{
 		}
 		else if( event == TEvent.WORKSTATION_RELEASE_FINISHED ){
 			releaseFinished = true;
+		}
+		else if( event == TEvent.WORKSTATION_BROKEN ){
+			broken = true;
+		}
+		else if( event == TEvent.WORKSTATION_FIXED ){
+			fix = true;
 		}
 		stateChanged();
 	}

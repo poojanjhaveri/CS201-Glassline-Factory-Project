@@ -20,6 +20,7 @@ import engine.conveyorfamily.Interfaces_Poojan.InLineMachine_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Popup_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
+
 import engine.conveyorfamily_Poojan.PopupAgent_PJ.GlassStatusPopup;
 import engine.interfaces.ConveyorFamily;
 
@@ -144,18 +145,17 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-	
-		while(conveyor1==ConveyorState.Need_Fix)
-		{
-			unbreakConveyor(1);
-		}
-
-		while(conveyor1==ConveyorState.Need_Break)
+		
+		if(conveyor1==ConveyorState.Jammed)
 		{
 			return false;
 		}
 
-		
+		while(conveyor1==ConveyorState.Need_Run)
+		{
+			print("Starting the conveyor");
+			startconveyor1();
+		}
 		
 		
 		
@@ -247,6 +247,8 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 
 
+		
+		
 		if(channel == TChannel.SENSOR)
 		{
 			
@@ -289,9 +291,25 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 				}
 
 			}
-			
-			
+	
 		}
+		
+		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == this.number) ) {
+			if(event == TEvent.CONVEYOR_BROKEN) {
+				
+				conveyor1 = ConveyorState.Jammed;
+				print("I AM BROKENNNNNN");
+				stateChanged();		
+				return;
+				
+			} else if (event == TEvent.CONVEYOR_FIXED) {
+			
+				conveyor1 = ConveyorState.Need_Run;
+				stateChanged();		
+				return;
+			}
+		}
+		
 	}
 
 
