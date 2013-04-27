@@ -122,6 +122,7 @@ public class Conveyor extends Component implements TReceiver{
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
+		
 		sensorNum = (Integer)args[0];
 		if( event == TEvent.SENSOR_GUI_PRESSED ){
 			if( sensorNum == frontSensorNum ){
@@ -138,10 +139,10 @@ public class Conveyor extends Component implements TReceiver{
 				stateChanged();
 			}
 		}
-		else if( event == TEvent.CONVEYOR_BROKEN ){
+		else if(args[0] == conveyorNum &&  event == TEvent.CONVEYOR_BROKEN ){
 			broken = true;
 		}
-		else if( event == TEvent.CONVEYOR_FIXED ){
+		else if(args[0] == conveyorNum && event == TEvent.CONVEYOR_FIXED ){
 			fix = true;
 			stateChanged();
 		}
