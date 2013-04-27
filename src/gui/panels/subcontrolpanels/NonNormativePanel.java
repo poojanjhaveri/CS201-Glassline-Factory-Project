@@ -188,6 +188,7 @@ public class NonNormativePanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			//Comment out the following 3 lines of codes when you need to do so.
+			System.out.println("");
 			Integer idx[] = new Integer[1];
 			idx[0] = selectconv.getSelectedIndex();
 			if (idx[0] != 15)
