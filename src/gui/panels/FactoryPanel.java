@@ -150,7 +150,13 @@ public class FactoryPanel extends JPanel
 		bin.startThread();
 		
 		
-		//ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
+		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
+		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "Breakout", false);
+		c1.setNextConveyorFamily(c2);
+		c1.setPreviousConveyorFamily(bin);
+		
+		bin.setNextConveyorFamily(c1);
+		/*
 		ConveyorFamily c0 = new ConveyorFamilyAgents(0, "NC_Cutter", false);
 		ConveyorAgent c1 = new ConveyorAgent("Conveyor1", 1, Mode.MEDIATING);
 		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "Breakout", false);
@@ -165,9 +171,9 @@ public class FactoryPanel extends JPanel
 		( (ConveyorFamilyAgents) c0).setTransducer(transducer);
 		
 		( (ConveyorAgent) c1).setTransducer(transducer);
-		
-		
-		
+		*/
+		c2.setPreviousConveyorFamily(c1);
+	
 		( (ConveyorFamilyAgents) c2).setChannel(TChannel.BREAKOUT);
 		( (ConveyorFamilyAgents) c2).setTransducer(transducer);
 		
@@ -264,7 +270,7 @@ public class FactoryPanel extends JPanel
 		o7up.startThread();
 		o7down.startThread();
 		
-		c0.startThreads();
+	//	c0.startThreads();
 		
 		c1.startThreads();
 		c2.startThreads();
