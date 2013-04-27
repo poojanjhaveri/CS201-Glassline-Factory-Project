@@ -68,11 +68,13 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	this.isINLINEBusy=false;
 	myTransducer = transducer;
 
+	
 	conveyor0=ConveyorState.Need_Run;
 
 	myTransducer.register(this, TChannel.CUTTER);
 	myTransducer.register(this, TChannel.SENSOR);
 	myTransducer.register(this, TChannel.ALL_AGENTS);
+	myTransducer.register(this, TChannel.CONVEYOR);
 
 	Object[] conveyornumber={this.number};
 	isConveyorRunning=true;
@@ -121,34 +123,10 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-		while(conveyor1==ConveyorState.Need_Break)
-		{
-			breakConveyor(1);
-		}
-
-		while(conveyor0==ConveyorState.Need_Break)
-		{
-			breakConveyor(0);
-		}
-
-
-
-		while(conveyor1==ConveyorState.Need_Fix)
-		{
-			unbreakConveyor(1);
-		}
-
-		while(conveyor0==ConveyorState.Need_Fix)
-		{
-			unbreakConveyor(0);
-		}
-
-
-
-
 
 		while(conveyor0==ConveyorState.Need_Run)
 		{
+			print("Starting the conveyor");
 			startconveyor0();
 		}
 
@@ -380,42 +358,27 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			    };    	
 			}
 
-			/*
-			if(event == TEvent.SENSOR_GUI_PRESSED)
-			{
-				if((Integer)args[0]==2)
-				{	
-					//mediatingconveyorstart();
-					OnThirdSensor((Integer)args[1]);
-				}
-			}
-
-
-			if(event == TEvent.SENSOR_GUI_RELEASED)
-			{
-				if((Integer)args[0]==2)
-				{
-					isINLINEBusy=false;
-					this.myinline.msgIamFreeForGlass();
-
-				}
-
-			}
-	
-
-
-
-			if(event == TEvent.SENSOR_GUI_PRESSED)
-			{
-				if((Integer)args[0]==3)
-				{	
-					onthelastsensor((Integer)args[1]); 
-
-				}
-			}
-*/
-
 		}
+		
+		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == this.number) ) {
+			if(event == TEvent.CONVEYOR_BROKEN) {
+				
+				print("BREAKKK");
+				conveyor0 = ConveyorState.Jammed;
+				print("");
+				stateChanged();		
+				return;
+				
+			} else if (event == TEvent.CONVEYOR_FIXED) {
+			
+				print("NEED RUN RECIEVED");
+				conveyor0 = ConveyorState.Need_Run;
+				stateChanged();		
+				return;
+			}
+		}
+		
+		
 
 	}
 
@@ -659,36 +622,7 @@ private void mediatingconveyorstart(MyCGlass mg) {
 
 
 
-	public void setbrokenstatus(boolean s,int i) {
-		// 
-		if(s)
-		{
-		Object [] no={i};
-		if(i==0)
-		{
-			conveyor0=ConveyorState.Need_Break;
-		}
-		else
-		{
-			conveyor1=ConveyorState.Need_Break;
-		}
-		}
-		else
-		{
-			Object [] no={i};
-			if(i==0)
-			{
-				conveyor0=ConveyorState.Need_Fix;
-			}
-			else
-			{
-				conveyor1=ConveyorState.Need_Fix;
-			}
-		}
-
-    	stateChanged();
-
-	}
+	
 
 
 

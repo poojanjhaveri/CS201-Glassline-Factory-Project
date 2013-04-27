@@ -45,7 +45,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 		channel = c;
 		
 		entryAgent = new EntryAgent("entry agent", this);
-		conveyorAgent = new ConveyorAgent("conveyor agent", this, cfIndex);
+		conveyorAgent = new ConveyorAgent("conveyor agent", this, index);
 			
 		entryAgent.setConveyorAgent(conveyorAgent);
 		conveyorAgent.setEntryAgent(entryAgent);
