@@ -226,6 +226,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		myPopUp = new MyPopUp(popUp);
 		transducer = trans;
 		trans.register(this, TChannel.SENSOR);
+		transducer.register(this, TChannel.CONVEYOR);
 	}
 	
 	public PopUp_LV getPopUp()
