@@ -158,6 +158,11 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		}
 		
 		
+		if(conveyor1==ConveyorState.Need_Fix)
+		{
+			unbreakconveyor();
+		}
+		
 		
 		if(frontsensor)
 		{
@@ -195,6 +200,18 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
 
 
+
+
+	private void unbreakconveyor() {
+		
+	Object[] cno={this.number};
+	print("finished"+finished);
+	print("nextsensor"+nextsensor);
+
+	myTransducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, cno );
+	conveyor1=ConveyorState.Running;
+	print("RUNNING");
+	}
 
 
 	private void glassonsecondsensor() {
@@ -304,7 +321,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 				
 			} else if (event == TEvent.CONVEYOR_FIXED) {
 			
-				conveyor1 = ConveyorState.Need_Run;
+				conveyor1 = ConveyorState.Need_Fix;
 				stateChanged();		
 				return;
 			}

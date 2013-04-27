@@ -42,7 +42,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
 		this.halfconveyor = new HalfConveyorAgent("HalfConveyor",number+1,this,transducer, popup, inline,cprev);
 		this.inline.setConveyor(conveyor,halfconveyor);
-	//	this.popup.setConveyor(conveyor);
+
 	}
 
 
