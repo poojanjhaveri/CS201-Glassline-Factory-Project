@@ -62,7 +62,7 @@ public class FactoryFrame extends JFrame
 
 		// add top panel to frame
 		this.add(topPanel);
-		this.setResizable(false);
+		this.setResizable(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.black);
 		this.setForeground(Color.black);

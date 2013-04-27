@@ -301,6 +301,11 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		}
 		stateChanged();
 	}
+	
+	public void setNextFamily(ConveyorFamily c0)
+	{
+		NEXTFamily=c0;
+	}
 
 
 
@@ -308,6 +313,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	@Override
 	public void msgIamFreeForGlass() {
 		// TODO Auto-generated method stub
+		print("HALF CONVEYOR IS FREE FOR GLASS");
 		secondconveyorfree = true;
 		stateChanged();
 	}

@@ -40,8 +40,9 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
-		this.halfconveyor = new HalfConveyorAgent("HalfConveyor",number+1,this,transducer, popup, inline,cprev);
+		this.halfconveyor = new HalfConveyorAgent("HalfConveyor",1,this,transducer, popup, inline,cprev);
 		this.inline.setConveyor(conveyor,halfconveyor);
+		
 
 	}
 
@@ -69,8 +70,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	@Override
 	public void msgIAmFree() {
 		System.out.println("My CFnumber is"+this.ConveryorFamilyNo+"I am Free received from NEXT CONVEYOR FAMILY");
-		//this.conveyor.msgIsNextConveyorFamilyBusy();
-		this.halfconveyor.msgIsNextConveyorFamilyBusy();
+
+		this.halfconveyor.msgIamFree();
 	}
 
 
@@ -116,6 +117,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		nextConveyorFamily=c3;
 		this.conveyor.NEXTFamily=nextConveyorFamily;
 		this.halfconveyor.NEXTFamily=nextConveyorFamily;
+		this.inline.setNextFamily(c3);
 	}
 
 
@@ -136,13 +138,10 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	}
 
 
-
-
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
 		// TODO Auto-generated method stub
 		
-		halfconveyor.setbrokenstatus(s, conveyorno);
 	}
 
 
