@@ -30,6 +30,8 @@ public class GUIManualBreakout extends GuiAnimationComponent
 	ConveyorDirections direction = ConveyorDirections.UP;
 
 	MachineType type;
+	
+	boolean broken = false;
 
 	/**
 	 * Constructor for GUIManualBreakout
@@ -43,7 +45,8 @@ public class GUIManualBreakout extends GuiAnimationComponent
 		type = MachineType.MANUAL_BREAKOUT;
 		transducer = t;
 		transducer.register(this, TChannel.MANUAL_BREAKOUT);
-
+		channel = TChannel.MANUAL_BREAKOUT;
+		
 	}
 
 
@@ -85,17 +88,19 @@ public class GUIManualBreakout extends GuiAnimationComponent
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		if (animationState == AnimationState.MOVING)
-		{
-			movePartsIn();
-		}
-		else if (animationState == AnimationState.ANIMATING)
-		{
-			doAnimate();
-		}
-		else if (animationState == AnimationState.DONE)
-		{
-			movePartsOut();
+		if(! broken) {
+			if (animationState == AnimationState.MOVING)
+			{
+				movePartsIn();
+			}
+			else if (animationState == AnimationState.ANIMATING)
+			{
+				doAnimate();
+			}
+			else if (animationState == AnimationState.DONE)
+			{
+				movePartsOut();
+			}
 		}
 	}
 
@@ -201,11 +206,27 @@ public class GUIManualBreakout extends GuiAnimationComponent
 		{
 			if (event == TEvent.WORKSTATION_DO_ACTION)
 			{
-				animationState = AnimationState./*MOVING*/ANIMATING;//monroe changed
+				if(! broken)
+					animationState = AnimationState./*MOVING*/ANIMATING;//monroe changed
+				else
+					System.out.println("ONLINE WORKSTATION "+this.channel.toString()+" : GUI BROKEN, CAN'T PROCESS THE REQUEST.");
 			}
 			if (event == TEvent.WORKSTATION_RELEASE_GLASS)
 			{
-				animationState = AnimationState.DONE;
+				if(! broken)
+					animationState = AnimationState.DONE;
+				else
+					System.out.println("ONLINE WORKSTATION "+this.channel.toString()+" : GUI BROKEN, CAN'T PROCESS THE REQUEST.");
+			}
+			if (event == TEvent.WORKSTATION_DO_BREAK)
+			{
+				transducer.fireEvent(this.channel, TEvent.WORKSTATION_BROKEN, null);
+				broken = true;
+			}
+			if (event == TEvent.WORKSTATION_DO_FIX)
+			{
+				transducer.fireEvent(this.channel, TEvent.WORKSTATION_FIXED, null);
+				broken = false;
 			}
 		}
 
