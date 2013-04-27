@@ -6,7 +6,7 @@ import transducer.*;
 public class InlineMachine extends Component implements TReceiver{
 
 	// DATA
-	protected Glass glass;
+	private Glass glass;
 	private TChannel channel;
 	private boolean loadFinished = false, actionFinished = false, releaseFinished = false;
 	
@@ -97,7 +97,7 @@ public class InlineMachine extends Component implements TReceiver{
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		if( event == TEvent.WORKSTATION_LOAD_FINISHED ){
-			glass = tempGlass;
+			glass = tempGlasses.remove(0);
 			loadFinished = true;
 		}
 		else if( event == TEvent.WORKSTATION_GUI_ACTION_FINISHED ){

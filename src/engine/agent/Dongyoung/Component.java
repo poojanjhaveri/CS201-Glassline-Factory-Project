@@ -1,5 +1,7 @@
 package engine.agent.Dongyoung;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import shared.Glass;
 import transducer.*;
 
@@ -10,7 +12,7 @@ public class Component extends Agent{
 	protected Component nextComp;
 	protected Transducer transducer;
 	protected String name;
-	protected Glass tempGlass;
+	protected CopyOnWriteArrayList<Glass> tempGlasses = new CopyOnWriteArrayList<Glass>();
 	
 	protected boolean nextCompFree = true;   // Next Component's status
 	protected boolean newGlass = false;   // New glass on Front Sensor
@@ -42,7 +44,7 @@ public class Component extends Agent{
 	
 	public void msgHereIsGlass(Glass glass){
 		if( debug ){	print("Received message 'HereIsGlass' : " + glass.getNumber());	}
-		tempGlass = glass;
+		tempGlasses.add(glass);
 	}
 	
 	@Override

@@ -8,10 +8,10 @@ import transducer.*;
 public class Conveyor extends Component implements TReceiver{
 
 	// DATA
-	protected ConveyorFamily previousFamily = null;
-	protected ConveyorFamily nextFamily = null;
-	protected CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
-	protected boolean glassLeaveFront = false;
+	private ConveyorFamily previousFamily = null;
+	private ConveyorFamily nextFamily = null;
+	private CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
+	private boolean glassLeaveFront = false;
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum, sensorNum;
 	
@@ -93,8 +93,7 @@ public class Conveyor extends Component implements TReceiver{
 	/* New glass on Front Sensor */
 	private void newGlassAction(){
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
-		glasses.add( tempGlass );
-		tempGlass = null;
+		glasses.add( tempGlasses.remove(0) );
 		newGlass = false;
 		conveyorCheck();
 	}
@@ -116,7 +115,7 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	/* Glass Pass */
-	private void passGlassAction(){
+	private void passGlassAction(){		
 		if( nextFamily == null ){
 			nextComp.msgHereIsGlass( glasses.remove(0) );
 		}
