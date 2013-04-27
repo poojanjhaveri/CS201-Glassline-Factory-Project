@@ -15,9 +15,6 @@ public class Conveyor extends Component implements TReceiver{
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum, sensorNum;
 	
-	// Non-norm DATA
-	private boolean fix = false;
-	
 	// Constructor
 	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
 		super(name);
@@ -64,14 +61,12 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	// ACTION
-	/*
-	 * 
-	 */
 	private void fixNonNorm(){
 		fix = false;
 		broken = false;
 		conveyorCheck();
 	}
+	
 	/*
 	 * Check if next component is ready to accept glasses.
 	 * If not, the conveyor keeps the glass waiting.
@@ -123,19 +118,7 @@ public class Conveyor extends Component implements TReceiver{
 			nextFamily.msgHereIsGlass( glasses.remove(0) );
 		}
 	}
-	
-	// NON-NORM.
-	public void nonNormBreak(){
-		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum);
-		broken = true;
-	}
-	
-	public void nonNormFix(){
-		fix = true;
-		broken = false;
-		stateChanged();
-	}
-	
+
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
@@ -154,7 +137,14 @@ public class Conveyor extends Component implements TReceiver{
 				glassLeaveFront = true;
 				stateChanged();
 			}
-		}	
+		}
+		else if( event == TEvent.CONVEYOR_BROKEN ){
+			broken = true;
+		}
+		else if( event == TEvent.CONVEYOR_FIXED ){
+			fix = true;
+			stateChanged();
+		}
 	}
 	
 	/* Everytime the conveyor status is changed, it should check the conveyor should run or stops. */
@@ -171,6 +161,7 @@ public class Conveyor extends Component implements TReceiver{
 	public void setter(Object previous, Object next, Transducer transducer){
 		this.transducer = transducer;
 		transducer.register(this, TChannel.SENSOR);
+		transducer.register(this, TChannel.CONVEYOR);
 		
 		if( previous instanceof Component ){
 			previousComp = (Component)previous;

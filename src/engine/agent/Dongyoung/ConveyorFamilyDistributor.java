@@ -56,31 +56,6 @@ public class ConveyorFamilyDistributor implements ConveyorFamily {
 	public void startThreads(){}
 	public String getName() { return null; }
 	public void setConveyorBroken(boolean s) {}
-	
-	/*  
-	 * Non-normative scenario : Conveyor Break(10~14)
-	 * Thread stops as soon as the conveyor breaks.
-	 * Also the conveyor stops moving if it was moving.
-	 */
-	public void setConveyorBroken(boolean s, int num){
-		if(s){
-			conveyors[num-10].nonNormBreak();
-		}
-		else if(!s){
-			conveyors[num-10].nonNormFix();
-		}
-	}
-	
-	/*  
-	 * Non-normative scenario : Inline Machine Break(10~14)
-	 * Thread stops as soon as the inline machine breaks.
-	 */
-	public void setInlineBroken(boolean s, TChannel channel){
-		if(s){
-			inlineMachines.get(channel).nonNormBreak();
-		}
-		else if(!s){
-			inlineMachines.get(channel).nonNormFix();
-		}
-	}
+	public void setConveyorBroken(boolean s, int conveyorno) {}
+	public void setInlineBroken(boolean s, TChannel channel) {}
 }
