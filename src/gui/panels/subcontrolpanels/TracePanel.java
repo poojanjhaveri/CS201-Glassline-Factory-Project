@@ -76,7 +76,7 @@ public class TracePanel extends JPanel implements ActionListener
 
 		// set up message area
 		this.messageArea = new JTextArea("Output goes here", 5, 200);
-		this.messageArea.setBackground(Color.black);
+		this.messageArea.setBackground(Color.gray);
 		this.messageArea.setForeground(Color.white);
 		this.messageArea.setWrapStyleWord(true);
 		this.messageArea.setLineWrap(true);
