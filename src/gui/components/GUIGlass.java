@@ -62,6 +62,7 @@ public class GUIGlass extends GuiComponent implements Serializable
 	 * File names for each of the various images for glass
 	 */
 	String filePathNONE = "imageicons/glassImage_NONE.png";//Base image
+	String filePathMISSING = "imageicons/glassImage_MISSING.png";//Base image
 	/**
 	 * Instances of image holder that hold the overlays for the glass for breakout
 	 */
@@ -241,7 +242,7 @@ public class GUIGlass extends GuiComponent implements Serializable
 			imageWASHER.display = true;
 			break;
 		case NONE1:
-			setIcon(null);
+			setIcon(new ImageIcon(filePathMISSING));
 			break;	
 			
 			

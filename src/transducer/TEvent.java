@@ -67,6 +67,6 @@ public enum TEvent
 	
 	//bin and "Glass Ghosts"
 	BIN_CREATE_PART,
-	BIN_PART_CREATED,
+	BIN_PART_CREATED, WORKSTATION_MISSING_GLASS,
 	
 }
