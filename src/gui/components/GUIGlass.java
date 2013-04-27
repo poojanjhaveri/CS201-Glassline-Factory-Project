@@ -24,6 +24,8 @@ import transducer.TEvent;
 @SuppressWarnings("serial")
 public class GUIGlass extends GuiComponent implements Serializable
 {
+	
+	
 	/**
 	 * The rectangle of the glass pane
 	 */
@@ -238,6 +240,11 @@ public class GUIGlass extends GuiComponent implements Serializable
 		case WASHER:
 			imageWASHER.display = true;
 			break;
+		case NONE1:
+			setIcon(null);
+			break;	
+			
+			
 		}
 	}
 	/**
@@ -316,7 +323,10 @@ public class GUIGlass extends GuiComponent implements Serializable
 		if (imageWASHER.display)
 		{
 			g2d.drawImage(imageWASHER.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
+			
 		}
+		
+		
 	}
 
 	/**

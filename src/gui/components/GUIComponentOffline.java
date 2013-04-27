@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +13,7 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
 import shared.ImageIcons;
+import shared.enums.ComponentOperations;
 import shared.enums.MachineType;
 import transducer.TChannel;
 import transducer.TEvent;
@@ -37,6 +39,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 	TChannel channel;
 	
 	Timer timer = new Timer();
+	private boolean breakNextGlass=false;
 
 	/**
 	 * Frame counter
@@ -158,12 +161,24 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		else if (part.getCenterY() > getCenterY())
 			part.setCenterLocation(part.getCenterX(), part.getCenterY() - 1);
 
+		
+		
+		
 		if (part.getCenterX() == getCenterX() && part.getCenterY() == getCenterY())
 		{
 			Object[] args = new Object[1];
 			args[0] = index;
 			transducer.fireEvent(channel, TEvent.WORKSTATION_LOAD_FINISHED, args);
 		}
+		
+if (breakNextGlass){
+	
+	this.part.lastOperation = ComponentOperations.NONE1;
+	this.part.changeState();
+	breakNextGlass = false;
+		}
+		
+		
 	}
 
 	@Override
@@ -193,6 +208,12 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 				nextComponent.addPart(part);
 				return;
 			}
+			if (event == TEvent.WORKSTATION_MISSING_GLASS)
+			{
+				breakNextGlass=false;	
+				return;
+			}
+			
 
 		}
 	}
