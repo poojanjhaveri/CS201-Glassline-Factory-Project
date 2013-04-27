@@ -55,6 +55,14 @@ public class InlineAgent extends Agent implements Inline {
 				machineSemaphore.release();
 				Do("Glass unloading finished.");
 			}
+			if(event == TEvent.WORKSTATION_BROKEN) {
+				isBroken = true;
+				stateChanged();
+			}
+			if(event == TEvent.WORKSTATION_FIXED) {
+				isBroken = false;
+				stateChanged();
+			}
 		}
 	}
 
