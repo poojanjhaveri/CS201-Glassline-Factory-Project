@@ -50,6 +50,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		sensorOne = SensorState.NULL;
 		sensorOne = SensorState.NULL;
 		state = ConveyorState.FIXED;
+		transducer = parent.t;
 	}
 	
 	/*
@@ -80,9 +81,9 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 
 	public boolean pickAndExecuteAnAction() {
 			
-		if(state == ConveyorState.NEEDS_BREAK) {
+		if(state == ConveyorState.BROKEN) {
 			breakConveyor();
-			return true;
+			return false;
 		}
 		
 		if(state == ConveyorState.NEEDS_FIX) {
@@ -164,12 +165,6 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	}
 	
 	public void breakConveyor() {
-		/*Do("Breaking conveyor");
-		
-		Integer[] args = new Integer[1];
-		args[0] = index;
-		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, args);*/
-		state = ConveyorState.BROKEN;
 		moving = false;
 
 	}
@@ -194,13 +189,17 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 					sensorTwo = SensorState.RELEASED;
 			}
 		}
-		if(channel == TChannel.CONVEYOR && (Integer) (args[0]) == index ) {
+		if((Integer) (args[0]) == index ) {
 			if(event == TEvent.CONVEYOR_BROKEN) {
-				state = ConveyorState.NEEDS_BREAK;
-				stateChanged();		return;
+				setBroken(true);
+				print("Event received, broken");
+
+				
 			} else if (event == TEvent.CONVEYOR_FIXED) {
-				state = ConveyorState.NEEDS_FIX;
-				stateChanged();		return;
+				print("Event received, fixed");
+
+				setBroken(false);
+				
 			}
 			
 		}
@@ -259,7 +258,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	public void setBroken(boolean s)
 	{
 		if(s)
-			state = ConveyorState.NEEDS_BREAK;
+			state = ConveyorState.BROKEN;
 		else
 			state = ConveyorState.NEEDS_FIX;
 		stateChanged();
