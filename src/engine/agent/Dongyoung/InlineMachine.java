@@ -1,12 +1,10 @@
 package engine.agent.Dongyoung;
 
-import shared.Glass;
 import transducer.*;
 
 public class InlineMachine extends Component implements TReceiver{
 
 	// DATA
-	private Glass glass;
 	private TChannel channel;
 	private boolean loadFinished = false, actionFinished = false, releaseFinished = false;
 	
@@ -55,10 +53,10 @@ public class InlineMachine extends Component implements TReceiver{
 	 */
 	private void doWorkAction(){
 		loadFinished = false;
-		if( glass.getRecipe( channel ) ){
+		if( glasses.get(0).getRecipe( channel ) ){
 			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
 		}
-		else if( !glass.getRecipe( channel ) ){
+		else{
 			actionFinished = true;
 		}
 	}
@@ -73,7 +71,6 @@ public class InlineMachine extends Component implements TReceiver{
 	}
 	
 	private void releaseFinishedAction(){
-		glass = null;
 		notifyIAmFreeAction();
 		releaseFinished = false;
 	}
@@ -85,7 +82,7 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	/* Glass Pass */
 	private void passGlassAction(){
-		nextComp.msgHereIsGlass( glass );
+		nextComp.msgHereIsGlass( glasses.remove(0) );
 	}
 	
 	// NON-NORM.
@@ -98,7 +95,6 @@ public class InlineMachine extends Component implements TReceiver{
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		if( event == TEvent.WORKSTATION_LOAD_FINISHED ){
-			glass = tempGlasses.remove(0);
 			loadFinished = true;
 		}
 		else if( event == TEvent.WORKSTATION_GUI_ACTION_FINISHED ){

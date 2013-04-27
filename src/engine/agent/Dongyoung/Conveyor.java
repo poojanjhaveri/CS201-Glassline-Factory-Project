@@ -1,6 +1,5 @@
 package engine.agent.Dongyoung;
 
-import java.util.concurrent.CopyOnWriteArrayList;
 import engine.interfaces.ConveyorFamily;
 import shared.Glass;
 import transducer.*;
@@ -10,10 +9,10 @@ public class Conveyor extends Component implements TReceiver{
 	// DATA
 	private ConveyorFamily previousFamily = null;
 	private ConveyorFamily nextFamily = null;
-	private CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
 	private boolean glassLeaveFront = false;
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum, sensorNum;
+	private Glass glassToNext;
 	
 	// Constructor
 	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
@@ -88,7 +87,6 @@ public class Conveyor extends Component implements TReceiver{
 	/* New glass on Front Sensor */
 	private void newGlassAction(){
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
-		glasses.add( tempGlasses.remove(0) );
 		newGlass = false;
 		conveyorCheck();
 	}
@@ -110,12 +108,14 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	/* Glass Pass */
-	private void passGlassAction(){		
+	private void passGlassAction(){
+		glassToNext = glasses.remove(0);
+		
 		if( nextFamily == null ){
-			nextComp.msgHereIsGlass( glasses.remove(0) );
+			nextComp.msgHereIsGlass( glassToNext );
 		}
 		else{
-			nextFamily.msgHereIsGlass( glasses.remove(0) );
+			nextFamily.msgHereIsGlass( glassToNext );
 		}
 	}
 
