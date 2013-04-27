@@ -22,6 +22,12 @@ import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
 import engine.conveyorfamily_Poojan.PopupAgent_PJ.GlassStatusPopup;
 import engine.interfaces.ConveyorFamily;
 
+/**
+ * 
+ * HalfConveyor : Conveyor for mediating.
+ * @author POOJAN JHAVERI
+ *
+ */
 
 public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
@@ -37,37 +43,47 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	private enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY, ONLASTSENSOR, ONLASTSENSORSTOP, ONTHIRDSENSOR, THIRDSENSORDONE, CHECKEDDONE, ONENTRYSENSORSTOP};
 
 	private Boolean isPopUpBusy;
-	private Boolean isConveyorRunning;
 	
 	private boolean isNextConveyorFamilyBusy;
-	 private ConveyorAgent_PJ previousconveyor;
+	private ConveyorAgent_PJ previousconveyor;
 	
 	private enum ConveyorState{Running,Stopped,Jammed,Need_Fix, Need_Run, Need_Break};
-	private enum SensorState{Pressed, Released,None, NOTHING, PRESSED, RELEASED};
+	private enum SensorState{NOTHING, PRESSED, RELEASED};
 
 	private ConveyorState conveyor1;
-	private SensorState sensor1State;
-	private SensorState sensor2State;
+	private SensorState sensor1;
+	private SensorState sensor2;
 	
 
 	private List<MyCGlass> glassonconveyor = Collections.synchronizedList(new ArrayList<MyCGlass>());
 
-
-
-	public HalfConveyorAgent(String string,int number, ConveyorFamily c1, Transducer transducer,Popup_PJ p1,InLineMachine_PJ p2,ConveyorFamily cp) {
+	
+/**
+ *Agent for mediating conveyor ie. without any connecton to Inline Agent
+ * 
+ * 
+ * @param string : Conveyor name
+ * @param number : Conveyor number
+ * @param myfamily	: Conveyor Family instace, recognize my own conveyor family
+ * @param transducer : Transducer
+ * @param popup : Popup Agnet
+ * @param inline : Inline Agent
+ * @param previous - Previous Conveyor Family
+ */
+	public HalfConveyorAgent(String string,int number, ConveyorFamily myfamily, Transducer transducer,Popup_PJ popup,InLineMachine_PJ inline,ConveyorFamily previous) {
 		
 	this.name=string;
 	this.number=number;
 	
-	this.MyFamily=c1;
-	this.myinline=p2;
-	this.PREVIOUSFamily=cp;
+	this.MyFamily=myfamily;
+	this.myinline=inline;
+	this.PREVIOUSFamily=previous;
 
 	this.isPopUpBusy=false;
 	myTransducer = transducer;
 
-	sensor1State = SensorState.NOTHING;
-	sensor2State = SensorState.NOTHING;
+	sensor1 = SensorState.NOTHING;
+	sensor2 = SensorState.NOTHING;
 	conveyor1 = ConveyorState.Stopped;
 
 	myTransducer.register(this, TChannel.ALL_GUI);
@@ -108,7 +124,11 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
 
 	// MESSAGES
-
+	
+		/**
+		 * msgHereIsGlass recieved from the previous conveyor Family or from Previous Component
+		 * 
+		 */
 		public void msgHereIsGlass(Glass g1) {
 			print("Glass Recieved."+this.number);
 			MyCGlass mcg = new MyCGlass(g1);
@@ -116,29 +136,23 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			stateChanged();
 		}
 
+		/**
+		 * msgIamFree received from the my own conveyor family which is in turn recieved by the next conveyor family
+		 */
+		public void msgIamFree() {			
+			isNextConveyorFamilyBusy=false;
+			print("NEXT CONVEYOR FAMILY -> FREE "+ isNextConveyorFamilyBusy);
+			stateChanged();	
+		}
+
+
+		@Override
+		public void msgOperatorIsfree(Operator_PJ operatorAgent) {
 		
-		public void msgIamFree() {
-			
-			isNextConveyorFamilyBusy=false;
-			print("NEXT CONVEYOR FAMILY -> FREE "+ isNextConveyorFamilyBusy);
-			
-			stateChanged();
-			
 		}
 
-
-		public void msgIsNextConveyorFamilyBusy() {
-			
-			isNextConveyorFamilyBusy=false;
-			print("NEXT CONVEYOR FAMILY -> FREE "+ isNextConveyorFamilyBusy);
-			stateChanged();
-		}
-
-
-
-
-
-
+	// SCHEDULER	
+		
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
@@ -149,9 +163,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			startconveyor1();
 		}
 		
-		
-		
-		if( (isNextConveyorFamilyBusy==true) && (sensor2State == SensorState.PRESSED) && (conveyor1==ConveyorState.Running) ) {
+		if( (isNextConveyorFamilyBusy==true) && (sensor2 == SensorState.PRESSED) && (conveyor1==ConveyorState.Running) ) {
 			stopConveyor();
 			return true;
 		}
@@ -161,15 +173,13 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			return true;
 		}
 		
-		if( (sensor2State == SensorState.RELEASED) ) {
-			shipttheglass();
+		if( (sensor2 == SensorState.RELEASED) ) {
+			
 			return true;
 		}
 		
-		
-		if( sensor1State == SensorState.RELEASED ) {
-			notifyPrevious();
-			startconveyor1();
+		if( sensor1 == SensorState.RELEASED ) {
+			
 			return true;
 		}
 		
@@ -178,36 +188,6 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		return false;
 	}
 
-
-
-
-
-
-	private void stopConveyor() {
-		
-		Object[] ar={this.number};
-		print("MY NUMBER ISSSSSSSSS"+this.number);
-		myTransducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, ar);
-		conveyor1 = ConveyorState.Stopped;
-		
-		
-	}
-
-
-	private void unbreakconveyor() {
-		
-		Integer[] idx = new Integer[1];
-		idx[0] = this.number;
-		print("MY NUMBER ISSSSSSSSS"+this.number);
-		myTransducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, idx);
-		conveyor1 = ConveyorState.Running;
-	}
-
-
-
-
-	
-	
 
 
 
@@ -227,7 +207,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 				if((Integer)args[0]==2)
 				{
 					this.previousconveyor.msgIamFree();
-					sensor1State = SensorState.PRESSED;
+					sensor1 = SensorState.PRESSED;
 			    };    	
 			}
 
@@ -235,7 +215,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			{
 				if((Integer)args[0]==3)
 				{
-					sensor2State = SensorState.PRESSED;
+					sensor2 = SensorState.PRESSED;
 			    };    	
 			}
 
@@ -244,8 +224,8 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			{
 				if((Integer)args[0]==2)
 				{
-					sensor1State = SensorState.RELEASED;
-					
+					informthepreviousfamily();
+					sensor1 = SensorState.RELEASED;
 				}
 
 			}
@@ -254,7 +234,8 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			{
 				if((Integer)args[0]==3)
 				{
-					sensor2State = SensorState.RELEASED;
+					shipttheglass();
+					sensor2 = SensorState.RELEASED;
 				}
 
 			}
@@ -281,9 +262,9 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
 
 	private void shipttheglass() {
-		// TODO Auto-generated method stub
+		
 		this.NEXTFamily.msgHereIsGlass(glassonconveyor.get(0).pcglass);
-		sensor2State = SensorState.NOTHING;
+		sensor2 = SensorState.NOTHING;
 		isNextConveyorFamilyBusy=true;
 		glassonconveyor.remove(0);
 	}
@@ -297,10 +278,19 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	}
 	
 
-	private void notifyPrevious() {
+
+	private void stopConveyor() {
+		
+		Object[] ar={this.number};
+		myTransducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, ar);
+		conveyor1 = ConveyorState.Stopped;
+	}
+	
+
+	private void informthepreviousfamily() {
 		Do("Notifying the previous conveyor family that I'm free");
 		this.myinline.msgIamFreeForGlass();
-		sensor1State = SensorState.NOTHING;
+		sensor1 = SensorState.NOTHING;
 	}
 
 	public String getName(){
@@ -344,14 +334,6 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		// 
 	//	isINLINEBusy=s;
 		stateChanged();
-	}
-
-
-
-	@Override
-	public void msgOperatorIsfree(Operator_PJ operatorAgent) {
-		// 
-
 	}
 
 

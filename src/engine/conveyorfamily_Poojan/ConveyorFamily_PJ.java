@@ -38,7 +38,6 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 		this.inline = new InLineMachineAgent_PJ("NCCUTTER",number,this,transducer);
 
-
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
 		this.halfconveyor = new HalfConveyorAgent("HalfConveyor",1,this,transducer, popup, inline,cprev);
 		this.inline.setConveyor(conveyor,halfconveyor);
@@ -149,6 +148,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void setInlineBroken(boolean s, TChannel channel) {
 		// TODO Auto-generated method stub
 
+		this.inline.setbroken(s);
 	}
 
 

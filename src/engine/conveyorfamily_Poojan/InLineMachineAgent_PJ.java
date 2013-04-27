@@ -35,8 +35,8 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private List<MyPGlass> glassoninline = Collections.synchronizedList(new ArrayList<MyPGlass>());
 	private List<MyPGlass> finishedglassonpopup = Collections.synchronizedList(new ArrayList<MyPGlass>());
 
+	private boolean inlinebroken;
 
-	private boolean finisheddone;
 	private boolean secondconveyorfree;
 
 	private enum GlassStatusInline{NEW,CHECKING,NOPROCESSING,PROCESSING,BEINGPROCESSED, DONE,DONE2, PROCESSINGDONE};
@@ -78,7 +78,11 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-
+		if(inlinebroken)
+		{
+			return false;
+		}
+		
 	synchronized(glassoninline){
 
 			for(MyPGlass mg:glassoninline){
@@ -315,6 +319,13 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		// TODO Auto-generated method stub
 		print("HALF CONVEYOR IS FREE FOR GLASS");
 		secondconveyorfree = true;
+		stateChanged();
+	}
+
+
+	public void setbroken(boolean s) {
+		// TODO Auto-generated method stub
+		inlinebroken=s;
 		stateChanged();
 	}
 
