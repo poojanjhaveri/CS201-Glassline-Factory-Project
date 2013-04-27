@@ -46,6 +46,7 @@ public class Operator extends Agent{
 	}
 	Semaphore popup;
 	Semaphore machined;
+	
 	/*
 	 * Messages
 	 *
@@ -193,4 +194,5 @@ public class Operator extends Agent{
 	public void setConveyorFamily(ConveyorFamily c5) {
 		this.myPopupAgent = (ConveyorFamilyAgent_LV) c5;
 	}
+	public void breakNextGlass(){breakNextGlassPiece = true;}
 }

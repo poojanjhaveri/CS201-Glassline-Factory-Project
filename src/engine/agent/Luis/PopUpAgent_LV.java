@@ -310,6 +310,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if (currentGlass == null){
 			print("No glass returned, lost by machine");
 			machine.occupied = false;
+			state = PopUpState.OPEN;
 		}
 		else{
 			
