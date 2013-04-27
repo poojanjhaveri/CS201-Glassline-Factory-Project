@@ -121,34 +121,14 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-		while(conveyor1==ConveyorState.Need_Break)
-		{
-			breakConveyor(1);
-		}
-
-		while(conveyor0==ConveyorState.Need_Break)
-		{
-			breakConveyor(0);
-		}
-
-
-
-		while(conveyor1==ConveyorState.Need_Fix)
-		{
-			unbreakConveyor(1);
-		}
-
-		while(conveyor0==ConveyorState.Need_Fix)
-		{
-			unbreakConveyor(0);
-		}
-
+	
 
 
 
 
 		while(conveyor0==ConveyorState.Need_Run)
 		{
+			print("Starting the conveyor");
 			startconveyor0();
 		}
 
@@ -380,40 +360,20 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			    };    	
 			}
 
-			/*
-			if(event == TEvent.SENSOR_GUI_PRESSED)
-			{
-				if((Integer)args[0]==2)
-				{	
-					//mediatingconveyorstart();
-					OnThirdSensor((Integer)args[1]);
+			if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == this.number) ) {
+				if(event == TEvent.CONVEYOR_BROKEN) {
+					
+					conveyor0 = ConveyorState.Jammed;
+					stateChanged();		
+					return;
+					
+				} else if (event == TEvent.CONVEYOR_FIXED) {
+				
+					conveyor0 = ConveyorState.Need_Run;
+					stateChanged();		
+					return;
 				}
 			}
-
-
-			if(event == TEvent.SENSOR_GUI_RELEASED)
-			{
-				if((Integer)args[0]==2)
-				{
-					isINLINEBusy=false;
-					this.myinline.msgIamFreeForGlass();
-
-				}
-
-			}
-	
-
-
-
-			if(event == TEvent.SENSOR_GUI_PRESSED)
-			{
-				if((Integer)args[0]==3)
-				{	
-					onthelastsensor((Integer)args[1]); 
-
-				}
-			}
-*/
 
 		}
 
@@ -659,36 +619,7 @@ private void mediatingconveyorstart(MyCGlass mg) {
 
 
 
-	public void setbrokenstatus(boolean s,int i) {
-		// 
-		if(s)
-		{
-		Object [] no={i};
-		if(i==0)
-		{
-			conveyor0=ConveyorState.Need_Break;
-		}
-		else
-		{
-			conveyor1=ConveyorState.Need_Break;
-		}
-		}
-		else
-		{
-			Object [] no={i};
-			if(i==0)
-			{
-				conveyor0=ConveyorState.Need_Fix;
-			}
-			else
-			{
-				conveyor1=ConveyorState.Need_Fix;
-			}
-		}
-
-    	stateChanged();
-
-	}
+	
 
 
 
