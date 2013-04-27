@@ -104,6 +104,12 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 				{
 					state = TruckState.ARRIVED;
 				}
+				else if (event == TEvent.TRUCK_DO_BREAK){
+					setBroken(true);
+				}
+				else if (event == TEvent.TRUCK_DO_FIX){
+					setBroken(false);
+				}
 			}
 	
 			stateChanged();

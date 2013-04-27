@@ -171,9 +171,10 @@ public class NonNormativePanel extends JPanel
 			//Comment out the following 3 lines of codes when you need to do so.
 			Integer idx[] = new Integer[1];
 			idx[0] = selectconv.getSelectedIndex();
-			
-			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_BREAK, idx);
-			
+			if (idx[0] != 15)
+				transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_BREAK, idx);
+			else
+				transducer.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_BREAK, idx);
 			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
 		}
 		
@@ -189,9 +190,10 @@ public class NonNormativePanel extends JPanel
 			//Comment out the following 3 lines of codes when you need to do so.
 			Integer idx[] = new Integer[1];
 			idx[0] = selectconv.getSelectedIndex();
-			
-			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_FIX, idx);
-			
+			if (idx[0] != 15)
+				transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_FIX, idx);
+			else
+				transducer.fireEvent(TChannel.TRUCK, TEvent.TRUCK_DO_FIX, idx);
 			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
 		}
 		
