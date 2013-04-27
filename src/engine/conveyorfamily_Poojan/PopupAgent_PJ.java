@@ -15,7 +15,7 @@ import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Popup_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
-import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.GlassStatusConveyor;
+
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyOperators;
 import engine.interfaces.ConveyorFamily;

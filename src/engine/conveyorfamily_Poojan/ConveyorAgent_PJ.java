@@ -30,24 +30,24 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	private String name;
 	private int number;
 	private Transducer myTransducer;
-	public ConveyorFamily MyFamily;
+	private ConveyorFamily MyFamily;
 	public ConveyorFamily NEXTFamily;
 	public ConveyorFamily PREVIOUSFamily;
 
 	private InLineMachine_PJ myinline;
 
-	public enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY, ONLASTSENSOR, ONLASTSENSORSTOP, ONTHIRDSENSOR, THIRDSENSORDONE};
+	private enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY, ONLASTSENSOR, ONLASTSENSORSTOP, ONTHIRDSENSOR, THIRDSENSORDONE};
 
 	private Boolean isPopUpBusy;
 	private Boolean isINLINEBusy;
 	private Boolean isConveyorRunning;
-	public boolean isNextConveyorFamilyBusy;
+	private boolean isNextConveyorFamilyBusy;
 
 
 	private enum ConveyorState{Running,Stopped,Jammed,Need_Fix, Need_Run, Need_Break};
 	private enum SensorState{Pressed, Released,None};
 
-	ConveyorState conveyor0;
+	private ConveyorState conveyor0;
 
 
 	private Boolean secondconveyorfree;

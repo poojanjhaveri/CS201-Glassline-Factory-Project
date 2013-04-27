@@ -16,7 +16,6 @@ import engine.conveyorfamily.Interfaces_Poojan.InLineMachine_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Operator_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.Popup_PJ;
 import engine.conveyorfamily.Interfaces_Poojan.TransducerInterface_PJ;
-import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.GlassStatusConveyor;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyCGlass;
 import engine.conveyorfamily_Poojan.ConveyorAgent_PJ.MyOperators;
 import engine.interfaces.ConveyorFamily;
@@ -148,11 +147,12 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
 		print("RELEASING GLASS");
-		secondconveyorfree=false;
+		
 		mg.status=GlassStatusInline.DONE;
 		this.halfconveyor.msgHereIsGlass(mg.pcglass);
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
-		myconveyor.msgIamFree();
+		secondconveyorfree=false;
+		//myconveyor.msgIamFree();
 		stateChanged();
 
 

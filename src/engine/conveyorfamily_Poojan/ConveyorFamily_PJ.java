@@ -42,7 +42,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		this.conveyor = new ConveyorAgent_PJ("MyConveyor",number,this,transducer, popup, inline,cprev);
 		this.halfconveyor = new HalfConveyorAgent("HalfConveyor",1,this,transducer, popup, inline,cprev);
 		this.inline.setConveyor(conveyor,halfconveyor);
-		
+		this.halfconveyor.setConveyor(this.conveyor);
 
 	}
 
@@ -115,8 +115,8 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 	public void setNextConveyorFamily(ConveyorFamily c3) {
 		// TODO Auto-generated method stub
 		nextConveyorFamily=c3;
-		this.conveyor.NEXTFamily=nextConveyorFamily;
-		this.halfconveyor.NEXTFamily=nextConveyorFamily;
+		//this.conveyor.NEXTFamily=nextConveyorFamily;
+		this.halfconveyor.NEXTFamily=c3;
 		this.inline.setNextFamily(c3);
 	}
 

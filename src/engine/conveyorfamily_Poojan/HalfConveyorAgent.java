@@ -25,13 +25,12 @@ import engine.interfaces.ConveyorFamily;
 
 public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
-
 	private String name;
 	private int number;
 	private Transducer myTransducer;
-	public ConveyorFamily MyFamily;
+	private ConveyorFamily MyFamily;
 	public ConveyorFamily NEXTFamily;
-	public ConveyorFamily PREVIOUSFamily;
+	private ConveyorFamily PREVIOUSFamily;
 
 	private InLineMachine_PJ myinline;
 
@@ -41,9 +40,8 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	private Boolean isConveyorRunning;
 	
 	private boolean isNextConveyorFamilyBusy;
-
+	 private ConveyorAgent_PJ previousconveyor;
 	
-
 	private enum ConveyorState{Running,Stopped,Jammed,Need_Fix, Need_Run, Need_Break};
 	private enum SensorState{Pressed, Released,None, NOTHING, PRESSED, RELEASED};
 
@@ -60,7 +58,6 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		
 	this.name=string;
 	this.number=number;
-	
 	
 	this.MyFamily=c1;
 	this.myinline=p2;
@@ -229,7 +226,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 
 				if((Integer)args[0]==2)
 				{
-					
+					this.previousconveyor.msgIamFree();
 					sensor1State = SensorState.PRESSED;
 			    };    	
 			}
@@ -355,6 +352,12 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	public void msgOperatorIsfree(Operator_PJ operatorAgent) {
 		// 
 
+	}
+
+
+	public void setConveyor(ConveyorAgent_PJ conveyor) {
+		// TODO Auto-generated method stub
+		this.previousconveyor=conveyor;
 	}
 
 
