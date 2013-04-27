@@ -33,7 +33,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	SensorState sensor1State;
 	SensorState sensor2State;
 	enum SensorState {PRESSED, RELEASED, NOTHING};
-	enum ConveyorState {NEED_BREAK, NEED_RUN, STOPPED, BROKEN, RUNNING, TIMED_OUT};
+	enum ConveyorState {NEED_RUN, STOPPED, BROKEN, RUNNING, TIMED_OUT};
 	
 	Timer timer = new Timer();
 	
@@ -78,17 +78,19 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 					Do("Sensor 2 Released");
 				}
 			}
+			stateChanged();		return;
 		}
 		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == conveyorIndex ) ) {
 			if(event == TEvent.CONVEYOR_BROKEN) {
 				Do("Get Notified that Conveyor is Broken");
-				conveyorState = ConveyorState.NEED_BREAK;
+				conveyorState = ConveyorState.BROKEN;
+				stateChanged();		return;
 			} else if (event == TEvent.CONVEYOR_FIXED) {
 				Do("Get Notified that Conveyor is Fixed");
 				conveyorState = ConveyorState.NEED_RUN;
+				stateChanged();		return;
 			}
 		}
-		stateChanged();
 	}
 
 	public void msgHereIsGlass(Glass glass) {
@@ -135,10 +137,6 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 	//Scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(conveyorState == ConveyorState.NEED_BREAK) {
-			breakConveyor();
-			return true;
-		}
 		
 		if(conveyorState == ConveyorState.NEED_RUN) {
 			startConveyor();
@@ -203,15 +201,6 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		return false;
 	}
 	
-	public void breakConveyor() {
-		Do("Breaking conveyor");
-		
-		/*Integer[] idx = new Integer[1];
-		idx[0] = conveyorIndex;
-		transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, idx);*/
-		conveyorState = ConveyorState.BROKEN;
-
-	}
 
 	private void giveGlassToNextThing() {
 		Do("Giving glass to the next thing");
@@ -316,13 +305,13 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 		next = cf;
 	}
 
-	public void setConveyorBroken(boolean s) {
+	/*public void setConveyorBroken(boolean s) {
 		if(s)
 			conveyorState = ConveyorState.NEED_BREAK;
 		else
 			conveyorState = ConveyorState.NEED_RUN;
 		stateChanged();
-	}
+	}*/
 
 	@Override
 	public void startThreads() {
@@ -331,7 +320,7 @@ public class ConveyorAgent extends Agent implements Conveyor, ConveyorFamily {
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
-		setConveyorBroken(s);
+		//setConveyorBroken(s);
 	}
 
 	@Override

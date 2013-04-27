@@ -5,8 +5,7 @@ import java.util.concurrent.Semaphore;
 
 import engine.agent.Agent;
 import engine.interfaces.ConveyorFamily;
-import transducer.TChannel;
-import transducer.TEvent;
+import transducer.*;
 
 public class ConveyorAgent extends Agent {
 	
@@ -24,13 +23,18 @@ public class ConveyorAgent extends Agent {
 	private NextCFStatus nextCFStatus;
 	private SensorState sensorState;
 	
-	public ConveyorAgent(String n,AlexsConveyorFamily parent){
+	private int conveyorIndex;
+	
+	private Transducer transducer;
+	
+	public ConveyorAgent(String n,AlexsConveyorFamily parent, int cfIndex){
 		super(n);
 		nextCFStatus = NextCFStatus.FREE;
 		conveyorState = ConveyorState.RUNNING;
 		sensorState = SensorState.UP;
 		breakConveyor = BreakConveyor.RUNNING;
 		parentCF = parent;
+		conveyorIndex = cfIndex;
 	}
 	
 	
@@ -62,11 +66,11 @@ public class ConveyorAgent extends Agent {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if (breakConveyor == BreakConveyor.NEED_BREAK && conveyorState == ConveyorState.RUNNING){
+		/*if (breakConveyor == BreakConveyor.NEED_BREAK && conveyorState == ConveyorState.RUNNING){
 			axnBreakConveyor();
 			return true;
-		}
-		else if(breakConveyor == BreakConveyor.BROKEN){
+		}*/
+		if(breakConveyor == BreakConveyor.BROKEN){
 			return false;
 		}
 		else if (breakConveyor == BreakConveyor.NEED_RUN && nextCFStatus == NextCFStatus.FREE){
@@ -112,11 +116,11 @@ public class ConveyorAgent extends Agent {
 	}
 
 
-	private void axnBreakConveyor() {
+	/*private void axnBreakConveyor() {
 		print("AXN, Break Conveyor");
 		breakConveyor = BreakConveyor.BROKEN;
 		axnStopConveyor();
-	}
+	}*/
 
 
 	private void axnPushGlass() {
@@ -147,7 +151,16 @@ public class ConveyorAgent extends Agent {
 
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		
+		if (channel == TChannel.CONVEYOR && (Integer) (args[0]) == conveyorIndex) {
+			if (event == TEvent.CONVEYOR_BROKEN && breakConveyor != BreakConveyor.BROKEN) {
+				breakConveyor = BreakConveyor.BROKEN;
+				stateChanged();
+			}
+			else if (event == TEvent.CONVEYOR_FIXED && breakConveyor != BreakConveyor.RUNNING) {
+				breakConveyor = BreakConveyor.NEED_RUN;
+				stateChanged();
+			}
+		}
 	}
 
 
@@ -157,6 +170,11 @@ public class ConveyorAgent extends Agent {
 		else if (!s && breakConveyor != BreakConveyor.RUNNING)
 			breakConveyor = BreakConveyor.NEED_RUN;
 		stateChanged();
+	}
+	
+	public void setTransducer(Transducer t) {
+		transducer = t;
+		t.register(this, TChannel.CONVEYOR);
 	}
 
 

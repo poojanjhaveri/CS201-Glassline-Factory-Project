@@ -108,7 +108,7 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 	}
 	
 	public void setConveyorBroken(boolean s,int conveyorno) {
-		conveyor.setConveyorBroken(s);
+		//conveyor.setConveyorBroken(s);
 	}
 	
 	

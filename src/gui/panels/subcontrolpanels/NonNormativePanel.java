@@ -26,6 +26,7 @@ import javax.swing.*;
 
 import shared.Barcode;
 import transducer.TChannel;
+import transducer.TEvent;
 import transducer.Transducer;
 
 /**
@@ -167,7 +168,13 @@ public class NonNormativePanel extends JPanel
 	{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
+			//Comment out the following 3 lines of codes when you need to do so.
+			Integer idx[] = new Integer[1];
+			idx[0] = selectconv.getSelectedIndex();
+			
+			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_BREAK, idx);
+			
+			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(true,selectconv.getSelectedIndex());
 		}
 		
 	}
@@ -179,7 +186,13 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
+			//Comment out the following 3 lines of codes when you need to do so.
+			Integer idx[] = new Integer[1];
+			idx[0] = selectconv.getSelectedIndex();
+			
+			transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_DO_FIX, idx);
+			
+			//myconveyorfamilies.get(selectconv.getSelectedIndex()).setConveyorBroken(false,selectconv.getSelectedIndex());
 		}
 		
 	}
