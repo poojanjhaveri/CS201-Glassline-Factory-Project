@@ -73,7 +73,7 @@ public class FactoryPanel extends JPanel
 		// initialize transducer
 		transducer = new Transducer();
 		transducer.startTransducer();
-	//	transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
+		transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
 		// use default layout
 		// dPanel = new DisplayPanel(this);
 		// dPanel.setDefaultLayout();
@@ -150,11 +150,21 @@ public class FactoryPanel extends JPanel
 		bin.startThread();
 		
 		
-		ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
+		//ConveyorFamily_PJ c1 = new  ConveyorFamily_PJ(0,transducer,bin);
+		ConveyorFamily c0 = new ConveyorFamilyAgents(0, "NC_Cutter", false);
+		ConveyorAgent c1 = new ConveyorAgent("Conveyor1", 1, Mode.MEDIATING);
 		ConveyorFamily c2 = new ConveyorFamilyAgents(2, "Breakout", false);
-		bin.setNextConveyorFamily(c1);
+		bin.setNextConveyorFamily(c0);
+		c0.setPreviousConveyorFamily(bin);
+		c0.setNextConveyorFamily(c1);
+		c1.setPreviousConveyorFamily(c0);
 		c1.setNextConveyorFamily(c2);
 		c2.setPreviousConveyorFamily(c1);
+		
+		( (ConveyorFamilyAgents) c0).setChannel(TChannel.CUTTER);
+		( (ConveyorFamilyAgents) c0).setTransducer(transducer);
+		
+		( (ConveyorAgent) c1).setTransducer(transducer);
 		
 		
 		
@@ -253,6 +263,8 @@ public class FactoryPanel extends JPanel
 		o6up.startThread();
 		o7up.startThread();
 		o7down.startThread();
+		
+		c0.startThreads();
 		
 		c1.startThreads();
 		c2.startThreads();

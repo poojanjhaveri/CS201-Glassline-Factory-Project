@@ -175,6 +175,9 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	}
 
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
+		Do("Event Received. Channel = " + channel.toString()
+				+ " Event = " + event.toString() + 
+				" args[0] = " + (Integer)(args[0]) );
 		
 		if(channel == TChannel.SENSOR)
 		{
@@ -196,9 +199,11 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 		}
 		if(channel == TChannel.CONVEYOR && (Integer) (args[0]) == index ) {
 			if(event == TEvent.CONVEYOR_BROKEN) {
+				Do("kbfkchslakg bagfkjas cfshfc,ase nbkcfh skjf cksad bkfjcja");
 				state = ConveyorState.NEEDS_BREAK;
 				stateChanged();		return;
 			} else if (event == TEvent.CONVEYOR_FIXED) {
+				Do("kbfkchslakg bagfkjas cfshfc,ase nbkcfh skjf cksad bkfjcjargbvkzsvbgbskjgch sjkcgjsbgkjsbckfjhgz");
 				state = ConveyorState.NEEDS_FIX;
 				stateChanged();		return;
 			}
