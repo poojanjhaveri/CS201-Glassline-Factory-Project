@@ -104,6 +104,4 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		popup.msgIHaveNoGlass(operator);
 	}
 
-
-
 }

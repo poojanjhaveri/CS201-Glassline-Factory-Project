@@ -58,12 +58,14 @@ public class NonNormativePanel extends JPanel
 	String[] conveyornames = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14","Truck"};
 	String[] inlinenames = { "NCCutter", "Breakout", "Manual Breakout","Drill","Cross-Seamer","Grinder", "Washer", "UV_Lamp", "Oven","Painter" };
 	String[] offlineNames = { "Machine 1 - Up", "Machine 1- Down", "Machine 2 - Up", "Machine 2- Down","Machine 3 - Up", "Machine 3- Down"};
+	String[] popupNames = {"5","6","7"};
 	
 	TChannel[] tchannelnames = { TChannel.CUTTER,TChannel.BREAKOUT,TChannel.MANUAL_BREAKOUT,TChannel.DRILL,TChannel.CROSS_SEAMER,TChannel.GRINDER,TChannel.WASHER,TChannel.UV_LAMP,TChannel.OVEN,TChannel.PAINTER };
 	
 	JComboBox selectconv;
 	JComboBox selectinlineconv;
 	JComboBox selectOffline;
+	JComboBox selectPopup;
 	private ArrayList<ConveyorFamily> offlineConveyorFamilies;
 	private ArrayList<Operator> offlineAgents;
 	
@@ -90,6 +92,9 @@ public class NonNormativePanel extends JPanel
 		selectOffline = new JComboBox(offlineNames);
 		selectOffline.addActionListener(new selectOfflineStationFromDropDown());
 		
+		selectPopup = new JComboBox(popupNames);
+		selectPopup.addActionListener(new selectPopupFromDropDown());
+		
 		JButton breakbutton = new JButton("Break");
 		JButton unbreakbutton = new JButton("Unbreak");
 		unbreakbutton.addActionListener(new unbreakbuttonaction());
@@ -105,6 +110,13 @@ public class NonNormativePanel extends JPanel
 		unbreakOffline.addActionListener(new unbreakOffline());
 		breakOffline.addActionListener(new breakOffline());
 		
+		JButton breakOfflineGlass = new JButton ("Break Glass");
+		breakOfflineGlass.addActionListener(new breakOfflineGlass());
+		
+		JButton breakPopup = new JButton("Break");
+		JButton unbreakPopup = new JButton("Unbreak");
+		breakPopup.addActionListener(new breakPopup());
+		unbreakPopup.addActionListener(new unbreakPopup());
 		
 		this.add(glasschoose);
 		
@@ -153,6 +165,19 @@ public class NonNormativePanel extends JPanel
 		
 		c.gridx=2;
 		glasschoose.add(unbreakOffline,c);
+		c.gridy=7;
+		c.gridx=1;
+		glasschoose.add(breakOfflineGlass,c);
+		
+		c.gridx=0;
+		c.gridy=8;
+		glasschoose.add(new JLabel("POPUP"),c);
+		c.gridy=9;
+		glasschoose.add(selectPopup,c);
+		c.gridx=1;
+		glasschoose.add(breakPopup,c);
+		c.gridx=2;
+		glasschoose.add(unbreakPopup,c);
 		
 		
 
@@ -239,6 +264,38 @@ public class NonNormativePanel extends JPanel
 		
 	}
 	
+	public class breakOfflineGlass implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("GUI breaking glass in offline machine " + selectOffline.getSelectedIndex());
+			//transducer.fireEvent(channel, event, args)
+		}
+		
+	}
+	
+	public class breakPopup implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class unbreakPopup implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	
 
 	public class selectglassfromdropdown implements ActionListener
@@ -260,6 +317,16 @@ public class NonNormativePanel extends JPanel
 			
 			
 		}
+	}
+	
+	public class selectPopupFromDropDown implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+		}
+		
 	}
 	
 	private class breakOffline implements ActionListener {
