@@ -335,7 +335,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	private void sendImFree() {
 		// TODO Auto-generated method stub
-		if ((state == PopUpState.OPEN && !(operators.get(0).occupied && operators.get(1).occupied) ) || conveyorStatus == ConveyorStatus.GLASS_WAITING_NO_PROC)
+		if ((state == PopUpState.OPEN && (!(operators.get(0).occupied && operators.get(1).occupied) ) || conveyorStatus == ConveyorStatus.GLASS_WAITING_NO_PROC))
 		{
 			conveyor.msgPopUpFree();
 		}
@@ -352,13 +352,14 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		Integer[] args = new Integer[1];
 		args[0] = index;
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
+
+		next.msgHereIsGlass(g.glass);
 		try{
 			release.acquire();
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
 
-		next.msgHereIsGlass(g.glass);
 		state = PopUpState.OPEN;
 		sendImFree();
 		currentGlass = null;
@@ -414,7 +415,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		
+		print("Index: " + index);
 		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index)) //Note: popup offset
 		{
 			if(event == TEvent.POPUP_GUI_MOVED_DOWN)
@@ -447,6 +448,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			}
 			
 		}
+		
 		else if((channel == operators.get(1).channel) && ((Integer)(args[0]) == 1) )
 		{
 			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+

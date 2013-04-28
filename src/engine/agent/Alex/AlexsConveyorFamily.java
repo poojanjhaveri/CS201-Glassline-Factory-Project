@@ -8,6 +8,7 @@ import transducer.Transducer;
 import engine.agent.Agent;
 
 import engine.interfaces.*;
+import gui.panels.subcontrolpanels.GlassInfoPanel;
 
 public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	public ConveyorFamily previousCF;
@@ -158,7 +159,8 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	public void pushGlass(){
 		Integer [] args= new Integer[1];
 		args[0] = cfIndex;
-		nextCF.msgHereIsGlass(glassOnCF.remove(glassOnCF.size()-1).glass);
+		print("Glass no ******: " +glassOnCF.get(0).glass.getNumber());
+		nextCF.msgHereIsGlass((glassOnCF.remove(0).glass));
 		transducer.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
 	}
 	public boolean doesLastGlassOnCFNeedProcessing(){

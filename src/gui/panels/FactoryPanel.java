@@ -73,7 +73,7 @@ public class FactoryPanel extends JPanel
 		// initialize transducer
 		transducer = new Transducer();
 		transducer.startTransducer();
-		transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
+		///transducer.setDebugMode(TransducerDebugMode.EVENTS_AND_ACTIONS);
 		// use default layout
 		// dPanel = new DisplayPanel(this);
 		// dPanel.setDefaultLayout();

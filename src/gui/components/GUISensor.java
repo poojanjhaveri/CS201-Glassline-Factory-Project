@@ -117,7 +117,7 @@ public class GUISensor extends GuiComponent
 
 				// Will basically check a box that is range by range big around it's current guiX and guiY
 				//
-				if (activePieces.get(k).getCenterX()>=getCenterX()-10&&activePieces.get(k).getCenterX()<=getCenterX()+10&&activePieces.get(k).getCenterY()>=getCenterY()-10&&activePieces.get(k).getCenterY()<=getCenterY()+10)
+				if (activePieces.get(k).getCenterX()>=getCenterX()-0&&activePieces.get(k).getCenterX()<=getCenterX()+0&&activePieces.get(k).getCenterY()>=getCenterY()-0&&activePieces.get(k).getCenterY()<=getCenterY()+0)
 				{
 					setIcon(sensorOn);
 					// If one does intersect it will change it's icon to pressed(green)
@@ -146,7 +146,7 @@ public class GUISensor extends GuiComponent
 
 			// Andrew fixed a bug on the line below.
 			// Before, if the glass stopped at the very edge of the sensor, the sensor would continuously flicker on and off.
-			if (currentGlassPiece.getCenterX()<getCenterX()-10||currentGlassPiece.getCenterX()>getCenterX()+10||currentGlassPiece.getCenterY()<getCenterY()-10||currentGlassPiece.getCenterY()>getCenterY()+10)
+			if (currentGlassPiece.getCenterX()<getCenterX()-32||currentGlassPiece.getCenterX()>getCenterX()+32||currentGlassPiece.getCenterY()<getCenterY()-32||currentGlassPiece.getCenterY()>getCenterY()+32)
 			{
 				// Redraws the sensor to it's red icon
 				setIcon(sensorOff);
