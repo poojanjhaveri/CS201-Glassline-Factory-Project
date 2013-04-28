@@ -136,14 +136,15 @@ public class GlassSelectPanel extends JPanel
 			// TODO Auto-generated method stub
 			
 			
-			/*
-			 
+			
+		/*
 			timer.scheduleAtFixedRate(new TimerTask() {
+			
   			  @Override
   			  public void run() {
   				  
-  				 */
-
+  			
+*/
 		
 			
 			
@@ -170,13 +171,13 @@ public class GlassSelectPanel extends JPanel
 			System.out.println("grinder is "+Grinder.isSelected());
 			System.out.println("washer is "+Washer.isSelected());
 			
+			/*
 			binAgent.msgCreateGlass(new Barcode(l1));
   			
-  			  /*
   			  }
-  			}, 1500, 1500); */
+  			}, 1000,1000); 
+			*/
 		}
-		
 	}
 	
 	

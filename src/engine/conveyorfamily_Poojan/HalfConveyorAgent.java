@@ -250,6 +250,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 				
 			} else if (event == TEvent.CONVEYOR_FIXED) {
 				conveyor1 = ConveyorState.Need_Run;
+				
 				stateChanged();		
 				return;
 			}
@@ -272,6 +273,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		Object [] no={this.getNumber()};
     	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
     	conveyor1=ConveyorState.Running;
+    	this.myinline.msgIamFreeForGlass();
 	}
 	
 
@@ -285,7 +287,6 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	
 
 	private void informthepreviousfamily() {
-		Do("Notifying the previous conveyor family that I'm free");
 		this.myinline.msgIamFreeForGlass();
 		sensor1 = SensorState.NOTHING;
 	}
