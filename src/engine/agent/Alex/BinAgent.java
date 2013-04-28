@@ -112,8 +112,9 @@ public class BinAgent extends Agent implements ConveyorFamily{
 		for (TransducerEvent event: events){
 			if (event == TransducerEvent.glassCreated)
 			{
+		//		giveGlassToNCCutter(event);
+
 				events.remove(event);
-				giveGlassToNCCutter();
 				return true;
 			}
 		}
@@ -121,12 +122,15 @@ public class BinAgent extends Agent implements ConveyorFamily{
 		for (GlassRequest gr: requests){
 			if (!gr.dealtWith && nextCFFree && !currentlyCreatingGlass){
 				createGlassGUI(gr);
+				requests.remove(gr);
 				return true;
 			}
 		}
 		for (GlassRequest gr: requests){
 			if (!gr.dealtWith && !nextCFFree ){
 				warnInGUIWaitingForCFFree(gr);
+
+				requests.remove(gr);
 				return true;
 			}
 		}
@@ -134,6 +138,8 @@ public class BinAgent extends Agent implements ConveyorFamily{
 		for (GlassRequest gr: requests){
 			if (!gr.dealtWith && currentlyCreatingGlass ){
 				warnCreatingGlass(gr);
+
+				requests.remove(gr);
 				return true;
 			}
 		}
@@ -160,14 +166,15 @@ public class BinAgent extends Agent implements ConveyorFamily{
 		gr.dealtWith = true;
 		currentlyCreatingGlass = true;
 		Integer [] args = new Integer[1];
+		giveGlassToNCCutter(gr);
 		transducer.fireEvent(TChannel.BIN, TEvent.BIN_CREATE_PART, args);
 	}
 
-	private void giveGlassToNCCutter(){
+	private void giveGlassToNCCutter(GlassRequest gr){
 		System.out.println(name + ": Giving glass to nc Cutter");
 		nextCFFree = false;
 		//get first glass in requests
-		ncCutter.conveyor.msgHereIsGlass(requests.remove(0).glass);
+		ncCutter.conveyor.msgHereIsGlass(gr.glass);
 		currentlyCreatingGlass = false;
 	}
 	private void warnInGUIWaitingForCFFree(GlassRequest gr) {

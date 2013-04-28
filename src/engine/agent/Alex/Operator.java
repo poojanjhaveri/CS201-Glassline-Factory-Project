@@ -160,20 +160,7 @@ public class Operator extends Agent{
 	private void breakGlass(MyGlass myGlass) {
 		print("AXN, breaking glass");
 		breakNextGlassPiece = false;
-		print("Machining glass piece " + myGlass.glass.getNumber());
-		Integer[] args = new Integer[1];
-		args[0] = workstation_number;
-		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_ACTION, args);
-		try {
-			machined.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		print("Done machining glass piece" + myGlass.glass.getNumber());
-		print("Removing glass");
 		glasses.remove(myGlass);
-		
 		myPopupAgent.msgIHaveNoGlass(this, false);
 		try {
 			popup.acquire();
@@ -236,8 +223,9 @@ public class Operator extends Agent{
 	{
 		print("Receieve dont give glass back");
 		if (b)
-		doesntGiveBackGlass = true;
+			doesntGiveBackGlass = true;
 		else 
 			doesntGiveBackGlass = false;
+		stateChanged();
 	}
 }

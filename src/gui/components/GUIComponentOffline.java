@@ -2,6 +2,7 @@
 package gui.components;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -98,9 +99,9 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 	 */
 	public void doAnimate()
 	{
-		if (counter/11 < imageicons.size())
+		if (counter/20 < imageicons.size())
 		{
-			setIcon(imageicons.get(counter/11));
+			setIcon(imageicons.get(counter/20));
 			counter++;
 		}
 		else
@@ -125,9 +126,11 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 				movePartIn();
 			}
 		}
+
 		if (animationState.equals(AnimationState.ANIMATING))
 		{
-				doAnimate();
+
+			doAnimate();
 		}
 
 			//doAnimate();
@@ -151,6 +154,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 
 	private void movePartIn()
 	{
+
 		if (part.getCenterX() < getCenterX())
 			part.setCenterLocation(part.getCenterX() + 1, part.getCenterY());
 		else if (part.getCenterX() > getCenterX())
@@ -168,11 +172,18 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			Object[] args = new Object[1];
 			args[0] = index;
 			transducer.fireEvent(channel, TEvent.WORKSTATION_LOAD_FINISHED, args);
-			if(breakglass)
-			{
-			parent.remove(this.part);
-			breakglass=false;
+			if (breakglass){
+				part.setCenterLocation(new Point( -100,-100));
+				System.out.println("GLASS BREAKING");
+
+				part.stateBroken = true;
+				parent.remove(this.part);
+				breakglass=false;
+
+				animationState = AnimationState.IDLE;
 			}
+				
+
 		}
 
 		/*
@@ -194,7 +205,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		{
 			if (event == TEvent.WORKSTATION_DO_ACTION)
 			{
-
+				
 				animationState = AnimationState.ANIMATING;
 				return;
 			}
@@ -203,6 +214,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 				animationState = AnimationState.MOVING;
 				return;
 			}
+
 			if (event == TEvent.WORKSTATION_RELEASE_GLASS)
 			{
 				//added by monroe
@@ -218,7 +230,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			{
 				// SET THE BOOLEAN HERE
 				breakglass=true;
-				System.out.println("MISSING"+breakglass);
+				System.out.println("MISSING "+breakglass);
 				return;
 			}
 			

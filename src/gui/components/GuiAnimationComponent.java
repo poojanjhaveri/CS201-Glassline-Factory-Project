@@ -21,7 +21,7 @@ public class GuiAnimationComponent extends GuiComponent
 
 	enum AnimationState
 	{
-		IDLE, ANIMATING, DONE, MOVING
+		IDLE, ANIMATING, DONE, MOVING, BREAKING
 	};
 
 	AnimationState animationState = AnimationState.IDLE;

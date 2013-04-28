@@ -288,20 +288,20 @@ public class NonNormativePanel extends JPanel
 			
 			TChannel tc = null;
 			Integer idx[] = new Integer[1];
-			idx[0] = selectconv.getSelectedIndex()% 2;
+			idx[0] = selectOffline.getSelectedIndex()% 2	;
 			
 			switch (selectOffline.getSelectedIndex()){
 			case 0:
 			case 1:
-				tc = TChannel.GRINDER;
+				tc = TChannel.DRILL;
 				break;
 			case 2:
 			case 3:
-				tc = TChannel.DRILL;
+				tc = TChannel.CROSS_SEAMER;
 				break;
 			case 4:
 			case 5:
-				tc = TChannel.CROSS_SEAMER;
+				tc = TChannel.GRINDER;
 				break;
 			}
 			
