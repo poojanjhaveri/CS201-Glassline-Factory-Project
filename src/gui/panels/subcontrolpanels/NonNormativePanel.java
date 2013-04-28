@@ -37,6 +37,10 @@ import transducer.Transducer;
 public class NonNormativePanel extends JPanel
 {
 	
+
+
+
+
 	private class selectOfflineStationFromDropDown implements ActionListener {
 
 		@Override
@@ -112,6 +116,12 @@ public class NonNormativePanel extends JPanel
 		JButton breakOfflineGlass = new JButton ("Break Glass");
 		breakOfflineGlass.addActionListener(new breakOfflineGlass());
 		
+		JButton noGlassReturnedBreak = new JButton ("Expectation Failure- Break");
+		noGlassReturnedBreak.addActionListener(new breakExpectationFailure());
+
+		JButton noGlassReturnedFix = new JButton ("Expectation Failure-Fix");
+		noGlassReturnedFix.addActionListener(new unbreakExpectationFailure());
+		
 		JButton breakPopup = new JButton("Break");
 		JButton unbreakPopup = new JButton("Unbreak");
 		breakPopup.addActionListener(new breakPopup());
@@ -167,11 +177,18 @@ public class NonNormativePanel extends JPanel
 		c.gridy=7;
 		c.gridx=1;
 		glasschoose.add(breakOfflineGlass,c);
+		c.gridy=8;
+		c.gridx = 0;
+		glasschoose.add(noGlassReturnedBreak,c);
+		
+		c.gridy=9;
+		glasschoose.add(noGlassReturnedFix,c);
 		
 		c.gridx=0;
+		
 		c.gridy=8;
 		glasschoose.add(new JLabel("POPUP"),c);
-		c.gridy=9;
+		c.gridy=10;
 		glasschoose.add(selectPopup,c);
 		c.gridx=1;
 		glasschoose.add(breakPopup,c);
@@ -371,7 +388,33 @@ public class NonNormativePanel extends JPanel
 		}
 
 	}
+	private class breakExpectationFailure implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("GUI expectation failure" + selectOffline.getSelectedIndex());
+
+			
+			
+			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
+			cfOffline.dontGiveNextGlassBack(true, selectOffline.getSelectedIndex() % 2);
+		}
+
+	}
 	
+	private class unbreakExpectationFailure implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("GUI expectation failure" + selectOffline.getSelectedIndex());
+
+			
+			
+			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
+			cfOffline.dontGiveNextGlassBack(false, selectOffline.getSelectedIndex() % 2);
+		}
+
+	}
 	
 	public int booleanToNumber(boolean b) {
 	    return b ? 1 : 0;

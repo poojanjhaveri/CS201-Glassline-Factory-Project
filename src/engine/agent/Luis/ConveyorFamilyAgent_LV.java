@@ -105,13 +105,15 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		
 	}
 
-	public void msgIHaveNoGlass(Operator operator) {
-		popup.msgIHaveNoGlass(operator);
+	public void msgIHaveNoGlass(Operator operator, boolean b) {
+		popup.msgIHaveNoGlass(operator,b);
 	}
 
 	public void breakNextGlass(int i) {
 		// TODO Auto-generated method stub
 		popup.msgBreakNextGlass(i);
 	}
-
+	public void dontGiveNextGlassBack(boolean b, int number){
+		popup.dontGiveNextGlassBack(b,number);
+	}
 }

@@ -24,6 +24,7 @@ public class Operator extends Agent{
 		workstation_number = workStationNum ;
 		glasses = new ArrayList<MyGlass>();
 		breakNextGlassPiece = false;
+		doesntGiveBackGlass = false;
 	}
 	/*
 	 * DATA
@@ -32,7 +33,7 @@ public class Operator extends Agent{
 	enum MachiningState {Waiting, Machining, Finished};
 	private Transducer transducer;
 	private TChannel mychannel;
-	boolean breakNextGlassPiece;
+	boolean breakNextGlassPiece, doesntGiveBackGlass;
 
 	int workstation_number;
 	ConveyorFamilyAgent_LV myPopupAgent;
@@ -107,12 +108,15 @@ public class Operator extends Agent{
 		{
 			if (breakNextGlassPiece)
 				breakGlass(glasses.get(0));
+			else if (doesntGiveBackGlass)
+				doesntGiveBack(glasses.get(0));
 			else
 				machineGlass(glasses.get(0));
 			return true;
 		}
 		return false;
 	}
+
 
 
 	@Override
@@ -131,13 +135,46 @@ public class Operator extends Agent{
 	/*
 	Actions
 	*/
-
+	private void doesntGiveBack(MyGlass myGlass) {
+		print("AXN, doesnt give back glass");
+		doesntGiveBackGlass = false;
+		print("Machining glass piece " + myGlass.glass.getNumber());
+		Integer[] args = new Integer[1];
+		args[0] = workstation_number;
+		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_ACTION, args);
+		try {
+			machined.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		print("Done machining glass piece" + myGlass.glass.getNumber());
+		myPopupAgent.msgIHaveNoGlass(this, true);
+		try {
+			popup.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void breakGlass(MyGlass myGlass) {
 		print("AXN, breaking glass");
 		breakNextGlassPiece = false;
+		print("Machining glass piece " + myGlass.glass.getNumber());
+		Integer[] args = new Integer[1];
+		args[0] = workstation_number;
+		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_ACTION, args);
+		try {
+			machined.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		print("Done machining glass piece" + myGlass.glass.getNumber());
 		print("Removing glass");
 		glasses.remove(myGlass);
-		myPopupAgent.msgIHaveNoGlass(this);
+		
+		myPopupAgent.msgIHaveNoGlass(this, false);
 		try {
 			popup.acquire();
 		} catch (InterruptedException e) {
@@ -195,4 +232,12 @@ public class Operator extends Agent{
 		this.myPopupAgent = (ConveyorFamilyAgent_LV) c5;
 	}
 	public void breakNextGlass(){breakNextGlassPiece = true;}
+	public void dontGiveNextGlassBack(boolean b)
+	{
+		print("Receieve dont give glass back");
+		if (b)
+		doesntGiveBackGlass = true;
+		else 
+			doesntGiveBackGlass = false;
+	}
 }

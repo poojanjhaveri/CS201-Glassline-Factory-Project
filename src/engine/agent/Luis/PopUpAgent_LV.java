@@ -136,7 +136,31 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		currentGlass = g;
 		waitingForFinshedGlass.release();
 	}
-	public void msgIHaveNoGlass(Operator operator) {
+	public void msgIHaveNoGlass(Operator operator, boolean glassStillInside) {
+		
+		if (glassStillInside){
+			if (operators.get(0).operator == operator)
+			{
+				operators.get(0).occupied = true;
+			}
+			else
+			{
+				
+				operators.get(1).occupied = true;
+			}
+		}
+		else
+		{
+			if (operators.get(0).operator == operator)
+			{
+				operators.get(0).occupied = false;
+			}
+			else
+			{
+				
+				operators.get(1).occupied = false;
+			}
+		}
 		waitingForFinshedGlass.release();
 		currentGlass = null;
 	}
@@ -271,7 +295,6 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 		if (currentGlass == null){
 			print("No glass returned, lost by machine");
-			machine.occupied = false;
 			state = PopUpState.OPEN;
 		}
 		else{
@@ -624,6 +647,16 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	public void msgBreakNextGlass(int i) {
 		operators.get(i).operator.breakNextGlass();
+	}
+
+
+	public void dontGiveNextGlassBack(boolean b, int number) {
+		if (!b){
+			operators.get(number).readyToGiveFinishedGlass = true;
+			
+		}
+		operators.get(number).operator.dontGiveNextGlassBack(b);
+		stateChanged();
 	}
 
 
