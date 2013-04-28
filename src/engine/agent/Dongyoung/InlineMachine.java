@@ -19,11 +19,6 @@ public class InlineMachine extends Component implements TReceiver{
 	// SCHEDULER
 	@Override
 	protected boolean pickAndExecuteAnAction(){
-		if( fix ){
-			fixNonNorm();
-			return true;
-		}
-		
 		if( broken ){
 			return false;
 		}
@@ -84,13 +79,7 @@ public class InlineMachine extends Component implements TReceiver{
 	private void passGlassAction(){
 		nextComp.msgHereIsGlass( glasses.remove(0) );
 	}
-	
-	// NON-NORM.
-	private void fixNonNorm(){
-		fix = false;
-		broken = false;
-	}
-	
+
 	// EXTRA
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
@@ -107,7 +96,7 @@ public class InlineMachine extends Component implements TReceiver{
 			broken = true;
 		}
 		else if( event == TEvent.WORKSTATION_FIXED ){
-			fix = true;
+			broken = false;
 		}
 		stateChanged();
 	}

@@ -13,12 +13,8 @@ public class Component extends Agent{
 	protected Transducer transducer;
 	protected String name;
 	protected CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
-	
 	protected boolean nextCompFree = true;   // Next Component's status
-	protected boolean newGlass = false;   // New glass on Front Sensor
-	protected boolean checkPass = false;   // New glass on Next Sensor
-	protected boolean checkDone = true;   // Glass passed to next Component safely?
-	protected boolean debug = false, broken = false, fix = false;
+	protected boolean debug = false, broken = false;
 	
 	// Constructor
 	protected Component(String name){
@@ -29,15 +25,7 @@ public class Component extends Agent{
 	// MESSAGE
 	public void msgIAmFree(){
 		if( debug ){	print("Received message 'IAmFree'");	}
-		
-		// For Conveyor ------------------------------
 		nextCompFree = true;
-		// If a glass still stays, it needs to be sent.
-		if( !checkDone ){
-			checkPass = true;
-		}
-		// -------------------------------------------
-		
 		stateChanged();
 	}
 	

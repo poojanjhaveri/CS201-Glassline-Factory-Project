@@ -1,46 +1,20 @@
-
-
 package gui.panels;
-/*
-import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily5.ConveyorFamily5;
-import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily6.ConveyorFamily6;
-import engine.agent.Dongyoung.ConveyorFamily.ConveyorFamily7.ConveyorFamily7;
-import engine.agent.Dongyoung.Mock.MockNextFamily;
-import engine.agent.Dongyoung.Mock.MockPreviousFamily;
-import engine.agent.Dongyoung.Mock.TestAni;
-*/
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import engine.agent.Alex.AlexsConveyorFamily;
-import engine.agent.Alex.BinAgent;
-import engine.agent.Alex.Operator;
-import engine.agent.Alex.V1_GUI;
+import engine.interfaces.ConveyorFamily;
+import gui.drivers.FactoryFrame;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import transducer.TChannel;
+import transducer.Transducer;
+
+import engine.agent.Alex.*;
 import engine.agent.Dongyoung.ConveyorFamilyDistributor;
-import engine.agent.Dongyoung.Mock.MockNextFamily;
-import engine.agent.Dongyoung.Mock.MockPreviousFamily;
-import engine.agent.Dongyoung.Mock.TestAni;
 import engine.agent.Luis.*;
-
 import engine.agent.Yinong.ConveyorAgent;
 import engine.agent.Yinong.ConveyorAgent.Mode;
 import engine.agent.Yinong.ConveyorFamilyAgents;
-
-import engine.agent.Yinong.*;
-import engine.conveyorfamily.Interfaces_Poojan.ConveyorFamilyInterface;
 import engine.conveyorfamily_Poojan.ConveyorFamily_PJ;
-import engine.interfaces.ConveyorFamily;
-import gui.drivers.FactoryFrame;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
-import shared.Glass;
-import transducer.TChannel;
-import transducer.TEvent;
-import transducer.Transducer;
-import transducer.TransducerDebugMode;
 
 /**
  * The FactoryPanel is highest level panel in the actual kitting cell. The
@@ -319,26 +293,6 @@ public class FactoryPanel extends JPanel
 	//	c3.startThreads();
 	//	bin.startThreads();
 		//c2.setNextConveyorFamily();
-	}
-
-	// NO TOUCH
-	public void runDongyoung(){
-		new TestAni(transducer);
-		final ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
-		MockPreviousFamily previousFamily = new MockPreviousFamily(dongyoungFamily, transducer);
-		MockNextFamily nextFamily = new MockNextFamily(dongyoungFamily);
-		dongyoungFamily.setter(previousFamily, nextFamily, transducer);
-		/*
-		// Non-norm test
-		final int brokenConveyorNum = 13;
-		
-		new Timer().schedule(new TimerTask(){
-			public void run(){
-				dongyoungFamily.setConveyorBroken(true, brokenConveyorNum);
-				System.out.println("CONVEYOR" + brokenConveyorNum + " is BROKEN!!!");
-			}
-		}, 8000);
-		*/
 	}
 
 	/**

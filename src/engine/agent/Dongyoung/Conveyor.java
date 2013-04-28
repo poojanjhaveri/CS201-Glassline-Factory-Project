@@ -9,10 +9,12 @@ public class Conveyor extends Component implements TReceiver{
 	// DATA
 	private ConveyorFamily previousFamily = null;
 	private ConveyorFamily nextFamily = null;
-	private boolean glassLeaveFront = false;
+	private boolean glassLeaveFront = false, glassLeaveBack = false;
+	private boolean entrySensorCheck = false, lastSensorCheck = false;
+	private boolean readyToSend = false;
 	private Integer[] conveyorNum = new Integer[1];
-	private int frontSensorNum, backSensorNum, sensorNum;
-	private Glass glassToNext;
+	private int frontSensorNum, backSensorNum;
+	private boolean truckFirstIAmFreeNotify = false;
 	
 	// Constructor
 	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
@@ -23,36 +25,50 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	// MESSAGE - Directly from Transducer. Refer to function 'eventFired'
+	public void msgHereIsGlass(Glass glass){
+		super.msgHereIsGlass(glass);
+		if( glasses.isEmpty() ){
+			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
+		}
+	}
+	
+	public void msgIAmFree(){
+		super.msgIAmFree();
+		if( conveyorNum[0] == 14 && truckFirstIAmFreeNotify ){
+			glasses.remove(0);
+		}
+		truckFirstIAmFreeNotify = true;
+	}
 	
 	// SCHEDULER
 	@Override
-	protected boolean pickAndExecuteAnAction(){		
-		// Non-norm. Fix
-		if( fix ){
-			fixNonNorm();
-			return true;
-		}
-		
-		// Conveyor is broken
+	protected boolean pickAndExecuteAnAction(){
 		if( broken ){
 			return false;
 		}
 		
-		// New Glass on Front Sensor
-		if( newGlass ){
+		if( entrySensorCheck ){
 			newGlassAction();
 			return true;
 		}
 		
-		// Glass leaves Front Sensor
 		if( glassLeaveFront ){
 			glassLeaveFrontAction();
 			return true;
 		}
-		
-		// New Glass on Back Sensor
-		if( checkPass ){
+	
+		if( lastSensorCheck ){
 			checkPassAction();
+			return true;
+		}
+		
+		if( glassLeaveBack ){
+			glassLeaveBackAction();
+			return true;
+		}
+		
+		if( readyToSend && nextCompFree ){
+			sendGlassAction();
 			return true;
 		}
 		
@@ -60,104 +76,74 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	// ACTION
-	private void fixNonNorm(){
-		fix = false;
-		broken = false;
-		conveyorCheck();
-	}
-	
-	/*
-	 * Check if next component is ready to accept glasses.
-	 * If not, the conveyor keeps the glass waiting.
-	 */
-	private void checkPassAction(){
-		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
-		if( nextCompFree ){
-			nextCompFree = false;
-			passGlassAction();
-			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
-			checkDone = true;
-		}
-		else{
-			checkDone = false;
-		}
-		checkPass = false;
-	}
-	
 	/* New glass on Front Sensor */
 	private void newGlassAction(){
-		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
-		newGlass = false;
-		conveyorCheck();
+		if( !lastSensorCheck && !readyToSend ){
+			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
+		}
+		entrySensorCheck = false;
 	}
 	
 	/* Glass leaves Front Sensor */
 	private void glassLeaveFrontAction(){
-		glassLeaveFront = false;
-		notifyIAmFreeAction();
-	}
-
-	/* Notification */
-	private void notifyIAmFreeAction(){
 		if( previousFamily == null ){
 			previousComp.msgIAmFree();
 		}
 		else{
 			previousFamily.msgIAmFree();
 		}
+		
+		glassLeaveFront = false;
 	}
 	
-	/* Glass Pass */
-	private void passGlassAction(){
-		glassToNext = glasses.remove(0);
-		
+	private void checkPassAction(){
+		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
+		lastSensorCheck = false;
+		readyToSend = true;
+	}
+
+	private void glassLeaveBackAction(){		
+		glassLeaveBack = false;
+	}
+	
+	private void sendGlassAction(){
 		if( nextFamily == null ){
-			nextComp.msgHereIsGlass( glassToNext );
+			nextComp.msgHereIsGlass( glasses.get(0) );
 		}
 		else{
-			nextFamily.msgHereIsGlass( glassToNext );
+			nextFamily.msgHereIsGlass( glasses.get(0) );
 		}
+		
+		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
+		readyToSend = false;
+		nextCompFree = false;
 	}
 
 	// EXTRA
-	public void breakConveyor(){
-		broken = true;
-	}
-	
-	public void fixConveyor(){
-		fix = true;
+	public void setConveyorBroken(boolean conveyorStatus){
+		broken = conveyorStatus;
 		stateChanged();
 	}
 	
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		
-		sensorNum = (Integer)args[0];
-		if( event == TEvent.SENSOR_GUI_PRESSED ){
-			if( sensorNum == frontSensorNum ){
-				newGlass = true;
+		if( (Integer)args[0] == frontSensorNum ){
+			if( event == TEvent.SENSOR_GUI_PRESSED ){
+				entrySensorCheck = true;
 			}
-			else if( sensorNum == backSensorNum ){
-				checkPass = true;
+			else if( event == TEvent.SENSOR_GUI_RELEASED ){
+				glassLeaveFront = true;
 			}
 			stateChanged();
 		}
-		else if( event == TEvent.SENSOR_GUI_RELEASED ){
-			if( sensorNum == frontSensorNum ){
-				glassLeaveFront = true;
-				stateChanged();
+		else if( (Integer)args[0] == backSensorNum ){
+			if( event == TEvent.SENSOR_GUI_PRESSED ){
+				lastSensorCheck = true;
 			}
-		}
-	}
-	
-	/* Everytime the conveyor status is changed, it should check the conveyor should run or stops. */
-	private void conveyorCheck(){
-		// Glass on Front Sensor or on Conveyor, but no Glass on Back Sensor
-		if( ( newGlass || !glasses.isEmpty() ) && !checkPass && checkDone ){
-			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
-		}
-		else{
-			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
+			else if( event == TEvent.SENSOR_GUI_RELEASED ){
+				glassLeaveBack = true;
+			}
+			stateChanged();
 		}
 	}
 
@@ -171,6 +157,7 @@ public class Conveyor extends Component implements TReceiver{
 		else if( previous instanceof ConveyorFamily ){
 			previousFamily = (ConveyorFamily)previous;
 		}
+
 		if( next instanceof Component ){
 			nextComp = (Component)next;
 		}

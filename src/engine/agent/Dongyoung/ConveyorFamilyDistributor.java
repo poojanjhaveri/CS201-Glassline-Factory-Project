@@ -50,12 +50,7 @@ public class ConveyorFamilyDistributor implements ConveyorFamily {
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
-		if(s){
-			conveyors[conveyorno-10].breakConveyor();
-		}
-		else{
-			conveyors[conveyorno-10].fixConveyor();
-		}
+		conveyors[conveyorno-10].setConveyorBroken(s);
 	}
 	
 	@Override
