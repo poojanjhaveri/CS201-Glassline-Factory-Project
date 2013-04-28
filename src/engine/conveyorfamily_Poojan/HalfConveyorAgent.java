@@ -376,38 +376,21 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	
 
 
-/*
+
 	public void setbrokenstatus(boolean s,int i) {
 		// 
 		if(s)
 		{
-		Object [] no={i};
-		if(i==0)
-		{
-			
+			conveyor1=ConveyorState.Jammed;
 		}
 		else
 		{
-			conveyor1=ConveyorState.Need_Break;
+				conveyor1=ConveyorState.Need_Run;
 		}
-		}
-		else
-		{
-			Object [] no={i};
-			if(i==0)
-			{
-				
-			}
-			else
-			{
-				conveyor1=ConveyorState.Need_Fix;
-			}
-		}
-
     	stateChanged();
 
 	}
-*/
+
 
 
 

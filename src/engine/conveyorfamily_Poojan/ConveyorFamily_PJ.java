@@ -139,6 +139,16 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
+
+		// TODO Auto-generated method stub
+		if(conveyorno==0)
+		{
+			conveyor.setbrokenstatus(s, conveyorno);
+		}
+		else
+		{
+			halfconveyor.setbrokenstatus(s, conveyorno);
+		}
 	}
 
 
