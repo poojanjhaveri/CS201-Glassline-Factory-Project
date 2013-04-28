@@ -324,7 +324,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 
 
 	public void setbroken(boolean s) {
-		// TODO Auto-generated method stub
 		inlinebroken=s;
 		stateChanged();
 	}

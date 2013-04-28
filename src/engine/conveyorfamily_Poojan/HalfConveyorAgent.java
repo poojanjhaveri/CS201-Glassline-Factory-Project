@@ -39,17 +39,14 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 	private ConveyorFamily PREVIOUSFamily;
 
 	private InLineMachine_PJ myinline;
-
 	private enum GlassStatusConveyor{NEW,DONE,ONENTRYSENSOR,CHECKED, ONEXITSENSOR, NEEDSMACHINEPROCESSING, NOMACHINEPROCESSING, CHECKINGPROCESSING, FIRSTDONE, INLINEBUSY, ONLASTSENSOR, ONLASTSENSORSTOP, ONTHIRDSENSOR, THIRDSENSORDONE, CHECKEDDONE, ONENTRYSENSORSTOP};
 
 	private Boolean isPopUpBusy;
 	
 	private boolean isNextConveyorFamilyBusy;
 	private ConveyorAgent_PJ previousconveyor;
-	
 	private enum ConveyorState{Running,Stopped,Jammed,Need_Fix, Need_Run, Need_Break};
 	private enum SensorState{NOTHING, PRESSED, RELEASED};
-
 	private ConveyorState conveyor1;
 	private SensorState sensor1;
 	private SensorState sensor2;
@@ -163,12 +160,12 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			startconveyor1();
 		}
 		
-		if( (isNextConveyorFamilyBusy==true) && (sensor2 == SensorState.PRESSED) && (conveyor1==ConveyorState.Running) ) {
+		if( (isNextConveyorFamilyBusy) && (sensor2 == SensorState.PRESSED) && (conveyor1==ConveyorState.Running) ) {
 			stopConveyor();
 			return true;
 		}
 		
-		if( (isNextConveyorFamilyBusy==false) && (conveyor1==ConveyorState.Stopped) ) {
+		if( (!isNextConveyorFamilyBusy) && (conveyor1==ConveyorState.Stopped) ) {
 			startconveyor1();
 			return true;
 		}
