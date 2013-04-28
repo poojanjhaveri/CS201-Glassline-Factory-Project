@@ -87,6 +87,11 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		conveyor.setBroken(s);
 		
 	}
+	
+	public void setPopUpBroken(boolean s)
+	{
+		popup.setPopUpBroken(s);
+	}
 
 	@Override
 	public void setInlineBroken(boolean s, TChannel channel) {
