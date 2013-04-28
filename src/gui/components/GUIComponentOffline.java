@@ -40,7 +40,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 	
 	Timer timer = new Timer();
 	private boolean breakNextGlass=false;
-
+	private boolean informoperator=true;
 	/**
 	 * Frame counter
 	 */
@@ -162,25 +162,22 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			part.setCenterLocation(part.getCenterX(), part.getCenterY() - 1);
 
 		
-		
-		
-		
 		if (part.getCenterX() == getCenterX() && part.getCenterY() == getCenterY())
 		{
 			
-			
+			if(informoperator)
+			{
 			Object[] args = new Object[1];
 			args[0] = index;
 			transducer.fireEvent(channel, TEvent.WORKSTATION_LOAD_FINISHED, args);
+			}
 		}
 		
 		if(breakNextGlass)
 		{
-			
+			informoperator=false;
 			this.part.msgPartBroken();
-			this.part=null;
 			breakNextGlass=false;
-			
 		}
 		
 		
@@ -215,6 +212,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			}
 			if (event == TEvent.WORKSTATION_MISSING_GLASS)
 			{
+				System.out.println("MISSING");
 				 breakNextGlass=true;
 				return;
 			}
