@@ -378,9 +378,14 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				print("Sending to conveyor im free");
 				conveyor.msgPopUpFree();
 			}
-				
+			else{
+
+				conveyor.msgPopUpBusy();
+			}
 			
 		}
+		else
+			conveyor.msgPopUpBusy();
 		conveyorNotifiedFree = true;
 	}
 
@@ -675,6 +680,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	public void msgBreakNextGlass(int i) {
 		operators.get(i).operator.breakNextGlass();
+		stateChanged();
 	}
 
 
@@ -682,6 +688,9 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if (!b){
 			if (operators.get(number).occupied)
 				operators.get(number).readyToGiveFinishedGlass = true;
+			sendImFree();
+			//?
+			
 			
 		}
 		

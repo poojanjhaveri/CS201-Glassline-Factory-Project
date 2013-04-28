@@ -77,7 +77,7 @@ public class GUIPopUp extends GuiComponent implements Serializable
 		doPopUpAnimation = false;
 		doPopDownAnimation = false;
 		setIcon(iconWithoutPart);
-		this.setSize(iconWithoutPart.getIconHeight(), iconWithoutPart.getIconWidth());
+		this.setSize(33,33);//iconWithoutPart.getIconHeight(), iconWithoutPart.getIconWidth());
 		this.setIcon(iconWithoutPart);
 		transducer = t;
 		transducer.register(this, TChannel.POPUP);

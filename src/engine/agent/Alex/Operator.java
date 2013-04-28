@@ -47,6 +47,8 @@ public class Operator extends Agent{
 	}
 	Semaphore popup;
 	Semaphore machined;
+	private Semaphore dontGiveGlassBack = new Semaphore(0);
+	
 
 	/*
 	 * Messages
@@ -108,8 +110,6 @@ public class Operator extends Agent{
 		{
 			if (breakNextGlassPiece)
 				breakGlass(glasses.get(0));
-			else if (doesntGiveBackGlass)
-				doesntGiveBack(glasses.get(0));
 			else
 				machineGlass(glasses.get(0));
 			return true;
@@ -158,6 +158,15 @@ public class Operator extends Agent{
 		args[0] = workstation_number;
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_LOAD_GLASS, args);
 		glasses.get(0).lState = LoadingState.Loading;
+		if (doesntGiveBackGlass){
+			print("Doesn't give glass back!");
+			try {
+				dontGiveGlassBack.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void machineGlass(MyGlass myGlass){
@@ -202,14 +211,14 @@ public class Operator extends Agent{
 	public void dontGiveNextGlassBack(boolean b)
 	{
 		print("Receieve dont give glass back");
-		if (b)
-			doesntGiveBackGlass = true;
-		else 
-			{
-			if (!glasses.isEmpty()){
-				glasses.get(0).mState =MachiningState.Waiting;
-			}
-			doesntGiveBackGlass = false;}
+
+		doesntGiveBackGlass = b;
+
+		if (!b){
+				dontGiveGlassBack.release();
+			
+		}
+			
 		
 		stateChanged();
 	}
