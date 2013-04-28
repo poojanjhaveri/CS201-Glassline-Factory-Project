@@ -103,6 +103,8 @@ public class GUIGlass extends GuiComponent implements Serializable
 	 * Instances of image holder that hold the overlays for the glass for washer
 	 */
 	ImageHolder imageWASHER;
+	ImageHolder imageMISSING;
+
 	/**
 	 * The current imageHolder overlay
 	 */
@@ -161,6 +163,8 @@ public class GUIGlass extends GuiComponent implements Serializable
 		imageHolders.add(imageUVLAMP);
 		imageWASHER = new ImageHolder("imageicons/glassOverlays/glassImageHolder_WASHER.png");
 		imageHolders.add(imageWASHER);
+		imageMISSING = new ImageHolder("imageicons/imageicons/glassImage_MISSING.png");
+		imageHolders.add(imageMISSING);
 	}
 	/**
 	 * Message to tell the part to rotate to an angle
@@ -242,7 +246,7 @@ public class GUIGlass extends GuiComponent implements Serializable
 			imageWASHER.display = true;
 			break;
 		case NONE1:
-			setIcon(new ImageIcon(filePathMISSING));
+			imageMISSING.display=true;
 			break;	
 			
 			
@@ -324,6 +328,11 @@ public class GUIGlass extends GuiComponent implements Serializable
 		if (imageWASHER.display)
 		{
 			g2d.drawImage(imageWASHER.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
+			
+		}
+		if (imageMISSING.display)
+		{
+			g2d.drawImage(imageMISSING.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
 			
 		}
 		
