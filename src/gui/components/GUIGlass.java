@@ -352,6 +352,17 @@ public class GUIGlass extends GuiComponent implements Serializable
 		setIcon( new ImageIcon("imageicons/glassImage_BROKEN.png"));
 		lastOperation = ComponentOperations.SHATTERED;
 	}
+	
+	
+	public void msgPartDELETED()
+	{
+		for (int i = 0; i < imageHolders.size(); i++)
+		{
+			imageHolders.get(i).display = false;
+		}
+	}
+	
+	
 	/**
 	 * Returns the current angle
 	 * @return The part's current angle
