@@ -30,5 +30,5 @@ public enum ComponentOperations
 	PAINT,
 	SHATTERED,
 	UVLAMP,
-	WASHER
+	WASHER, NONE1
 }
