@@ -49,13 +49,21 @@ public class ConveyorFamilyDistributor implements ConveyorFamily {
 	}
 
 	@Override
+	public void setConveyorBroken(boolean s, int conveyorno) {
+		if(s){
+			conveyors[conveyorno-10].breakConveyor();
+		}
+		else{
+			conveyors[conveyorno-10].fixConveyor();
+		}
+	}
+	
+	@Override
 	public void setPreviousConveyorFamily(ConveyorFamily previousFamily) {}
 	public void setNextConveyorFamily(ConveyorFamily nextFamily) {}
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) {}
 	public void msgIHaveGlassFinished(Operator operator) {}
 	public void startThreads(){}
 	public String getName() { return null; }
-	public void setConveyorBroken(boolean s) {}
-	public void setConveyorBroken(boolean s, int conveyorno) {conveyors[conveyorno-10].setConveyorBroken(s);}
 	public void setInlineBroken(boolean s, TChannel channel) {}
 }

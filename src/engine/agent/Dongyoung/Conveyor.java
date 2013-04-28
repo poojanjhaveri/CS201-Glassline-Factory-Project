@@ -120,6 +120,15 @@ public class Conveyor extends Component implements TReceiver{
 	}
 
 	// EXTRA
+	public void breakConveyor(){
+		broken = true;
+	}
+	
+	public void fixConveyor(){
+		fix = true;
+		stateChanged();
+	}
+	
 	/* From Transducer */
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		
@@ -138,13 +147,6 @@ public class Conveyor extends Component implements TReceiver{
 				glassLeaveFront = true;
 				stateChanged();
 			}
-		}
-		else if(args[0] == conveyorNum[0] && event == TEvent.CONVEYOR_BROKEN ){
-			broken = true;
-		}
-		else if(args[0] == conveyorNum[0] && event == TEvent.CONVEYOR_FIXED ){
-			fix = true;
-			stateChanged();
 		}
 	}
 	
@@ -176,13 +178,5 @@ public class Conveyor extends Component implements TReceiver{
 		else if( next instanceof ConveyorFamily ){
 			nextFamily = (ConveyorFamily)next;
 		}
-	}
-
-	public void setConveyorBroken(boolean s) {
-		// TODO Auto-generated method stub
-		if (s)
-			broken = true;
-		else
-			broken = false;
 	}
 }
