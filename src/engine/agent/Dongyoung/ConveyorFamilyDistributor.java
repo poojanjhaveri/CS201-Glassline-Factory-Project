@@ -56,6 +56,6 @@ public class ConveyorFamilyDistributor implements ConveyorFamily {
 	public void startThreads(){}
 	public String getName() { return null; }
 	public void setConveyorBroken(boolean s) {}
-	public void setConveyorBroken(boolean s, int conveyorno) {}
+	public void setConveyorBroken(boolean s, int conveyorno) {conveyors[conveyorno-10].setConveyorBroken(s);}
 	public void setInlineBroken(boolean s, TChannel channel) {}
 }

@@ -69,6 +69,7 @@ public class AlexsConveyorFamily extends Agent implements ConveyorFamily {
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		// TODO Auto-generated method stub
+		conveyorAgent.eventFired(channel, event, args);
 		if (channel == TChannel.SENSOR){
 			//if one of the proper sensors
 			if ((Integer)args[0] == cfIndex * 2){

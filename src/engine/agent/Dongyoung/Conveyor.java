@@ -177,4 +177,12 @@ public class Conveyor extends Component implements TReceiver{
 			nextFamily = (ConveyorFamily)next;
 		}
 	}
+
+	public void setConveyorBroken(boolean s) {
+		// TODO Auto-generated method stub
+		if (s)
+			broken = true;
+		else
+			broken = false;
+	}
 }

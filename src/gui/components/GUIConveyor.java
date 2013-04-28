@@ -345,7 +345,7 @@ public class GUIConveyor extends GuiComponent
 			if (event.equals(TEvent.CONVEYOR_DO_BREAK)) {
 				
 				moving = false;
-				transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_BROKEN, args);
+				//transducer.fireEvent(TChannel.CONVEYOR, TEvent.CONVEYOR_BROKEN, args);
 			}
 			if (event.equals(TEvent.CONVEYOR_DO_FIX)) {
 				//System.out.println("Fixed");
