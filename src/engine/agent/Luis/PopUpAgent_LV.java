@@ -19,7 +19,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	int index;
 	TChannel work;
-	boolean nextComponentFree;
+	boolean nextComponentFree,popUpBreak = false;
 	Status status;
 	PopUpState state;
 	List<Machine> operators;
@@ -34,6 +34,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	Semaphore load = new Semaphore(0,true);
 	Semaphore release = new Semaphore(0,true);
+
+	Semaphore brokenPopUp = new Semaphore(0,true);
 
 	Semaphore statusSemaphore = new Semaphore(0,true);
 
@@ -381,6 +383,18 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	private void lowerPopUp()
 	{
 		print("lowering popup");
+
+		if(popUpBreak)
+		{
+			print("PopUp broken!");
+			
+			try {
+				brokenPopUp.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		Integer[] args = new Integer[1];
 
 		args[0] = index; //Note: popup offset
@@ -398,6 +412,18 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	private void raisePopUp()
 	{
 		print("raising popup");
+
+		if(popUpBreak)
+		{
+			print("PopUp broken!");
+			
+			try {
+				brokenPopUp.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		Integer[] args = new Integer[1];
 
 		args[0] = index;
@@ -466,6 +492,20 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	{
 		return name;
 
+	}
+
+	public void setPopUpBroken(boolean s)
+	{
+		print("setting popup " + index + " to broken = " + s);
+		
+		if(s)
+			popUpBreak = true;
+		else
+		{
+			brokenPopUp.release();
+			popUpBreak = false;
+		}
+		stateChanged();
 	}
 
 	public void setOperators(Operator operatorOne, Operator operatorTwo, TChannel c)
