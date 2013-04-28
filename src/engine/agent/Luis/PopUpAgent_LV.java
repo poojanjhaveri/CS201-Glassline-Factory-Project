@@ -622,6 +622,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	}
 
 
+	public void msgBreakNextGlass(int i) {
+		operators.get(i).operator.breakNextGlass();
+	}
+
+
 
 
 
