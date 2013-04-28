@@ -139,8 +139,7 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 
 	@Override
 	public void setConveyorBroken(boolean s, int conveyorno) {
-<<<<<<< HEAD
-=======
+
 		// TODO Auto-generated method stub
 		if(conveyorno==0)
 		{
@@ -150,8 +149,6 @@ public class ConveyorFamily_PJ implements ConveyorFamily
 		{
 			halfconveyor.setbrokenstatus(s, conveyorno);
 		}
-		
->>>>>>> fixed setconveyorbroken() !
 	}
 
 
