@@ -171,12 +171,6 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			transducer.fireEvent(channel, TEvent.WORKSTATION_LOAD_FINISHED, args);
 		}
 		
-if (breakNextGlass){
-	
-	this.part.msgPartBroken();
-	breakNextGlass = false;
-		}
-		
 		
 	}
 
@@ -207,11 +201,7 @@ if (breakNextGlass){
 				nextComponent.addPart(part);
 				return;
 			}
-			if (event == TEvent.WORKSTATION_MISSING_GLASS)
-			{
-				breakNextGlass=true;	
-				return;
-			}
+
 			
 
 		}
