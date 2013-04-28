@@ -173,8 +173,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		
 if (breakNextGlass){
 	
-	this.part.lastOperation = ComponentOperations.NONE1;
-	this.part.changeState();
+	this.part.msgPartBroken();
 	breakNextGlass = false;
 		}
 		
@@ -210,7 +209,7 @@ if (breakNextGlass){
 			}
 			if (event == TEvent.WORKSTATION_MISSING_GLASS)
 			{
-				breakNextGlass=false;	
+				breakNextGlass=true;	
 				return;
 			}
 			
