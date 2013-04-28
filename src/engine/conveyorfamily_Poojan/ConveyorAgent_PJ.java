@@ -124,6 +124,11 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		
+		while(conveyor0==ConveyorState.Jammed)
+		{
+			return false;
+		}
 
 
 		while(conveyor0==ConveyorState.Need_Run)
@@ -306,7 +311,6 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 		
 		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == this.number) ) {
 			if(event == TEvent.CONVEYOR_BROKEN) {
-				
 				print("BREAKKK");
 				conveyor0 = ConveyorState.Jammed;
 				print("");
@@ -467,7 +471,20 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 
 
+	public void setbrokenstatus(boolean s,int i) {
+		// 
+		if(s)
+		{
+			conveyor0=ConveyorState.Jammed;
+			print("I AM JAMMED");
+		}
+		else
+		{
+				conveyor0=ConveyorState.Need_Run;
+		}
+    	stateChanged();
 
+	}
 
 
 	
