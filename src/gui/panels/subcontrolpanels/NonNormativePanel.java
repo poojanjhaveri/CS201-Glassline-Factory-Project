@@ -269,26 +269,7 @@ public class NonNormativePanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("GUI breaking glass in offline machine " + selectOffline.getSelectedIndex());
-			TChannel tc = null;
-			Integer idx[] = new Integer[1];
-			idx[0] = selectconv.getSelectedIndex()% 2;
-			
-			switch (selectOffline.getSelectedIndex()){
-			case 0:
-			case 1:
-				tc = TChannel.GRINDER;
-				break;
-			case 2:
-			case 3:
-				tc = TChannel.DRILL;
-				break;
-			case 4:
-			case 5:
-				tc = TChannel.CROSS_SEAMER;
-				break;
-			}
-			
-			transducer.fireEvent(tc, TEvent.WORKSTATION_MISSING_GLASS, idx);
+			//transducer.fireEvent(channel, event, args)
 			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
 			cfOffline.breakNextGlass( selectOffline.getSelectedIndex() % 2);
 		}
@@ -300,7 +281,10 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			
+			ConveyorFamilyAgent_LV cfPopUp = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectPopup.getSelectedIndex());
+			
+			cfPopUp.setPopUpBroken(true);
 			
 		}
 		
@@ -311,7 +295,9 @@ public class NonNormativePanel extends JPanel
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			ConveyorFamilyAgent_LV cfPopUp = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectPopup.getSelectedIndex());
+			
+			cfPopUp.setPopUpBroken(false);
 			
 		}
 		
@@ -354,9 +340,8 @@ public class NonNormativePanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("GUI breaking offline machine " + selectOffline.getSelectedIndex());
-			
 			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
-			cfOffline.msgOperatorBroken(true, selectOffline.getSelectedIndex() % 2);
+					cfOffline.msgOperatorBroken(true, selectOffline.getSelectedIndex() % 2);
 		}
 
 	}
