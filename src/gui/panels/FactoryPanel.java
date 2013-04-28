@@ -252,7 +252,6 @@ public class FactoryPanel extends JPanel
 		// Dongyoung =======================================
 		ConveyorFamilyDistributor dongyoungFamily = new ConveyorFamilyDistributor();
 		c9.setNextConveyorFamily(dongyoungFamily);
-		dongyoungFamily.setConveyorBroken(true);
 		// ================================================
 		
 		// Truck ==========================================
