@@ -162,12 +162,8 @@ public class Operator extends Agent{
 		breakNextGlassPiece = false;
 		glasses.remove(myGlass);
 		myPopupAgent.msgIHaveNoGlass(this, false);
-		try {
-			popup.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		popup.drainPermits();
 
 	}
 

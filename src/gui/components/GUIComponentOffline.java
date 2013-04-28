@@ -178,8 +178,10 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 
 				part.stateBroken = true;
 				parent.remove(this.part);
-				breakglass=false;
 
+				this.part = null;
+				breakglass=false;
+				//this.transducer.fireEvent(this.channel, TEvent.WORKSTATION_RELEASE_FINISHED, args);
 				animationState = AnimationState.IDLE;
 			}
 				
