@@ -328,7 +328,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		//g.state = GlassState.NONE;
 		state = PopUpState.OPEN;
 	
-		sendImFree();
+		conveyor.msgPopUpFree();
 		currentGlass = null;
 		stateChanged();
 	}
