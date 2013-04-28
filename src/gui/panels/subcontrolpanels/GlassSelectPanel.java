@@ -171,9 +171,9 @@ public class GlassSelectPanel extends JPanel
 			System.out.println("grinder is "+Grinder.isSelected());
 			System.out.println("washer is "+Washer.isSelected());
 			
-			/*
+			
 			binAgent.msgCreateGlass(new Barcode(l1));
-  			
+  			/*
   			  }
   			}, 1000,1000); 
 			*/
