@@ -32,13 +32,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	enum Status{RAISED,LOWERED};
 	Semaphore stateSemaphore = new Semaphore(0,true);
 	Semaphore statusSemaphore = new Semaphore(0,true);
-	//Semaphore loadSemaphore = new Semaphore(0,true);
 	
 	ConveyorFamily next;
 	
 	Transducer t;
 	TChannel channel;
-	//private Semaphore waitingForOperatorToGiveBackGlass = new Semaphore(0);
 	private ConveyorFamilyAgent_LV parentCF;
 	private enum ConveyorStatus{NULL, GLASS_WAITING_NO_PROC, GLASS_WAITING_YES_PROC};
 	ConveyorStatus conveyorStatus = ConveyorStatus.NULL;
@@ -106,50 +104,24 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	public void msgHereIsGlass(Glass glass) 
 	{
-	
-			
-			/*for(GlassPackage g : myGlassPieces)
-			{
-				if(g.glass == glass)
-				{
-					g.state = GlassState.INCOMING;
-					currentGlass = g;
-					stateChanged();
-					return;
-				}
-			}*/
-			GlassPackage g = new GlassPackage(glass, GlassState.INCOMING);
-			myGlassPieces.add(g);
-			currentGlass = g;
-		
+		GlassPackage g = new GlassPackage(glass, GlassState.INCOMING);
+		myGlassPieces.add(g);
+		currentGlass = g;
 		stateChanged();
 
 	}
 	
 	public void msgIHaveGlassFinished(Operator operator) 
 	{
-		/*synchronized(myGlassPieces)
-		{
-			for(GlassPackage g : myGlassPieces)
-			{
-				if(g.operator == operator)
-				{
-					g.state = GlassState.FINISHED;
-				}
-			}
-		}*/
 		if (operators.get(0).operator == operator)
 			operators.get(0).readyToGiveFinishedGlass = true;
 		else
 			operators.get(1).readyToGiveFinishedGlass = true;
-		stateChanged();
-		//waitingForOperatorToGiveBack.release();
-		
+		stateChanged();	
 	} 
 
 	public void msgHereIsFinishedGlass(Operator operator, Glass glass) 
 	{
-		
 		GlassPackage g = new GlassPackage(glass, GlassState.MOVE);
 		myGlassPieces.add(g);
 		currentGlass = g;
@@ -180,17 +152,13 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				{
 					if(g.state == GlassState.NEEDS_WORK)
 					{
-						temp = g;
+						if(getOperatorStatus(0) == false)
+							giveGlassToOperator(g, 0);
+						else if (getOperatorStatus(1) == false)
+							giveGlassToOperator(g, 1);
+						return true;
 					}
 				}
-			}
-			if(temp != null)
-			{
-				if(getOperatorStatus(0) == false)
-					giveGlassToOperator(temp, 0);
-				else if (getOperatorStatus(1) == false)
-					giveGlassToOperator(temp, 1);
-				return true;	
 			}
 		}
 		if(state == PopUpState.OPEN)
@@ -200,15 +168,22 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				for(GlassPackage g : myGlassPieces)
 				{
 					if(g.state == GlassState.INCOMING)
-						temp = g;
-				}
-			}
-			if(temp != null)
-			{
-				if((!temp.glass.getRecipe(channel)) || !(getOperatorStatus(0) == true && getOperatorStatus(1) == true) || (!operators.get(0).working && !operators.get(1).working))
-				{
-					takeGlass(temp);
-					return true;
+					{
+						//if((!g.glass.getRecipe(channel)) || !(getOperatorStatus(0) == true && getOperatorStatus(1) == true) || (!operators.get(0).working && !operators.get(1).working))
+						if((g.glass.getRecipe(channel) == false))
+						{
+								takeGlass(g);
+								return true;
+						}
+						else if((g.glass.getRecipe(channel) == true) && (getOperatorStatus(0) == false || getOperatorStatus(1) == false))
+						{
+							if(state == PopUpState.OPEN)
+							{
+								takeGlass(g);
+								return true;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -219,24 +194,18 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			{
 				if(g.state == GlassState.WAITING)
 				{
-					temp = g;
+					checkGlass(g);
+					return true;
 				}
 			}
 		}
-		if(temp != null)
-		{
-			checkGlass(temp);
-			return true;
-		}
-		
-
-		
+				
 		if(state == PopUpState.OPEN)
 		{
 			if (operators.get(0).readyToGiveFinishedGlass)
 			{
 				axnLoadGlassFromOperator(operators.get(0));
-			return true;
+				return true;
 			}
 			else if (operators.get(1).readyToGiveFinishedGlass){
 				axnLoadGlassFromOperator(operators.get(1));
@@ -253,32 +222,15 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				{
 					if(g.state == GlassState.MOVE)
 					{
-						temp = g;
+						//if(state == PopUpState.FULL )
+						//{
+							moveGlass(g);
+							return true;
+						//}
 					}
 				}
 			}
-			if(temp != null && state == PopUpState.FULL )
-			{
-				moveGlass(temp);
-				return true;
-			}
-
 		}
-
-		
-
-		
-
-
-		
-		/*if (state == PopUpState.OPEN && status ==Status.RAISED && 
-			(conveyorStatus == ConveyorStatus.GLASS_WAITING_NO_PROC && nextComponentFree) ||
-			(conveyorStatus == ConveyorStatus.GLASS_WAITING_YES_PROC  && !(operators.get(0).occupied && operators.get(1).occupied))){
-			lowerPopUp();
-			return true;
-			
-		}*/
-
 
 		return false;
 	}
@@ -336,15 +288,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		print("Taking glass from conveyor");
 		if(status == Status.RAISED)
 			lowerPopUp();
-			
-		
-		//print(""+stateSemaphore.availablePermits());
 		try{
 			stateSemaphore.acquire();
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		
 		state = PopUpState.FULL;
 		g.state = GlassState.WAITING;
 		//TEST conveyor.msgPopUpBusy();
@@ -431,9 +379,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		//TEST if(state == PopUpState.OPEN)
-			//conveyor.msgPopUpFree();
 		status = Status.LOWERED;
+		stateChanged();
 	}
 	
 	private void raisePopUp()
@@ -449,29 +396,10 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		
-		//Do("REACHED HERE");
-		//conveyor.msgPopUpBusy();
+		conveyor.msgPopUpBusy();
 		status = Status.RAISED;
-	}
-	
-	/*private void takeFinishedGlass(GlassPackage g, int operatorNum)
-	{
-		print("Taking glass from operator");
-		if(status == Status.LOWERED)
-			raisePopUp();
-		operators.get(operatorNum).operator.msgIAmFree();
-		try{
-			operators.get(operatorNum).semaphore.acquire();
-		} catch(InterruptedException e){
-			e.printStackTrace();
-		}
-		operators.get(operatorNum).occupied = false;
-		g.state = GlassState.MOVE;
-		state = PopUpState.FULL;
 		stateChanged();
-	} */
-	
+	}
 	
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
