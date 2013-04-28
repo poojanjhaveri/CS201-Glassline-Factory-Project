@@ -238,14 +238,7 @@ public class GUIGlass extends GuiComponent implements Serializable
 		case WASHER:
 			imageWASHER.display = true;
 			break;
-<<<<<<< HEAD
-=======
-		case NONE1:
-			imageMISSING.display=true;
-			break;	
-			
-			
->>>>>>> updateee donee !
+		
 		}
 	}
 	/**
@@ -325,14 +318,9 @@ public class GUIGlass extends GuiComponent implements Serializable
 		{
 			g2d.drawImage(imageWASHER.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
 		}
-<<<<<<< HEAD
-=======
-		if (imageMISSING.display)
-		{
-			g2d.drawImage(imageMISSING.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
-		}
+
 		
->>>>>>> updateee donee !
+
 	}
 
 	/**
