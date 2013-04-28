@@ -146,7 +146,7 @@ public class GUISensor extends GuiComponent
 
 			// Andrew fixed a bug on the line below.
 			// Before, if the glass stopped at the very edge of the sensor, the sensor would continuously flicker on and off.
-			if (currentGlassPiece.getCenterX()<getCenterX()-10||currentGlassPiece.getCenterX()>getCenterX()+10||currentGlassPiece.getCenterY()<getCenterY()-10||currentGlassPiece.getCenterY()>getCenterY()+10)
+			if (currentGlassPiece.getCenterX()<getCenterX()-15||currentGlassPiece.getCenterX()>getCenterX()+15||currentGlassPiece.getCenterY()<getCenterY()-15||currentGlassPiece.getCenterY()>getCenterY()+15)
 			{
 				// Redraws the sensor to it's red icon
 				setIcon(sensorOff);
