@@ -164,7 +164,6 @@ public class Conveyor extends Component implements TReceiver{
 	public void setter(Object previous, Object next, Transducer transducer){
 		this.transducer = transducer;
 		transducer.register(this, TChannel.SENSOR);
-		transducer.register(this, TChannel.CONVEYOR);
 		
 		if( previous instanceof Component ){
 			previousComp = (Component)previous;
