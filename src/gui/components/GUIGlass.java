@@ -24,8 +24,6 @@ import transducer.TEvent;
 @SuppressWarnings("serial")
 public class GUIGlass extends GuiComponent implements Serializable
 {
-	
-	
 	/**
 	 * The rectangle of the glass pane
 	 */
@@ -62,7 +60,6 @@ public class GUIGlass extends GuiComponent implements Serializable
 	 * File names for each of the various images for glass
 	 */
 	String filePathNONE = "imageicons/glassImage_NONE.png";//Base image
-	String filePathMISSING = "imageicons/glassImage_MISSING.png";//Base image
 	/**
 	 * Instances of image holder that hold the overlays for the glass for breakout
 	 */
@@ -103,8 +100,6 @@ public class GUIGlass extends GuiComponent implements Serializable
 	 * Instances of image holder that hold the overlays for the glass for washer
 	 */
 	ImageHolder imageWASHER;
-	ImageHolder imageMISSING;
-
 	/**
 	 * The current imageHolder overlay
 	 */
@@ -163,8 +158,6 @@ public class GUIGlass extends GuiComponent implements Serializable
 		imageHolders.add(imageUVLAMP);
 		imageWASHER = new ImageHolder("imageicons/glassOverlays/glassImageHolder_WASHER.png");
 		imageHolders.add(imageWASHER);
-		imageMISSING = new ImageHolder("imageicons/imageicons/glassImage_MISSING.png");
-		imageHolders.add(imageMISSING);
 	}
 	/**
 	 * Message to tell the part to rotate to an angle
@@ -245,13 +238,6 @@ public class GUIGlass extends GuiComponent implements Serializable
 		case WASHER:
 			imageWASHER.display = true;
 			break;
-		case NONE1:
-			imageMISSING.display=true;
-			this.part.setIcon(null);
-			this.part.repaint();
-			break;	
-			
-			
 		}
 	}
 	/**
@@ -330,15 +316,7 @@ public class GUIGlass extends GuiComponent implements Serializable
 		if (imageWASHER.display)
 		{
 			g2d.drawImage(imageWASHER.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
-			
 		}
-		if (imageMISSING.display)
-		{
-			
-			
-		}
-		
-		
 	}
 
 	/**

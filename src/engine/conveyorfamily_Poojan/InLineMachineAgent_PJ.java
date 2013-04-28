@@ -237,18 +237,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 					}
 			}
 			}
-			
-			
-			if(event == TEvent.WORKSTATION_BROKEN) {
-				inlinebroken=true;
-				stateChanged();
-			}
-			
-			if(event == TEvent.WORKSTATION_FIXED) {
-				inlinebroken=false;
-				stateChanged();
-			}
-			
 
 
 			}
@@ -336,7 +324,6 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 
 
 	public void setbroken(boolean s) {
-		
 		inlinebroken=s;
 		stateChanged();
 	}

@@ -136,6 +136,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	}
 	public void msgIHaveNoGlass(Operator operator) {
 		waitingForFinshedGlass.release();
+		/*if (operators.get(0).operator == operator)
+			operators.get(0).readyToGiveFinishedGlass = false;
+		else
+			operators.get(1).readyToGiveFinishedGlass = false;*/
+		state = PopUpState.OPEN;
 		currentGlass = null;
 	}
 	
@@ -267,22 +272,25 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			e.printStackTrace();
 		}
 		
+		try {
+			machine.semaphore.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if (currentGlass == null){
 			print("No glass returned, lost by machine");
 			machine.occupied = false;
 			state = PopUpState.OPEN;
+
 		}
 		else{
 			
 			
 			print("Message that finished glass is here recieved, waiting for load..");
 			//load finished
-			try {
-				load.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 			machine.occupied = false;
 			machine.readyToGiveFinishedGlass = false;
 			state = PopUpState.FULL;
@@ -579,6 +587,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		else
 			conveyorStatus = ConveyorStatus.GLASS_WAITING_YES_PROC;
 		stateChanged();
+	}
+
+
+	public void msgBreakNextGlass(int i) {
+		operators.get(i).operator.breakNextGlass();
 	}
 
 

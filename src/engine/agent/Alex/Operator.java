@@ -137,6 +137,7 @@ public class Operator extends Agent{
 		breakNextGlassPiece = false;
 		print("Removing glass");
 		glasses.remove(myGlass);
+		myPopupAgent.msgIHaveGlassFinished(this);
 		myPopupAgent.msgIHaveNoGlass(this);
 		try {
 			popup.acquire();

@@ -270,6 +270,8 @@ public class NonNormativePanel extends JPanel
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("GUI breaking glass in offline machine " + selectOffline.getSelectedIndex());
 			//transducer.fireEvent(channel, event, args)
+			ConveyorFamilyAgent_LV cfOffline = (ConveyorFamilyAgent_LV) offlineConveyorFamilies.get(selectOffline.getSelectedIndex()/2);
+			cfOffline.breakNextGlass( selectOffline.getSelectedIndex() % 2);
 		}
 		
 	}

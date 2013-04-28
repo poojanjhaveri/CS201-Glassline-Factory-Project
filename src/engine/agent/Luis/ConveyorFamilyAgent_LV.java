@@ -104,4 +104,9 @@ public class ConveyorFamilyAgent_LV implements ConveyorFamily{
 		popup.msgIHaveNoGlass(operator);
 	}
 
+	public void breakNextGlass(int i) {
+		// TODO Auto-generated method stub
+		popup.msgBreakNextGlass(i);
+	}
+
 }
