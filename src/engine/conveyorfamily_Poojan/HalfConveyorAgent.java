@@ -273,7 +273,6 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		Object [] no={this.getNumber()};
     	myTransducer.fireEvent(TChannel.CONVEYOR,TEvent.CONVEYOR_DO_START,no);
     	conveyor1=ConveyorState.Running;
-    	this.myinline.msgIamFreeForGlass();
 	}
 	
 
