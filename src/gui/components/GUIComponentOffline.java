@@ -164,11 +164,23 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 		
 		
 		
+		
 		if (part.getCenterX() == getCenterX() && part.getCenterY() == getCenterY())
 		{
+			
+			
 			Object[] args = new Object[1];
 			args[0] = index;
 			transducer.fireEvent(channel, TEvent.WORKSTATION_LOAD_FINISHED, args);
+		}
+		
+		if(breakNextGlass)
+		{
+			
+			this.part.msgPartBroken();
+			this.part=null;
+			breakNextGlass=false;
+			
 		}
 		
 		
@@ -201,7 +213,11 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 				nextComponent.addPart(part);
 				return;
 			}
-
+			if (event == TEvent.WORKSTATION_MISSING_GLASS)
+			{
+				 breakNextGlass=true;
+				return;
+			}
 			
 
 		}
