@@ -173,8 +173,10 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			}
 		}
 		
+		System.out.println("BREAK NEXT GLASS"+breakNextGlass);
 		if(breakNextGlass)
 		{
+			System.out.println("Yohoo I am here");
 			informoperator=false;
 			this.part.msgPartBroken();
 			breakNextGlass=false;
@@ -212,8 +214,8 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			}
 			if (event == TEvent.WORKSTATION_MISSING_GLASS)
 			{
-				System.out.println("MISSING");
 				 breakNextGlass=true;
+				System.out.println("MISSING");
 				return;
 			}
 			
