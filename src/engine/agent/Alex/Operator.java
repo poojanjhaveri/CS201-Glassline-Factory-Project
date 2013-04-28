@@ -33,7 +33,7 @@ public class Operator extends Agent{
 	private Transducer transducer;
 	private TChannel mychannel;
 	boolean breakNextGlassPiece;
-	
+
 	int workstation_number;
 	ConveyorFamilyAgent_LV myPopupAgent;
 	ArrayList<MyGlass> glasses; //should only have one piece, but just in case
@@ -46,13 +46,13 @@ public class Operator extends Agent{
 	}
 	Semaphore popup;
 	Semaphore machined;
-	
+
 	/*
 	 * Messages
 	 *
 	 */
 
-	
+
 	public void msgHereIsGlass(Glass g){
 		Do("Received a glass");
 
@@ -64,7 +64,7 @@ public class Operator extends Agent{
 	}
 	//from transducer
 	private void msgDoneMachining(){
-		
+
 		machined.release();
 	}
 	//from tr
@@ -72,7 +72,7 @@ public class Operator extends Agent{
 		if (!glasses.isEmpty())
 		{
 			print("Load finished");
-			
+
 			glasses.get(0).lState = LoadingState.Loaded;
 			stateChanged();
 		}
@@ -80,12 +80,12 @@ public class Operator extends Agent{
 		{
 			print("Glass couldn't be found, must be broken/taken off line");
 		}
-			
+
 	}
 	private void msgReleaseFinished() {
 		// TODO Auto-generated method stub
-		
-		
+
+
 	}
 	/*
 	 * Scheduler
@@ -126,7 +126,7 @@ public class Operator extends Agent{
 		else if (event == TEvent.WORKSTATION_RELEASE_FINISHED)
 			msgReleaseFinished();
 		}
-		
+
 	}
 	/*
 	Actions
@@ -137,7 +137,6 @@ public class Operator extends Agent{
 		breakNextGlassPiece = false;
 		print("Removing glass");
 		glasses.remove(myGlass);
-		myPopupAgent.msgIHaveGlassFinished(this);
 		myPopupAgent.msgIHaveNoGlass(this);
 		try {
 			popup.acquire();
@@ -145,9 +144,9 @@ public class Operator extends Agent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void loadGlass() {
 		// TODO Auto-generated method stub
 		Do("Loading glass");
@@ -156,7 +155,7 @@ public class Operator extends Agent{
 		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_LOAD_GLASS, args);
 		glasses.get(0).lState = LoadingState.Loading;
 	}
-	
+
 	private void machineGlass(MyGlass myGlass){
 		print("Machining glass piece " + myGlass.glass.getNumber());
 		Integer[] args = new Integer[1];
@@ -186,12 +185,12 @@ public class Operator extends Agent{
 	public void print(String n){
 	System.out.println(name + ": " + n);
 	}
-	
+
 	public void setTransducer(Transducer t) {
 		transducer = t;
 		t.register(this, mychannel);
 	}
-	
+
 	public void setConveyorFamily(ConveyorFamily c5) {
 		this.myPopupAgent = (ConveyorFamilyAgent_LV) c5;
 	}
