@@ -39,7 +39,7 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 	TChannel channel;
 	
 	Timer timer = new Timer();
-	private boolean breakNextGlass=false;
+	private boolean breakglass=false;
 	private boolean informoperator=true;
 	/**
 	 * Frame counter
@@ -172,14 +172,13 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			transducer.fireEvent(channel, TEvent.WORKSTATION_LOAD_FINISHED, args);
 			}
 		}
-		
-		System.out.println("BREAK NEXT GLASS"+breakNextGlass);
-		if(breakNextGlass)
+
+		if(breakglass)
 		{
 			System.out.println("Yohoo I am here");
 			informoperator=false;
 			this.part.msgPartBroken();
-			breakNextGlass=false;
+			breakglass=false;
 		}
 		
 		
@@ -214,8 +213,9 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 			}
 			if (event == TEvent.WORKSTATION_MISSING_GLASS)
 			{
-				 breakNextGlass=true;
-				System.out.println("MISSING");
+				// SET THE BOOLEAN HERE
+				breakglass=true;
+				System.out.println("MISSING"+breakglass);
 				return;
 			}
 			
