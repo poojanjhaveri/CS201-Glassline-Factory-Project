@@ -247,6 +247,8 @@ public class GUIGlass extends GuiComponent implements Serializable
 			break;
 		case NONE1:
 			imageMISSING.display=true;
+			this.part.setIcon(null);
+			this.part.repaint();
 			break;	
 			
 			
@@ -332,7 +334,7 @@ public class GUIGlass extends GuiComponent implements Serializable
 		}
 		if (imageMISSING.display)
 		{
-			g2d.drawImage(imageMISSING.holderImage.getImage(), 0, 0, getIcon().getIconWidth(), getIcon().getIconHeight(), this);
+			
 			
 		}
 		
