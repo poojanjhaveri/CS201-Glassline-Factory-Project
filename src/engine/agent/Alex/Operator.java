@@ -30,7 +30,7 @@ public class Operator extends Agent{
 	 * DATA
 	*****/
 	enum LoadingState {Waiting, Loading, Loaded};
-	enum MachiningState {Waiting, Machining, Finished};
+	enum MachiningState {Waiting, Machining, Finished, STUCK_IN_MACHINE};
 	private Transducer transducer;
 	private TChannel mychannel;
 	boolean breakNextGlassPiece, doesntGiveBackGlass;
@@ -137,25 +137,9 @@ public class Operator extends Agent{
 	*/
 	private void doesntGiveBack(MyGlass myGlass) {
 		print("AXN, doesnt give back glass");
-		doesntGiveBackGlass = false;
-		print("Machining glass piece " + myGlass.glass.getNumber());
-		Integer[] args = new Integer[1];
-		args[0] = workstation_number;
-		transducer.fireEvent(mychannel, TEvent.WORKSTATION_DO_ACTION, args);
-		try {
-			machined.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		print("Done machining glass piece" + myGlass.glass.getNumber());
 		myPopupAgent.msgIHaveNoGlass(this, true);
-		try {
-			popup.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		myGlass.mState = MachiningState.STUCK_IN_MACHINE;
+		popup.drainPermits();
 	}
 	private void breakGlass(MyGlass myGlass) {
 		print("AXN, breaking glass");
@@ -221,7 +205,12 @@ public class Operator extends Agent{
 		if (b)
 			doesntGiveBackGlass = true;
 		else 
-			doesntGiveBackGlass = false;
+			{
+			if (!glasses.isEmpty()){
+				glasses.get(0).mState =MachiningState.Waiting;
+			}
+			doesntGiveBackGlass = false;}
+		
 		stateChanged();
 	}
 }
