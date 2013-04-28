@@ -23,6 +23,7 @@ public class InlineAgent extends Agent implements Inline {
 	boolean isBroken;
 	
 	Conveyor conveyor;
+	Semaphore brokenSemaphore = new Semaphore(0, true);
 	Semaphore machineSemaphore = new Semaphore(0, true);
 	Semaphore nextSemaphore = new Semaphore(1, true);
 	
@@ -42,6 +43,8 @@ public class InlineAgent extends Agent implements Inline {
 	//Messages and Eventfires
 	@Override
 	public void eventFired(TChannel c, TEvent event, Object[] args) {
+		Do("My Channel: "+this.channel.toString()+", Channel Received: "+c.toString()
+				+", Event Received: "+event.toString());
 		if(channel == c) {
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED) {
 				machineSemaphore.release();
@@ -56,10 +59,13 @@ public class InlineAgent extends Agent implements Inline {
 				Do("Glass unloading finished.");
 			}
 			if(event == TEvent.WORKSTATION_BROKEN) {
+				Do("Reached here.");
 				isBroken = true;
 				stateChanged();
 			}
 			if(event == TEvent.WORKSTATION_FIXED) {
+				Do("Reached there.");
+				brokenSemaphore.release();
 				isBroken = false;
 				stateChanged();
 			}
@@ -91,6 +97,7 @@ public class InlineAgent extends Agent implements Inline {
 
 	//Actions
 	private void processGlass() {
+		checkBroken();
 		Do("Waiting glass to be fully loaded into machine.");
 		//STEP 1: Wait until GUI finishes loading the glass.
 		try {
@@ -98,7 +105,7 @@ public class InlineAgent extends Agent implements Inline {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+		checkBroken();
 		//STEP 2: GUI finishes loading; make GUI process the glass and wait until it's done
 		Do("Asking GUI machine to process the glass. I'll wait until it's finished.");
 		if(glassOnSpot.getRecipe(channel) ) {
@@ -109,7 +116,7 @@ public class InlineAgent extends Agent implements Inline {
 				e.printStackTrace();
 			}
 		}
-		
+		checkBroken();
 		//STEP 3: Code will get stuck here unless next thing is free
 		try {
 			nextSemaphore.acquire();
@@ -118,6 +125,7 @@ public class InlineAgent extends Agent implements Inline {
 		}
 		//Do("LOOK! I'm here");
 		//STEP 4: Release glass to the next thing
+		checkBroken();
 		Do("Asking GUI machine to release the glass. I'll wait until it's fully released.");
 		next.msgHereIsGlass(glassOnSpot);
 		transducer.fireEvent(channel, TEvent.WORKSTATION_RELEASE_GLASS, null);
@@ -126,12 +134,14 @@ public class InlineAgent extends Agent implements Inline {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		checkBroken();
 		//STEP 5: Unloading finished. Notify the conveyor that I'm free.
 		Do("Notifying conveyor that I'm free.");
 		glassOnSpot = null;
 		nextFree = false;
 		conveyor.msgInlineFree();
 		//Do("LOOK! I'm here");
+		checkBroken();
 	}
 
 	//Getters, Setters and Hacks
@@ -171,6 +181,16 @@ public class InlineAgent extends Agent implements Inline {
 		if(channel == c) {
 			isBroken = b;
 			stateChanged();
+		}
+	}
+	
+	private void checkBroken() {
+		if(isBroken) {
+			try {
+				brokenSemaphore.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

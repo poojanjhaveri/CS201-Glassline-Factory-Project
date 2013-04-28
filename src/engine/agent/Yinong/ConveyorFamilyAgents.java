@@ -25,15 +25,15 @@ public class ConveyorFamilyAgents implements ConveyorFamily {
 		isOffline = offline;
 		
 		if(isOffline) {			//Conveyor Family 1-3
-			conveyor = new ConveyorAgent("Conveyor", index, Mode.OFFLINE);
-			popup = new PopupAgent("Popup", index);
+			conveyor = new ConveyorAgent("Conveyor"+index, index, Mode.OFFLINE);
+			popup = new PopupAgent("Popup"+index, index);
 			conveyor.setPopup(popup);
 			popup.setConveyor(conveyor);
 			inline = null;
 		} else {				//Conveyor Family 4-7
-			conveyor = new ConveyorAgent("Conveyor", index, Mode.ONLINE);
+			conveyor = new ConveyorAgent("Conveyor"+index, index, Mode.ONLINE);
 			popup = null;
-			inline = new InlineAgent(index, "Inline", "nothing");
+			inline = new InlineAgent(index, "Inline"+index, "nothing");
 			conveyor.setInline(inline);
 			inline.setConveyor(conveyor);
 		}
