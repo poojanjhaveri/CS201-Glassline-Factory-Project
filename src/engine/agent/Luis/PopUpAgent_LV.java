@@ -30,7 +30,11 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	enum GlassState {INCOMING, WAITING, NEEDS_WORK, /*FINISHED,*/ MOVE, NONE};
 	enum PopUpState {FULL, OPEN};
 	enum Status{RAISED,LOWERED};
-	Semaphore stateSemaphore = new Semaphore(0,true);
+	
+	
+	Semaphore load = new Semaphore(0,true);
+	Semaphore release = new Semaphore(0,true);
+	
 	Semaphore statusSemaphore = new Semaphore(0,true);
 	
 	ConveyorFamily next;
@@ -41,7 +45,9 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	private enum ConveyorStatus{NULL, GLASS_WAITING_NO_PROC, GLASS_WAITING_YES_PROC};
 	ConveyorStatus conveyorStatus = ConveyorStatus.NULL;
 	private Semaphore waitingForFinshedGlass = new Semaphore(0);
-	private Semaphore popupUpDown = new Semaphore(0);
+	private Semaphore popupUp = new Semaphore(0);
+	private Semaphore popupDown = new Semaphore(0);
+	
 	
 	public void setParent(ConveyorFamilyAgent_LV parent){
 		parentCF = parent;
@@ -113,6 +119,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	public void msgIHaveGlassFinished(Operator operator) 
 	{
+		
 		if (operators.get(0).operator == operator)
 			operators.get(0).readyToGiveFinishedGlass = true;
 		else
@@ -259,6 +266,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		if (currentGlass == null){
 			print("No glass returned, lost by machine");
 			machine.occupied = false;
@@ -270,7 +278,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 			print("Message that finished glass is here recieved, waiting for load..");
 			//load finished
 			try {
-				stateSemaphore.acquire();
+				load.acquire();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -289,7 +297,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if(status == Status.RAISED)
 			lowerPopUp();
 		try{
-			stateSemaphore.acquire();
+			load.acquire();
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
@@ -313,6 +321,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
+
+		
 		Do("REACHED HERE !!!");
 		//operators.get(operatorNumber).occupied = true;
 		//g.state = GlassState.NONE;
@@ -337,17 +347,18 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		print("Moving glass to next conveyor");
 		if(status == Status.RAISED)
 			lowerPopUp();
-		next.msgHereIsGlass(g.glass);
 		myGlassPieces.remove(g);
 		
 		Integer[] args = new Integer[1];
 		args[0] = index;
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_RELEASE_GLASS, args);
 		try{
-			stateSemaphore.acquire();
+			release.acquire();
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
+
+		next.msgHereIsGlass(g.glass);
 		state = PopUpState.OPEN;
 		sendImFree();
 		currentGlass = null;
@@ -375,7 +386,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_DOWN, args);
 		
 		try{
-			popupUpDown.acquire();
+			popupDown.acquire();
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
@@ -392,7 +403,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		t.fireEvent(TChannel.POPUP, TEvent.POPUP_DO_MOVE_UP, args);
 		
 		try{
-			popupUpDown.acquire();
+			popupUp.acquire();
 		} catch(InterruptedException e){
 			e.printStackTrace();
 		}
@@ -407,16 +418,17 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index)) //Note: popup offset
 		{
 			if(event == TEvent.POPUP_GUI_MOVED_DOWN)
-				popupUpDown.release();
+				popupDown.release();
 			if(event == TEvent.POPUP_GUI_MOVED_UP)
-				popupUpDown.release();
+				popupUp.release();
 			if(event == TEvent.POPUP_GUI_LOAD_FINISHED)
 				{
-				stateSemaphore.release();
+				load.release();
 				}
 			if(event == TEvent.POPUP_GUI_RELEASE_FINISHED)
 				{
-				stateSemaphore.release();
+
+				release.release();
 				//conveyor.msgPopUpFree();
 				}
 			
