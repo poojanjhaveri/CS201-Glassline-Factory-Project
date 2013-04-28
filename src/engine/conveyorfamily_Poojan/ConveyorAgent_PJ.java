@@ -68,9 +68,9 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	myTransducer = transducer;
 
 	print("NUMBER MINE IS"+this.number);
-	
+
 	conveyor0=ConveyorState.Need_Run;
-	
+
 	myTransducer.register(this, TChannel.ALL_GUI);
 
 	myTransducer.register(this, TChannel.CUTTER);
@@ -124,7 +124,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
+
 		while(conveyor0==ConveyorState.Jammed)
 		{
 			return false;
@@ -308,7 +308,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 			stateChanged();
 			return;
 		}
-		
+
 		if( (channel == TChannel.CONVEYOR) && ( (Integer) (args[0]) == this.number) ) {
 			if(event == TEvent.CONVEYOR_BROKEN) {
 				print("BREAKKK");
@@ -316,17 +316,17 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 				print("");
 				stateChanged();		
 				return;
-				
+
 			} else if (event == TEvent.CONVEYOR_FIXED) {
-			
+
 				print("NEED RUN RECIEVED");
 				conveyor0 = ConveyorState.Need_Run;
 				stateChanged();		
 				return;
 			}
 		}
-		
-		
+
+
 
 	}
 
@@ -487,7 +487,7 @@ public class ConveyorAgent_PJ extends Agent implements Conveyor_PJ {
 	}
 
 
-	
+
 
 
 
