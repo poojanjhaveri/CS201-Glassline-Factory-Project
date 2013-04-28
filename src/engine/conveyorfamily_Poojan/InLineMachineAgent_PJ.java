@@ -82,7 +82,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		{
 			return false;
 		}
-		
+
 	synchronized(glassoninline){
 
 			for(MyPGlass mg:glassoninline){
@@ -151,7 +151,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 	private void shiptheglasstonextconveyor(MyPGlass mg) {
 		// TODO Auto-generated method stub
 		print("RELEASING GLASS");
-		
+
 		mg.status=GlassStatusInline.DONE;
 		this.halfconveyor.msgHereIsGlass(mg.pcglass);
 		myTransducer.fireEvent(TChannel.CUTTER, TEvent.WORKSTATION_RELEASE_GLASS, null);
@@ -239,6 +239,18 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 			}
 
 
+			if(event == TEvent.WORKSTATION_BROKEN) {
+				inlinebroken=true;
+				stateChanged();
+			}
+
+			if(event == TEvent.WORKSTATION_FIXED) {
+				inlinebroken=false;
+				stateChanged();
+			}
+
+
+
 			}
 
 
@@ -305,7 +317,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 		}
 		stateChanged();
 	}
-	
+
 	public void setNextFamily(ConveyorFamily c0)
 	{
 		NEXTFamily=c0;
@@ -324,6 +336,7 @@ public class InLineMachineAgent_PJ extends Agent implements InLineMachine_PJ  {
 
 
 	public void setbroken(boolean s) {
+
 		inlinebroken=s;
 		stateChanged();
 	}

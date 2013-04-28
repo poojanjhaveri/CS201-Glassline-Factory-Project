@@ -174,6 +174,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 			return true;
 		}
 
+		/*
 		if( (sensor2 == SensorState.RELEASED) ) {
 
 			return true;
@@ -182,7 +183,7 @@ public class HalfConveyorAgent extends Agent implements Conveyor_PJ {
 		if( sensor1 == SensorState.RELEASED ) {
 
 			return true;
-		}
+		}*/
 
 
 
