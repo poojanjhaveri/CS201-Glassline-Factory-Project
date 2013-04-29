@@ -6,6 +6,7 @@ import engine.interfaces.ConveyorFamily;
 import engine.agent.Alex.*;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import shared.Glass;
 import transducer.TChannel;
@@ -26,6 +27,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 	SensorState sensorTwo = SensorState.NULL;
 	ConveyorFamily previousFamily;
 	Transducer t;
+	private Semaphore popupReady = new Semaphore(0);
 	private ConveyorFamilyAgent_LV parentCF;
 	
 	public class MyPopUp
@@ -103,7 +105,7 @@ public class ConveyorAgent_LV extends Agent implements Conveyor_LV, ConveyorFami
 			return true;
 		}
 		
-		if(sensorTwo == SensorState.RELEASED && !(myPopUp.state == PopUpState.BUSY))
+		if(sensorTwo == SensorState.PRESSED && !(myPopUp.state == PopUpState.BUSY))
 		{
 			moveToPopUp();
 			return true;
