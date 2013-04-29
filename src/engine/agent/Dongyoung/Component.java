@@ -2,7 +2,6 @@ package engine.agent.Dongyoung;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import shared.Glass;
 import transducer.*;
 
 public class Component extends Agent{
@@ -12,13 +11,14 @@ public class Component extends Agent{
 	protected Component nextComp;
 	protected Transducer transducer;
 	protected String name;
-	protected CopyOnWriteArrayList<Glass> glasses = new CopyOnWriteArrayList<Glass>();
+	protected CopyOnWriteArrayList<DY_Glass> glasses;
 	protected boolean nextCompFree = true;   // Next Component's status
 	protected boolean debug = false, broken = false;
 	
 	// Constructor
-	protected Component(String name){
+	protected Component(String name, CopyOnWriteArrayList<DY_Glass> glasses){
 		this.name = name;
+		this.glasses = glasses;
 		super.startThread();
 	}
 	
@@ -27,11 +27,6 @@ public class Component extends Agent{
 		if( debug ){	print("Received message 'IAmFree'");	}
 		nextCompFree = true;
 		stateChanged();
-	}
-	
-	public void msgHereIsGlass(Glass glass){
-		if( debug ){	print("Received message 'HereIsGlass' : " + glass.getNumber());	}
-		glasses.add(glass);
 	}
 	
 	@Override

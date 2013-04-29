@@ -1,7 +1,8 @@
 package engine.agent.Dongyoung;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import engine.interfaces.ConveyorFamily;
-import shared.Glass;
 import transducer.*;
 
 public class Conveyor extends Component implements TReceiver{
@@ -14,31 +15,15 @@ public class Conveyor extends Component implements TReceiver{
 	private boolean readyToSend = false;
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum;
-	private boolean truckFirstIAmFreeNotify = false;
-	
 	// Constructor
-	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum) {
-		super(name);
+	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum, CopyOnWriteArrayList<DY_Glass> glasses) {
+		super(name, glasses);
 		conveyorNum[0] = num;
 		this.frontSensorNum = frontSensorNum;
 		this.backSensorNum = backSensorNum;
 	}
 	
 	// MESSAGE - Directly from Transducer. Refer to function 'eventFired'
-	public void msgHereIsGlass(Glass glass){
-		super.msgHereIsGlass(glass);
-		if( glasses.isEmpty() ){
-			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_STOP, conveyorNum );
-		}
-	}
-	
-	public void msgIAmFree(){
-		super.msgIAmFree();
-		if( conveyorNum[0] == 14 && truckFirstIAmFreeNotify ){
-			glasses.remove(0);
-		}
-		truckFirstIAmFreeNotify = true;
-	}
 	
 	// SCHEDULER
 	@Override
@@ -107,13 +92,9 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	private void sendGlassAction(){
-		if( nextFamily == null ){
-			nextComp.msgHereIsGlass( glasses.remove(0) );
+		if( nextFamily != null ){
+			nextFamily.msgHereIsGlass( glasses.remove(0).getGlass() );
 		}
-		else{
-			nextFamily.msgHereIsGlass( glasses.remove(0) );
-		}
-		
 		
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
 		readyToSend = false;

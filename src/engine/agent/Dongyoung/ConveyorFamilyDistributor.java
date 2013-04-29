@@ -1,6 +1,7 @@
 package engine.agent.Dongyoung;
 
 import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import engine.interfaces.ConveyorFamily;
 import engine.agent.Alex.*;
@@ -14,17 +15,18 @@ public class ConveyorFamilyDistributor implements ConveyorFamily {
 
 	private Conveyor[] conveyors = new Conveyor[5];
 	private HashMap<TChannel, InlineMachine> inlineMachines = new HashMap<TChannel, InlineMachine>();
+	protected CopyOnWriteArrayList<DY_Glass> glasses = new CopyOnWriteArrayList<DY_Glass>();
 	
 	public ConveyorFamilyDistributor(){
 		// Conveyor Generation
 		for(int i=0 ; i<5 ; i++){
-			conveyors[i] = new Conveyor("CONVEYOR"+(i+10), i+10, 2*(i+10), 2*(i+10)+1);
+			conveyors[i] = new Conveyor("CONVEYOR"+(i+10), i+10, 2*(i+10), 2*(i+10)+1, glasses);
 		}
 		
 		// Inline Machine Generation
-		inlineMachines.put( TChannel.PAINTER, new InlineMachine(TChannel.PAINTER) );
-		inlineMachines.put( TChannel.UV_LAMP, new InlineMachine(TChannel.UV_LAMP) );
-		inlineMachines.put( TChannel.OVEN, new InlineMachine(TChannel.OVEN) );
+		inlineMachines.put( TChannel.PAINTER, new InlineMachine(TChannel.PAINTER, glasses) );
+		inlineMachines.put( TChannel.UV_LAMP, new InlineMachine(TChannel.UV_LAMP, glasses) );
+		inlineMachines.put( TChannel.OVEN, new InlineMachine(TChannel.OVEN, glasses) );
 	}
 
 	public void setter(ConveyorFamily previousFamily, ConveyorFamily nextFamily, Transducer transducer){
@@ -40,7 +42,7 @@ public class ConveyorFamilyDistributor implements ConveyorFamily {
 	
 	@Override
 	public void msgHereIsGlass(Glass glass) {
-		conveyors[0].msgHereIsGlass(glass);
+		glasses.add( new DY_Glass(glass) );
 	}
 
 	@Override

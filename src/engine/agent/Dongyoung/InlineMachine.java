@@ -1,6 +1,7 @@
 package engine.agent.Dongyoung;
 
-import shared.Glass;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import transducer.*;
 
 public class InlineMachine extends Component implements TReceiver{
@@ -8,11 +9,10 @@ public class InlineMachine extends Component implements TReceiver{
 	// DATA
 	private TChannel channel;
 	private boolean loadFinished = false, actionFinished = false, releaseFinished = false;
-	private Glass glassOnSpot;
 	
 	// Constructor
-	public InlineMachine(TChannel channel) {
-		super(channel.toString());
+	public InlineMachine(TChannel channel, CopyOnWriteArrayList<DY_Glass> glasses) {
+		super(channel.toString(), glasses);
 		this.channel = channel;
 	}
 	
@@ -43,13 +43,6 @@ public class InlineMachine extends Component implements TReceiver{
 		return false;
 	}
 	
-	@Override
-	public void msgHereIsGlass(Glass g) {
-		glasses.add(g);
-		glassOnSpot = g;
-		
-	}
-	
 	// ACTION
 	/*
 	 * Need work - machine should work
@@ -57,40 +50,38 @@ public class InlineMachine extends Component implements TReceiver{
 	 */
 	private void doWorkAction(){
 		loadFinished = false;
-		if( glassOnSpot.getRecipe( channel ) ){
-			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
-		}
-		else{
-			actionFinished = true;
-		}
+		for(int i=0 ; i<glasses.size() ; i++){
+			if( !glasses.get(i).getPass(channel) ){
+				if( glasses.get(i).getNeedWork(channel) ){
+					transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
+				}
+				else{
+					actionFinished = true;
+				}
+				
+				// Check Path
+				for(DY_Glass g:glasses)
+					if(!g.getPass(channel)){
+						g.setPass(channel);
+						break;
+					}
+				
+				break;
+			}
+		}		
 	}
-	
+
 	private void actionFinishedAction(){
 		if( nextCompFree ){
 			transducer.fireEvent(channel, TEvent.WORKSTATION_RELEASE_GLASS, null);
-			passGlassAction();
 			actionFinished = false;
 			nextCompFree = false;
 		}
 	}
 	
 	private void releaseFinishedAction(){
-		notifyIAmFreeAction();
-		releaseFinished = false;
-	}
-	
-	/* Notification */
-	private void notifyIAmFreeAction(){
 		previousComp.msgIAmFree();
-	}
-	
-	/* Glass Pass */
-	private void passGlassAction(){
-		synchronized(glassOnSpot) {
-			nextComp.msgHereIsGlass( glassOnSpot );
-			glasses.remove(glassOnSpot);
-			glassOnSpot = null;
-		}
+		releaseFinished = false;
 	}
 
 	// EXTRA

@@ -18,7 +18,7 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 	ConveyorFamily previousFamily;
 	Transducer t;
 	List<Glass> truckGlass;
-	boolean broken= false;
+	boolean broken= false, temp = false;
 	enum TruckState{PARKED,COMMUTING,ARRIVED,LOADING,BROKEN,FIXED,NEEDS_BREAK,NEEDS_FIX};
 	Semaphore drivingSemaphore = new Semaphore(0,true);
 	TruckState state;
@@ -121,7 +121,9 @@ public class Truck_Agent_LV extends Agent implements ConveyorFamily{
 		print("Letting conveyor know I can load glass");
 		if(truckGlass.size()!=0)
 			truckGlass.remove(0);
-		previousFamily.msgIAmFree();
+		if( temp )
+			previousFamily.msgIAmFree();
+		temp = true;
 		state = TruckState.PARKED;
 	}
 
