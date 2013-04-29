@@ -52,7 +52,7 @@ public class Conveyor extends Component implements TReceiver{
 			return true;
 		}
 		
-		if( readyToSend && nextCompFree ){
+		if( readyToSend ){
 			sendGlassAction();
 			return true;
 		}
@@ -71,13 +71,12 @@ public class Conveyor extends Component implements TReceiver{
 	
 	/* Glass leaves Front Sensor */
 	private void glassLeaveFrontAction(){
-		if( previousFamily == null ){
+		if( previousComp != null ){
 			previousComp.msgIAmFree();
 		}
-		else{
+		else if( previousFamily != null ){
 			previousFamily.msgIAmFree();
 		}
-		
 		glassLeaveFront = false;
 	}
 	
@@ -92,12 +91,14 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	private void sendGlassAction(){
-		if( nextFamily != null ){
-			nextFamily.msgHereIsGlass( glasses.remove(0).getGlass() );
-		}		
-		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
-		readyToSend = false;
-		nextCompFree = false;
+		if( nextCompFree ){
+			if( nextFamily != null ){
+				nextFamily.msgHereIsGlass( glasses.remove(0).getGlass() );
+			}		
+			transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
+			readyToSend = false;
+			nextCompFree = false;
+		}
 	}
 
 	// EXTRA
