@@ -99,9 +99,9 @@ public class GUIComponentOffline extends GuiAnimationComponent implements Action
 	 */
 	public void doAnimate()
 	{
-		if (counter/20 < imageicons.size())
+		if (counter/10 < imageicons.size())
 		{
-			setIcon(imageicons.get(counter/20));
+			setIcon(imageicons.get(counter/10));
 			counter++;
 		}
 		else

@@ -491,6 +491,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
 		//print("Index: " + index);
+		
+		
 		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index)) //Note: popup offset
 		{
 			if(event == TEvent.POPUP_GUI_MOVED_DOWN)
@@ -503,8 +505,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				}
 			if(event == TEvent.POPUP_GUI_RELEASE_FINISHED)
 				{
-				msgLoadRelease();
 				//sendImFree();
+				release.release();
 				//conveyor.msgPopUpFree();
 				}
 
@@ -539,6 +541,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 	public void msgLoadRelease() {
 		// TODO Auto-generated method stub
+		//release = new Semaphore(0);
 		release.release();
 	}
 
@@ -568,12 +571,15 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		this.operators.add(new Machine(operatorOne,c,false,0));
 		this.operators.add(new Machine(operatorTwo,c,false,1));
 		t.register(this, c);
+		t.register(this, TChannel.SENSOR);
 	}
 
 	public void setTransducer(Transducer trans)
 	{
 		t = trans;
 		t.register(this, TChannel.POPUP);
+
+		t.register(this, TChannel.SENSOR);
 	}
 
 	public void setInteractions(ConveyorFamily cf, Conveyor_LV c, Transducer trans)
@@ -582,6 +588,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		next = cf;
 		t = trans;
 		t.register(this, TChannel.POPUP);
+		t.register(this, TChannel.SENSOR);
 	}
 
 	public void setConveyor(Conveyor_LV c)
