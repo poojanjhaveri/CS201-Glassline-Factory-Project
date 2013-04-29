@@ -92,18 +92,9 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	private void sendGlassAction(){
-<<<<<<< HEAD
 		if( nextFamily != null ){
 			nextFamily.msgHereIsGlass( glasses.remove(0).getGlass() );
 		}
-=======
-		if( nextFamily == null ){
-			nextComp.msgHereIsGlass( glasses.get(0) );
-		}
-		else{
-			nextFamily.msgHereIsGlass( glasses.get(0) );
-		}
->>>>>>> Revert "Dongyoung's Conveyor/Inline Recipe Bug Fixed"
 		
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
 		readyToSend = false;
