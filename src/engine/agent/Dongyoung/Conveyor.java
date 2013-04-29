@@ -88,6 +88,7 @@ public class Conveyor extends Component implements TReceiver{
 	}
 	
 	private void timerStart(){
+		/*
 		timer.schedule(new TimerTask(){
 			public void run(){
 				if( expectFromPrevious ){
@@ -96,6 +97,7 @@ public class Conveyor extends Component implements TReceiver{
 				}
 			}
 		}, 10000);
+		*/
 	}
 	
 	private void checkPassAction(){
