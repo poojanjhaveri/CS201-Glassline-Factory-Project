@@ -81,6 +81,7 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	private void releaseFinishedAction(){
 		previousComp.msgIAmFree();
+		releaseFinished = false;
 	}
 
 	// EXTRA
