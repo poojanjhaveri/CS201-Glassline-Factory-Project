@@ -1,7 +1,10 @@
 package engine.agent.Dongyoung;
 
+<<<<<<< HEAD
 import java.util.concurrent.CopyOnWriteArrayList;
 
+=======
+>>>>>>> Revert "Dongyoung's Conveyor/Inline Recipe Bug Fixed"
 import transducer.*;
 
 public class InlineMachine extends Component implements TReceiver{
@@ -50,6 +53,7 @@ public class InlineMachine extends Component implements TReceiver{
 	 */
 	private void doWorkAction(){
 		loadFinished = false;
+<<<<<<< HEAD
 		for(int i=0 ; i<glasses.size() ; i++){
 			if( !glasses.get(i).getPass(channel) ){
 				if( glasses.get(i).getNeedWork(channel) ){
@@ -69,6 +73,14 @@ public class InlineMachine extends Component implements TReceiver{
 				break;
 			}
 		}		
+=======
+		if( glasses.get(0).getRecipe( channel ) ){
+			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
+		}
+		else{
+			actionFinished = true;
+		}
+>>>>>>> Revert "Dongyoung's Conveyor/Inline Recipe Bug Fixed"
 	}
 
 	private void actionFinishedAction(){
@@ -81,7 +93,15 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	private void releaseFinishedAction(){
 		previousComp.msgIAmFree();
+<<<<<<< HEAD
 		releaseFinished = false;
+=======
+	}
+	
+	/* Glass Pass */
+	private void passGlassAction(){
+		nextComp.msgHereIsGlass( glasses.remove(0) );
+>>>>>>> Revert "Dongyoung's Conveyor/Inline Recipe Bug Fixed"
 	}
 
 	// EXTRA
