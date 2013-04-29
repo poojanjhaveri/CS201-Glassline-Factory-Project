@@ -117,7 +117,7 @@ public class GUISensor extends GuiComponent
 
 				// Will basically check a box that is range by range big around it's current guiX and guiY
 				//
-				if (activePieces.get(k).getCenterX()>=getCenterX()-10&&activePieces.get(k).getCenterX()<=getCenterX()+10&&activePieces.get(k).getCenterY()>=getCenterY()-10&&activePieces.get(k).getCenterY()<=getCenterY()+10)
+				if (activePieces.get(k).getCenterX()>=getCenterX()-13&&activePieces.get(k).getCenterX()<=getCenterX()+13&&activePieces.get(k).getCenterY()>=getCenterY()-13&&activePieces.get(k).getCenterY()<=getCenterY()+13)
 				{
 					setIcon(sensorOn);
 					// If one does intersect it will change it's icon to pressed(green)
@@ -158,6 +158,7 @@ public class GUISensor extends GuiComponent
 				// Notifies the agent
 				Object[] args = new Object[1];
 				args[0] = myIndex;
+				
 				transducer.fireEvent(TChannel.SENSOR, TEvent.SENSOR_GUI_RELEASED, args);
 			}
 		}
