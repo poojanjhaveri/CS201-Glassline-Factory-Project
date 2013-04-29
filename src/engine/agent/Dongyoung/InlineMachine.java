@@ -1,5 +1,6 @@
 package engine.agent.Dongyoung;
 
+import shared.Glass;
 import transducer.*;
 
 public class InlineMachine extends Component implements TReceiver{
@@ -7,6 +8,7 @@ public class InlineMachine extends Component implements TReceiver{
 	// DATA
 	private TChannel channel;
 	private boolean loadFinished = false, actionFinished = false, releaseFinished = false;
+	private Glass glassOnSpot;
 	
 	// Constructor
 	public InlineMachine(TChannel channel) {
@@ -41,6 +43,13 @@ public class InlineMachine extends Component implements TReceiver{
 		return false;
 	}
 	
+	@Override
+	public void msgHereIsGlass(Glass g) {
+		glasses.add(g);
+		glassOnSpot = g;
+		
+	}
+	
 	// ACTION
 	/*
 	 * Need work - machine should work
@@ -48,7 +57,7 @@ public class InlineMachine extends Component implements TReceiver{
 	 */
 	private void doWorkAction(){
 		loadFinished = false;
-		if( glasses.get(0).getRecipe( channel ) ){
+		if( glassOnSpot.getRecipe( channel ) ){
 			transducer.fireEvent(channel, TEvent.WORKSTATION_DO_ACTION, null);
 		}
 		else{
@@ -77,7 +86,11 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	/* Glass Pass */
 	private void passGlassAction(){
-		nextComp.msgHereIsGlass( glasses.remove(0) );
+		synchronized(glassOnSpot) {
+			nextComp.msgHereIsGlass( glassOnSpot );
+			glasses.remove(glassOnSpot);
+			glassOnSpot = null;
+		}
 	}
 
 	// EXTRA

@@ -108,11 +108,12 @@ public class Conveyor extends Component implements TReceiver{
 	
 	private void sendGlassAction(){
 		if( nextFamily == null ){
-			nextComp.msgHereIsGlass( glasses.get(0) );
+			nextComp.msgHereIsGlass( glasses.remove(0) );
 		}
 		else{
-			nextFamily.msgHereIsGlass( glasses.get(0) );
+			nextFamily.msgHereIsGlass( glasses.remove(0) );
 		}
+		
 		
 		transducer.fireEvent( TChannel.CONVEYOR, TEvent.CONVEYOR_DO_START, conveyorNum );
 		readyToSend = false;
