@@ -1,7 +1,6 @@
 package engine.agent.Dongyoung;
 
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import transducer.*;
 
 public class InlineMachine extends Component implements TReceiver{
@@ -50,6 +49,7 @@ public class InlineMachine extends Component implements TReceiver{
 	 */
 	private void doWorkAction(){
 		loadFinished = false;
+
 		for(int i=0 ; i<glasses.size() ; i++){
 			if( !glasses.get(i).getPass(channel) ){
 				if( glasses.get(i).getNeedWork(channel) ){
@@ -81,7 +81,6 @@ public class InlineMachine extends Component implements TReceiver{
 	
 	private void releaseFinishedAction(){
 		previousComp.msgIAmFree();
-		releaseFinished = false;
 	}
 
 	// EXTRA
