@@ -182,6 +182,35 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 
 		GlassPackage temp = null;
+		
+		if(myGlassPieces.size() == 0 && (getOperatorStatus(0) == false && getOperatorStatus(1) == false)) {
+			/*
+			 * Semaphore load = new Semaphore(0,true);
+	Semaphore release = new Semaphore(0,true);
+
+	Semaphore brokenPopUp = new Semaphore(0,true);
+
+	Semaphore statusSemaphore = new Semaphore(0,true);
+
+	ConveyorFamily next;
+
+	Transducer t;
+	TChannel channel;
+	private ConveyorFamilyAgent_LV parentCF;
+	private enum ConveyorStatus{NULL, GLASS_WAITING_NO_PROC, GLASS_WAITING_YES_PROC};
+	ConveyorStatus conveyorStatus = ConveyorStatus.NULL;
+	private Semaphore waitingForFinshedGlass = new Semaphore(0);
+	private Semaphore popupUp = new Semaphore(0);
+	private Semaphore popupDown = new Semaphore(0);
+			 */
+			load.drainPermits();
+			release.drainPermits();
+			brokenPopUp.drainPermits();
+			statusSemaphore.drainPermits();
+			waitingForFinshedGlass.drainPermits();
+			popupUp.drainPermits();
+			popupDown.drainPermits();
+		}
 
 		if(state == PopUpState.OPEN)
 		{
