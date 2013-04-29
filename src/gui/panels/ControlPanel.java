@@ -86,7 +86,7 @@ public class ControlPanel extends JPanel implements TReceiver
 	//public final static Dimension size = new Dimension(400, 880);
 	
 	// For Windows
-	public final static Dimension size = new Dimension(250, 880);
+	public final static Dimension size = new Dimension(400, 880);
 	//-----------------------------------------------------------------------------------------------
 	
 	/**
