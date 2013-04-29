@@ -374,7 +374,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 				print("Sending to conveyor im free");
 				conveyor.msgPopUpFree();
 			}
-			else if (!(operators.get(0).occupied && operators.get(1).occupied)){
+			else if (!(operators.get(0).occupied  && operators.get(1).occupied)){
 				print("Sending to conveyor im free");
 				conveyor.msgPopUpFree();
 			}
@@ -490,7 +490,7 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 	
 	@Override
 	public void eventFired(TChannel channel, TEvent event, Object[] args) {
-		print("Index: " + index);
+		//print("Index: " + index);
 		if((channel == TChannel.POPUP) && ((Integer)(args[0]) == index)) //Note: popup offset
 		{
 			if(event == TEvent.POPUP_GUI_MOVED_DOWN)
@@ -511,8 +511,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 		}
 		else if((channel == operators.get(0).channel) && ((Integer)(args[0]) == 0) )
 		{
-			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
-					" Operator No: "+operators.get(0).number);
+			//Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
+				//	" Operator No: "+operators.get(0).number);
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 				{
 					operators.get(0).semaphore.release();
@@ -526,8 +526,8 @@ public class PopUpAgent_LV extends Agent implements PopUp_LV{
 
 		else if((channel == operators.get(1).channel) && ((Integer)(args[0]) == 1) )
 		{
-			Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
-					" Operator No: "+operators.get(0).number);
+			//Do("Event: "+event+" Channel: "+channel+" Parameter passed in: "+(Integer)(args[0])+
+				//	" Operator No: "+operators.get(0).number);
 			if(event == TEvent.WORKSTATION_LOAD_FINISHED)
 				operators.get(1).semaphore.release();
 			if(event == TEvent.WORKSTATION_RELEASE_FINISHED)
