@@ -1,5 +1,7 @@
 package engine.agent.Dongyoung;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import engine.interfaces.ConveyorFamily;
@@ -8,6 +10,7 @@ import transducer.*;
 public class Conveyor extends Component implements TReceiver{
 
 	// DATA
+	private Timer timer = new Timer();
 	private ConveyorFamily previousFamily = null;
 	private ConveyorFamily nextFamily = null;
 	private boolean glassLeaveFront = false, glassLeaveBack = false;
@@ -15,6 +18,8 @@ public class Conveyor extends Component implements TReceiver{
 	private boolean readyToSend = false;
 	private Integer[] conveyorNum = new Integer[1];
 	private int frontSensorNum, backSensorNum;
+	private boolean expectFromPrevious = true;
+	
 	// Constructor
 	public Conveyor(String name, int num, int frontSensorNum, int backSensorNum, CopyOnWriteArrayList<DY_Glass> glasses) {
 		super(name, glasses);
@@ -76,8 +81,21 @@ public class Conveyor extends Component implements TReceiver{
 		}
 		else if( previousFamily != null ){
 			previousFamily.msgIAmFree();
+			expectFromPrevious = true;
+			timerStart();
 		}
 		glassLeaveFront = false;
+	}
+	
+	private void timerStart(){
+		timer.schedule(new TimerTask(){
+			public void run(){
+				if( expectFromPrevious ){
+					previousFamily.msgIAmFree();
+					timerStart();
+				}
+			}
+		}, 10000);
 	}
 	
 	private void checkPassAction(){
@@ -112,6 +130,7 @@ public class Conveyor extends Component implements TReceiver{
 		if( (Integer)args[0] == frontSensorNum ){
 			if( event == TEvent.SENSOR_GUI_PRESSED ){
 				entrySensorCheck = true;
+				expectFromPrevious = false;
 			}
 			else if( event == TEvent.SENSOR_GUI_RELEASED ){
 				glassLeaveFront = true;
